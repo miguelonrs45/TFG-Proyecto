@@ -171,3 +171,9 @@ desktop.ini
 /ios/
 /android/
 /electron/
+
+# Archivos de entorno
+.env
+.env.local
+.env.development
+.env.production
