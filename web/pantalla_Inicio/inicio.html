@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inicio - CoWorkGo</title>
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.esm.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ionic/core/css/ionic.bundle.css">
+  <script src="/inicio.js" defer></script>
+  <style>
+    /* Animaciones generales */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateX(-100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    /* Fondo con animación de gradiente */
+    ion-content {
+      --background: linear-gradient(135deg, 
+        rgba(0, 0, 0, 0.8),
+        rgba(74, 144, 226, 0.8),
+        rgba(0, 0, 0, 0.8)),
+        url('imagenFondo_Inicio.png') no-repeat center center / cover;
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
+    }
+
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* Header y título */
+    ion-toolbar {
+      --background: transparent;
+      --border-color: transparent;
+      min-height: 60px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    ion-toolbar ion-title {
+      font-size: 32px;
+      font-weight: bold;
+      color: #4a90e2; /* Color principal */
+      text-align: center;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+      opacity: 0;
+      animation: fadeIn 1s ease-out forwards;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 10px 20px;
+      margin: 10px auto;
+      max-width: fit-content;
+    }
+
+    ion-toolbar ion-title ion-icon {
+      font-size: 32px;
+      color: #4a90e2;
+    }
+
+    /* Header container mejorado */
+    .header-container {
+      background: transparent;
+      padding: 40px 20px;
+      margin-bottom: 30px;
+      text-align: center;
+      animation: slideIn 1s ease-out;
+    }
+
+    .header-title {
+      font-size: 42px;
+      font-weight: bold;
+      color: white;
+      margin: 0;
+      text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.8);
+      animation: fadeIn 1.5s ease-out;
+      margin-bottom: 15px;
+    }
+
+    .header-subtitle {
+      font-size: 20px;
+      color: rgba(255, 255, 255, 0.9);
+      margin: 0;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+      animation: fadeIn 2s ease-out;
+    }
+
+    /* Botones de la toolbar */
+    ion-buttons {
+      position: absolute;
+      right: 10px;
+    }
+
+    ion-buttons ion-button {
+      --color: #4a90e2;
+      margin: 0 5px;
+      --background: rgba(255, 255, 255, 0.95);
+      --border-radius: 10px;
+      --box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    ion-buttons ion-button:hover {
+      --background: rgba(255, 255, 255, 1);
+      --color: #357abd;
+    }
+
+    /* Ajustar grid de quick actions */
+    .quick-actions {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+      padding: 15px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    /* Reducir tamaño de las cards */
+    .action-card {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 20px;
+      padding: 15px;
+      text-align: center;
+      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+      backdrop-filter: blur(5px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      animation: fadeIn 0.5s ease-out forwards;
+      opacity: 0;
+      min-height: 120px;
+    }
+
+    .action-card:nth-child(1) { animation-delay: 0.2s; }
+    .action-card:nth-child(2) { animation-delay: 0.4s; }
+    .action-card:nth-child(3) { animation-delay: 0.6s; }
+    .action-card:nth-child(4) { animation-delay: 0.8s; }
+
+    .action-card:hover {
+      transform: translateY(-5px) scale(1.02);
+      box-shadow: 0 12px 20px rgba(0, 0, 0, 0.2);
+      background: rgba(255, 255, 255, 0.98);
+    }
+
+    .action-card ion-icon {
+      font-size: 28px;
+      color: #4a90e2;
+      margin-bottom: 10px;
+      transition: transform 0.3s ease;
+    }
+
+    .action-card:hover ion-icon {
+      transform: scale(1.1);
+    }
+
+    .action-card h3 {
+      font-size: 16px;
+      margin: 10px 0 5px;
+    }
+
+    .action-card p {
+      font-size: 12px;
+      margin: 0;
+    }
+
+    /* Ajustar tamaño de las stats cards */
+    .stats-container {
+      padding: 15px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .stats-container h3 {
+      font-size: 18px;
+      margin: 10px 0;
+    }
+
+    .stat-card {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 20px;
+      padding: 12px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(5px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: all 0.3s ease;
+      animation: slideIn 0.5s ease-out forwards;
+      opacity: 0;
+    }
+
+    .stat-card:nth-child(1) { animation-delay: 1s; }
+    .stat-card:nth-child(2) { animation-delay: 1.2s; }
+
+    .stat-card:hover {
+      transform: translateX(10px);
+      box-shadow: 0 12px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .stat-card ion-icon {
+      font-size: 24px;
+      margin-right: 12px;
+    }
+
+    .stat-card h4 {
+      font-size: 14px;
+    }
+
+    .stat-card p {
+      font-size: 12px;
+      margin: 3px 0 0;
+    }
+  </style>
+</head>
+<body>
+  <ion-app>
+    <ion-header class="ion-no-border">
+      <ion-toolbar>
+        <ion-title>
+          <ion-icon name="business-outline"></ion-icon>
+          CoWorkGo
+        </ion-title>
+        <ion-buttons slot="end">
+          <ion-button size="small">
+            <ion-icon slot="icon-only" name="notifications-outline"></ion-icon>
+          </ion-button>
+          <ion-button size="small">
+            <ion-icon slot="icon-only" name="person-circle-outline"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-content>
+      <div class="header-container">
+        <h1 class="header-title">¡Bienvenido de nuevo!</h1>
+        <p class="header-subtitle">Encuentra el espacio perfecto para trabajar</p>
+      </div>
+
+      <div class="quick-actions">
+        <div class="action-card" onclick="window.location.href='/web/menus/reservar.html'">
+          <ion-icon name="calendar-outline"></ion-icon>
+          <h3>Nueva Reserva</h3>
+          <p>Reserva tu espacio de trabajo</p>
+        </div>
+        <div class="action-card" onclick="window.location.href='/web/menus/mis-reservas.html'">
+          <ion-icon name="list-outline"></ion-icon>
+          <h3>Mis Reservas</h3>
+          <p>Ver tus reservas actuales</p>
+        </div>
+        <div class="action-card" onclick="window.location.href='/web/menus/espacios.html'">
+          <ion-icon name="business-outline"></ion-icon>
+          <h3>Espacios</h3>
+          <p>Explorar espacios disponibles</p>
+        </div>
+        <div class="action-card" onclick="window.location.href='/web/menus/perfil.html'">
+          <ion-icon name="person-outline"></ion-icon>
+          <h3>Mi Perfil</h3>
+          <p>Gestionar tu cuenta</p>
+        </div>
+      </div>
+    </ion-content>
+  </ion-app>
+</body>
+</html>

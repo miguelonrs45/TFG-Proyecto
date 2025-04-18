@@ -1,0 +1,52 @@
+/* Tema claro */
+.light-theme {
+    --background-color: #ffffff;
+    --text-color: #000000;
+    --card-background: #ffffff;
+    --border-color: #e0e0e0;
+    --label-color: #666666;
+    --value-color: #333333;
+}
+
+/* Tema oscuro */
+.dark-theme {
+    --background-color: #121212;
+    --text-color: #ffffff;
+    --card-background: #1e1e1e;
+    --border-color: #333333;
+    --label-color: #e0e0e0;
+    --value-color: #ffffff;
+}
+
+/* Estilos compartidos para tema oscuro */
+.dark-theme ion-content {
+    --background: var(--background-color);
+    --color: var(--text-color);
+}
+
+.dark-theme ion-card {
+    --background: var(--card-background);
+    --color: var(--text-color);
+}
+
+.dark-theme ion-item {
+    --background: var(--card-background);
+    --color: var(--text-color);
+    --border-color: var(--border-color);
+}
+
+.dark-theme ion-toolbar {
+    --background: var(--card-background);
+    --color: var(--text-color);
+}
+
+.dark-theme ion-button {
+    --background: #4a90e2;
+    --background-hover: #357abd;
+    --color: #ffffff;
+}
+
+.dark-theme ion-button.danger {
+    --background: #cf3c4f;
+    --background-hover: #b33545;
+}

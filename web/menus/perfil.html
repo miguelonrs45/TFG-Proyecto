@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Perfil - CoWorkGo</title>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.esm.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ionic/core/css/ionic.bundle.css">
+    <script src="perfil.js" defer></script>
+
+    <style>
+        .profile-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .profile-header {
+            text-align: center;
+            padding: 30px 20px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            margin-bottom: 30px;
+        }
+
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            background: #4a90e2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .profile-avatar ion-icon {
+            font-size: 64px;
+            color: white;
+        }
+
+        .profile-name {
+            font-size: 24px;
+            color: #333;
+            margin: 10px 0;
+        }
+
+        .profile-email {
+            color: #666;
+            margin: 0;
+        }
+
+        .profile-section {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .profile-section h3 {
+            color: #333;
+            margin: 0 0 20px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .profile-section h3 ion-icon {
+            color: #4a90e2;
+        }
+
+        .profile-info-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .profile-info-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .profile-info-label {
+            color: #666;
+            min-width: 120px;
+        }
+
+        .profile-info-value {
+            color: #333;
+            flex: 1;
+        }
+
+        .profile-actions {
+            display: grid;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .profile-info-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 5px;
+            }
+
+            .profile-info-label {
+                min-width: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <ion-app>
+        <ion-header>
+            <ion-toolbar color="primary">
+                <ion-buttons slot="start">
+                    <ion-back-button default-href="/web/pantalla_Inicio/inicio.html"></ion-back-button>
+                </ion-buttons>
+                <ion-title>Mi Perfil</ion-title>
+                <ion-buttons slot="end">
+                    <ion-button id="editProfileButton">
+                        <ion-icon name="create-outline" slot="icon-only"></ion-icon>
+                    </ion-button>
+                </ion-buttons>
+            </ion-toolbar>
+        </ion-header>
+
+        <ion-content>
+            <div class="profile-container">
+                <div class="profile-header">
+                    <div class="profile-avatar">
+                        <ion-icon name="person-outline"></ion-icon>
+                    </div>
+                    <h2 class="profile-name" id="userName">Nombre del Usuario</h2>
+                    <p class="profile-email" id="userEmail">usuario@email.com</p>
+                </div>
+
+                <div class="profile-section">
+                    <h3>
+                        <ion-icon name="person-circle-outline"></ion-icon>
+                        Información Personal
+                    </h3>
+                    <div class="profile-info-item">
+                        <span class="profile-info-label">Nombre:</span>
+                        <span class="profile-info-value" id="fullName"></span>
+                    </div>
+                    <div class="profile-info-item">
+                        <span class="profile-info-label">Departamento:</span>
+                        <span class="profile-info-value" id="department"></span>
+                    </div>
+                    <div class="profile-info-item">
+                        <span class="profile-info-label">Cargo:</span>
+                        <span class="profile-info-value" id="position"></span>
+                    </div>
+                </div>
+
+                <div class="profile-section">
+                    <h3>
+                        <ion-icon name="settings-outline"></ion-icon>
+                        Preferencias
+                    </h3>
+                    <div class="profile-info-item">
+                        <span class="profile-info-label">Notificaciones:</span>
+                        <ion-toggle id="notificationsToggle" checked></ion-toggle>
+                    </div>
+                    <div class="profile-info-item">
+                        <span class="profile-info-label">Tema:</span>
+                        <ion-select value="light" id="themeSelect">
+                            <ion-select-option value="light">Claro</ion-select-option>
+                            <ion-select-option value="dark">Oscuro</ion-select-option>
+                        </ion-select>
+                    </div>
+                </div>
+
+                <div class="profile-actions">
+                    <ion-button expand="block" color="primary" id="editProfileButton">
+                        <ion-icon name="create-outline" slot="start"></ion-icon>
+                        Editar Perfil
+                    </ion-button>
+                    <ion-button expand="block" color="danger" id="logoutButton">
+                        <ion-icon name="log-out-outline" slot="start"></ion-icon>
+                        Cerrar Sesión
+                    </ion-button>
+                </div>
+            </div>
+        </ion-content>
+    </ion-app>
+</body>
+</html>
