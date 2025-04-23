@@ -1,11 +1,11 @@
 // src/app/services/supabase-service.js
-import { createClient } from '@supabase/supabase-js';
-import { supabaseConfig } from '../config/supabase-config';
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+import { supabaseConfig } from '../config/supabase-config.js';
 
-// Usa la configuración importada
+// Crear cliente Supabase usando la configuración
 export const supabase = createClient(
-  supabaseConfig.supabaseUrl,
-  supabaseConfig.supabaseKey
+  supabaseConfig.supabaseUrl || 'https://dvtkkaxjehfotylwwsea.supabase.co',
+  supabaseConfig.supabaseKey || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2dGtrYXhqZWhmb3R5bHd3c2VhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI4MzEyOTUsImV4cCI6MjA1ODQwNzI5NX0.VjR1V7PBZuOtvSUIOnjrXBb_O-w6W2wabHhjahaom1A'
 );
 
 // Obtener datos
@@ -60,3 +60,12 @@ export const cerrarSesion = async () => {
   const { error } = await supabase.auth.signOut();
   if (error) throw error;
 };
+
+// // Función para restablecer contraseña
+// export const resetPasswordForEmail = async (email, redirectUrl) => {
+//   const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
+//     redirectTo: redirectUrl
+//   });
+//   if (error) throw error;
+//   return data;
+// };

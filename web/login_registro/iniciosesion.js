@@ -1,14 +1,10 @@
-// Importación de Supabase
-import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
-
-// Configuración de Supabase
-const supabaseUrl = 'https://dvtkkaxjehfotylwwsea.supabase.co';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2dGtrYXhqZWhmb3R5bHd3c2VhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI4MzEyOTUsImV4cCI6MjA1ODQwNzI5NX0.VjR1V7PBZuOtvSUIOnjrXBb_O-w6W2wabHhjahaom1A';
-const supabase = createClient(supabaseUrl, supabaseKey);
+import { supabase } from '../conexion/services/supabase-service.js';
+// No funiona 
 
 // Función para iniciar sesión
 async function iniciarSesion(email, password) {
   try {
+    console.log('Patata');
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password
