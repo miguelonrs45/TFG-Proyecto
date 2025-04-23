@@ -1,0 +1,28 @@
+{
+  "name": "tfg-proyecto",
+  "version": "1.0.0",
+  "description": "Proyecto de Fin de Grado\r Del Grado De DAM Desarrollo de Aplicaciones Multiplataformas",
+  "main": "index.js",
+  "scripts": {
+    "start": "ionic serve",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/miguelonrs45/TFG-Proyecto.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/miguelonrs45/TFG-Proyecto/issues"
+  },
+  "homepage": "https://github.com/miguelonrs45/TFG-Proyecto#readme",
+  "devDependencies": {
+    "@ionic/cli": "^7.2.1",
+    "supabase": "latest"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.49.4"
+  }
+}

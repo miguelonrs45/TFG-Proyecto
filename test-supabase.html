@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Test Supabase</title>
+  <!-- La versión más reciente de Supabase incluye el objeto global createClient -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+  <h1>Prueba de conexión a Supabase</h1>
+  <div id="result">Conectando...</div>
+  
+  <script>
+    // Configuración de Supabase
+    const supabaseUrl = 'https://dvtkkaxjehfotylwwsea.supabase.co';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2dGtrYXhqZWhmb3R5bHd3c2VhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI4MzEyOTUsImV4cCI6MjA1ODQwNzI5NX0.VjR1V7PBZuOtvSUIOnjrXBb_O-w6W2wabHhjahaom1A';
+    
+    // Creación correcta del cliente de Supabase
+    const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+    
+    // Prueba de conexión
+    async function testConnection() {
+      try {
+        // Intenta obtener datos de una tabla
+        const { data, error } = await supabaseClient
+          .from('Usuario')  // Asumiendo que la tabla se llama 'usuario'
+          .select('*')
+          .limit(1);
+        
+        if (error) {
+          document.getElementById('result').innerHTML = 'Error: ' + error.message;
+          console.error('Error:', error);
+        } else {
+          if (data && data.length === 0) {
+            document.getElementById('result').innerHTML = 'Conexión exitosa! La tabla está vacía.';
+            console.log('Tabla vacía, pero la conexión funciona correctamente');
+          } else {
+            document.getElementById('result').innerHTML = 'Conexión exitosa! Datos: ' + JSON.stringify(data);
+            console.log('Datos:', data);
+          }
+        }
+      } catch (e) {
+        document.getElementById('result').innerHTML = 'Error de conexión: ' + e.message;
+        console.error('Error de conexión:', e);
+      }
+    }
+    
+    // Ejecutar la prueba
+    testConnection();
+  </script>
+</body>
+</html>
