@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>Política de Privacidad - CoWorkGo</title>
+  <style>
+    /* Reset y estilos básicos */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    html, body {
+      height: auto;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      color: #333;
+      background-color: #f5f5f5;
+    }
+    
+    /* Header */
+    header {
+      background-color: #212529;
+      color: white;
+      padding: 15px 0;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    
+    .header-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+    }
+    
+    .logo {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      color: white;
+    }
+    
+    .logo-icon {
+      width: 24px;
+      height: 24px;
+      margin-right: 10px;
+      color: #4a90e2;
+    }
+    
+    .logo-text {
+      font-size: 22px;
+      font-weight: bold;
+    }
+    
+    /* Main content */
+    main {
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+    
+    .back-button {
+      display: inline-block;
+      background-color: #4a90e2;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 5px;
+      text-decoration: none;
+      margin-bottom: 30px;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    
+    .back-button:hover {
+      background-color: #357abd;
+    }
+    
+    h1 {
+      color: #4a90e2;
+      font-size: 32px;
+      margin-bottom: 30px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #4a90e2;
+    }
+    
+    .content-box {
+      background-color: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+      margin-bottom: 40px;
+    }
+    
+    h2 {
+      color: #4a90e2;
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+    
+    h3 {
+      font-size: 20px;
+      margin-top: 25px;
+      margin-bottom: 15px;
+      color: #333;
+    }
+    
+    h4 {
+      font-size: 18px;
+      margin-top: 20px;
+      margin-bottom: 10px;
+    }
+    
+    p {
+      margin-bottom: 15px;
+      color: #666;
+    }
+    
+    ul, ol {
+      margin-bottom: 15px;
+      padding-left: 25px;
+      color: #666;
+    }
+    
+    li {
+      margin-bottom: 8px;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+    }
+    
+    th, td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: left;
+    }
+    
+    th {
+      background-color: #f2f2f2;
+      font-weight: bold;
+    }
+    
+    tr:nth-child(even) {
+      background-color: #f8f8f8;
+    }
+    
+    .last-update {
+      font-style: italic;
+      color: #888;
+      text-align: right;
+      margin-top: 30px;
+      font-size: 14px;
+    }
+    
+    /* Footer */
+    footer {
+      background-color: #212529;
+      color: white;
+      padding: 30px 0 0 0;
+      margin-top: 40px;
+    }
+    
+    .footer-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: flex;
+      flex-wrap: wrap;
+    }
+    
+    .footer-column {
+      flex: 1;
+      min-width: 250px;
+      margin-bottom: 30px;
+      padding-right: 20px;
+    }
+    
+    .footer-column h3 {
+      color: #4a90e2;
+      font-size: 18px;
+      margin-bottom: 15px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #444;
+    }
+    
+    .footer-column p {
+      color: #aaa;
+      font-size: 14px;
+      margin-bottom: 15px;
+    }
+    
+    .footer-links {
+      list-style: none;
+      padding: 0;
+    }
+    
+    .footer-links li {
+      margin-bottom: 10px;
+    }
+    
+    .footer-links a {
+      color: #aaa;
+      text-decoration: none;
+      font-size: 14px;
+      transition: color 0.3s;
+    }
+    
+    .footer-links a:hover {
+      color: #4a90e2;
+    }
+    
+    .copyright {
+      background-color: #151719;
+      padding: 15px 0;
+      text-align: center;
+      color: #777;
+      font-size: 14px;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+      .footer-column {
+        flex: 0 0 50%;
+      }
+      
+      h1 {
+        font-size: 28px;
+      }
+      
+      h2 {
+        font-size: 22px;
+      }
+      
+      h3 {
+        font-size: 18px;
+      }
+      
+      .content-box {
+        padding: 20px;
+      }
+      
+      table {
+        font-size: 14px;
+      }
+      
+      th, td {
+        padding: 8px;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .footer-column {
+        flex: 0 0 100%;
+      }
+      
+      h1 {
+        font-size: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-container">
+      <a href="index.html" class="logo">
+        <svg class="logo-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="4" y="3" width="16" height="18" rx="2" ry="2"></rect>
+          <line x1="9" y1="7" x2="15" y2="7"></line>
+          <line x1="9" y1="11" x2="15" y2="11"></line>
+          <line x1="9" y1="15" x2="13" y2="15"></line>
+        </svg>
+        <span class="logo-text">CoWorkGo</span>
+      </a>
+    </div>
+  </header>
+
+  <main>
+    <button onclick="window.history.back()" class="back-button">
+      ← Volver
+    </button>
+    
+    <h1>Política de Privacidad</h1>
+    
+    <div class="content-box">
+      <h2>Política de Privacidad de CoWorkGo</h2>
+      <p>En CoWorkGo, valoramos y respetamos tu privacidad. Esta Política de Privacidad explica cómo recopilamos, utilizamos, compartimos y protegemos tu información personal cuando utilizas nuestra plataforma y servicios.</p>
+      
+      <h3>1. Información que Recopilamos</h3>
+      <p>Podemos recopilar los siguientes tipos de información:</p>
+      
+      <h4>1.1 Información proporcionada por el usuario</h4>
+      <ul>
+        <li><strong>Datos de registro:</strong> Nombre, apellidos, dirección de correo electrónico, contraseña, número de teléfono y fecha de nacimiento.</li>
+        <li><strong>Información de perfil:</strong> Fotografía, cargo, empresa, preferencias de espacios de trabajo.</li>
+        <li><strong>Datos de pago:</strong> Información de tarjetas de crédito/débito, datos de facturación y direcciones postales.</li>
+        <li><strong>Comunicaciones:</strong> Mensajes, comentarios, reseñas y cualquier otra comunicación que nos envíes.</li>
+      </ul>
+      
+      <h4>1.2 Información recopilada automáticamente</h4>
+      <ul>
+        <li><strong>Datos de uso:</strong> Información sobre cómo interactúas con nuestra plataforma, incluyendo páginas visitadas, características utilizadas y tiempo de permanencia.</li>
+        <li><strong>Información del dispositivo:</strong> Tipo de dispositivo, sistema operativo, identificadores únicos, dirección IP y ajustes de navegador.</li>
+        <li><strong>Datos de ubicación:</strong> Con tu consentimiento, podemos recopilar datos de geolocalización precisos para proporcionarte espacios de trabajo cercanos.</li>
+        <li><strong>Cookies y tecnologías similares:</strong> Utilizamos cookies y tecnologías similares para recopilar información sobre tu actividad y preferencias.</li>
+      </ul>
+      
+      <h3>2. Cómo Utilizamos tu Información</h3>
+      <p>Utilizamos la información recopilada para:</p>
+      <ul>
+        <li><strong>Proporcionar nuestros servicios:</strong> Gestionar tu cuenta, procesar reservas y pagos, y brindarte acceso a los espacios de trabajo.</li>
+        <li><strong>Personalizar tu experiencia:</strong> Adaptar el contenido y las recomendaciones según tus preferencias y actividad previa.</li>
+        <li><strong>Mejorar nuestros servicios:</strong> Analizar el uso de la plataforma para identificar tendencias, solucionar problemas y desarrollar nuevas funcionalidades.</li>
+        <li><strong>Comunicarnos contigo:</strong> Enviarte notificaciones sobre reservas, cambios en nuestros servicios, promociones y otra información relevante.</li>
+        <li><strong>Garantizar la seguridad:</strong> Proteger nuestra plataforma, verificar identidades y prevenir actividades fraudulentas.</li>
+        <li><strong>Cumplir con obligaciones legales:</strong> Cumplir con leyes, regulaciones y solicitudes gubernamentales aplicables.</li>
+      </ul>
+      
+      <h3>3. Base Legal para el Tratamiento</h3>
+      <p>Procesamos tu información personal bajo las siguientes bases legales:</p>
+      <table>
+        <tr>
+          <th>Base Legal</th>
+          <th>Ejemplos</th>
+        </tr>
+        <tr>
+          <td>Ejecución de un contrato</td>
+          <td>Cuando necesitamos tu información para proporcionarte los servicios solicitados (ej. gestionar reservas, procesar pagos).</td>
+        </tr>
+        <tr>
+          <td>Consentimiento</td>
+          <td>Cuando nos has dado tu consentimiento explícito para procesar tus datos (ej. para marketing por correo electrónico).</td>
+        </tr>
+        <tr>
+          <td>Intereses legítimos</td>
+          <td>Cuando el procesamiento es necesario para nuestros intereses legítimos, siempre que no prevalezcan tus derechos (ej. análisis para mejorar la plataforma).</td>
+        </tr>
+        <tr>
+          <td>Obligación legal</td>
+          <td>Cuando necesitamos procesar tus datos para cumplir con una obligación legal (ej. normativa fiscal).</td>
+        </tr>
+      </table>
+      
+      <h3>4. Compartición de Información</h3>
+      <p>Podemos compartir tu información con:</p>
+      <ul>
+        <li><strong>Proveedores de espacios:</strong> Compartimos información necesaria con los propietarios o gestores de los espacios que reserves.</li>
+        <li><strong>Proveedores de servicios:</strong> Empresas que nos ayudan a proporcionar nuestros servicios (ej. procesadores de pago, servicios de alojamiento web, análisis de datos).</li>
+        <li><strong>Socios comerciales:</strong> En algunos casos, podemos colaborar con otras empresas para ofrecer promociones o servicios conjuntos.</li>
+        <li><strong>Autoridades legales:</strong> Cuando sea necesario para cumplir con una obligación legal, procedimiento judicial o solicitud gubernamental.</li>
+        <li><strong>Compradores corporativos:</strong> En caso de fusión, adquisición o venta de activos, tu información podría ser transferida como parte de esa transacción.</li>
+      </ul>
+      <p>No vendemos ni alquilamos tu información personal a terceros para fines de marketing sin tu consentimiento explícito.</p>
+      
+      <h3>5. Seguridad de la Información</h3>
+      <p>Implementamos medidas de seguridad técnicas y organizativas diseñadas para proteger tu información personal contra acceso, uso o divulgación no autorizados. Estas medidas incluyen:</p>
+      <ul>
+        <li>Cifrado de datos sensibles en tránsito y en reposo.</li>
+        <li>Acceso limitado a datos personales por empleados basado en necesidad de conocimiento.</li>
+        <li>Monitorización continua de sistemas para detectar vulnerabilidades.</li>
+        <li>Realización regular de auditorías de seguridad.</li>
+        <li>Planes de respuesta a incidentes para abordar rápidamente cualquier brecha potencial.</li>
+      </ul>
+      <p>Sin embargo, ningún sistema es completamente seguro, por lo que no podemos garantizar la seguridad absoluta de tu información.</p>
+      
+      <h3>6. Tus Derechos de Privacidad</h3>
+      <p>Dependiendo de tu ubicación, puedes tener los siguientes derechos respecto a tu información personal:</p>
+      <ul>
+        <li><strong>Acceso:</strong> Derecho a solicitar copias de tu información personal.</li>
+        <li><strong>Rectificación:</strong> Derecho a solicitar que corrijamos información inexacta o incompleta.</li>
+        <li><strong>Supresión:</strong> Derecho a solicitar que eliminemos tu información personal.</li>
+        <li><strong>Restricción del tratamiento:</strong> Derecho a solicitar que limitemos el procesamiento de tu información.</li>
+        <li><strong>Portabilidad de datos:</strong> Derecho a recibir tus datos en formato estructurado y transferirlos a otro proveedor.</li>
+        <li><strong>Oposición:</strong> Derecho a oponerte al procesamiento basado en intereses legítimos.</li>
+        <li><strong>Retirada del consentimiento:</strong> Derecho a retirar tu consentimiento en cualquier momento.</li>
+      </ul>
+      <p>Para ejercer estos derechos, por favor contacta con nosotros a través de privacidad@coworkgo.com. Responderemos a tu solicitud dentro del plazo establecido por la ley aplicable (generalmente 30 días).</p>
+      
+      <h3>7. Transferencias Internacionales de Datos</h3>
+      <p>Como empresa global, podemos transferir tu información a países distintos de tu país de residencia, incluidos países que pueden tener diferentes regulaciones de protección de datos. Cuando transferimos datos internacionalmente, implementamos salvaguardas apropiadas de acuerdo con las leyes aplicables para garantizar que tus datos estén protegidos adecuadamente.</p>
+      
+      <h3>8. Retención de Datos</h3>
+      <p>Conservamos tu información personal solo durante el tiempo necesario para los fines descritos en esta Política de Privacidad o según lo requiera la ley. Los criterios utilizados para determinar nuestros períodos de retención incluyen:</p>
+      <ul>
+        <li>El tiempo que tengas una cuenta activa con nosotros.</li>
+        <li>Obligaciones legales que requieran mantener los datos por períodos específicos.</li>
+        <li>Resolución de disputas, establecimiento o defensa de reclamaciones legales.</li>
+      </ul>
+      
+      <h3>9. Política de Cookies</h3>
+      <p>Utilizamos cookies y tecnologías similares para mejorar la funcionalidad de nuestra plataforma y comprender cómo interactúas con ella. Puedes gestionar tus preferencias de cookies a través de la configuración de tu navegador. Para más información sobre nuestro uso de cookies, consulta nuestra <a href="#">Política de Cookies</a>.</p>
+      
+      <h3>10. Privacidad de Menores</h3>
+      <p>Nuestros servicios no están dirigidos a personas menores de 18 años y no recopilamos intencionalmente información de menores. Si descubrimos que hemos recopilado información personal de un menor sin el consentimiento parental verificable, tomaremos medidas para eliminar esa información.</p>
+      
+      <h3>11. Cambios en esta Política</h3>
+      <p>Podemos actualizar esta Política de Privacidad periódicamente para reflejar cambios en nuestras prácticas o por otros motivos operativos, legales o regulatorios. Te notificaremos cualquier cambio sustancial a través de un aviso destacado en nuestra plataforma o por correo electrónico.</p>
+      
+      <h3>12. Contacto</h3>
+      <p>Si tienes preguntas, comentarios o solicitudes relacionadas con esta Política de Privacidad o el tratamiento de tus datos personales, contáctanos en:</p>
+      <p><strong>Responsable de Protección de Datos</strong><br>
+      CoWorkGo<br>
+      Calle Principal 123, 28001 Madrid, España<br>
+      Email: privacidad@coworkgo.com<br>
+      Teléfono: +34 900 123 456</p>
+      
+      <p>Si no estás satisfecho con nuestra respuesta, tienes derecho a presentar una reclamación ante la autoridad de protección de datos competente, que en España es la Agencia Española de Protección de Datos (www.aepd.es).</p>
+      
+      <p class="last-update">Última actualización: 21 de abril de 2025</p>
+    </div>
+  </main>
+  
+  <footer>
+    <div class="footer-container">
+      <div class="footer-column">
+        <h3>CoWorkGo</h3>
+        <p>Tu plataforma de reserva de espacios de trabajo para profesionales.</p>
+      </div>
+      
+      <div class="footer-column">
+        <h3>Enlaces Rápidos</h3>
+        <ul class="footer-links">
+          <li><a href="terminos-condiciones.html">Términos y Condiciones</a></li>
+          <li><a href="#">Política de Privacidad</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-column">
+        <h3>Contacto</h3>
+        <ul class="footer-links">
+          <li><a href="mailto:info@coworkgo.com">info@coworkgo.com</a></li>
+          <li><a href="tel:+34900123456">+34 900 123 456</a></li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="copyright">
+      <p>&copy; 2025 CoWorkGo. Todos los derechos reservados.</p>
+    </div>
+  </footer>
+</body>
+</html>

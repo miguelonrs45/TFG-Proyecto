@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CoWorkGo</title>
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.esm.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ionic/core/css/ionic.bundle.css">
+  <script src="portada.js" defer></script>
+  <style>
+    /* Reset básico */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    /* Configuración estricta para evitar scroll */
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden; /* Evita el scroll */
+    }
+    
+    ion-app {
+      display: flex;
+      flex-direction: column;
+      height: 100vh; /* Usa toda la altura de la ventana */
+      overflow: hidden; /* Evita el scroll */
+      max-height: 100vh; /* Restringe altura máxima */
+    }
+    
+    /* Contenedor principal con fondo de imagen - igual al estilo original */
+    .main-container {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.7)), 
+                 url('portada.png') no-repeat center center / cover;
+      position: relative;
+    }
+    
+    /* Contenido principal (parte superior) */
+    .content-section {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      overflow-y: auto; /* Si es necesario, permite scroll solo en esta sección */
+      -webkit-overflow-scrolling: touch;
+      min-height: 0; /* Crítico para evitar que crezca más allá del espacio disponible */
+    }
+    
+    /* Footer (parte inferior) */
+    .footer-section {
+      background: rgba(0, 0, 0, 0.8);
+      color: white;
+      width: 100%;
+      z-index: 10;
+    }
+    
+    /* Contenido central - usando el mismo ancho que en tu versión */
+    .center-content {
+      width: min(90%, 1024px);
+      margin: 0 auto;
+      text-align: center;
+    }
+    
+    /* Título - imitando exactamente el estilo de tu versión */
+    .main-title {
+      text-align: center;
+      color: white;
+      font-size: clamp(28px, 5vw, 48px);
+      font-weight: bold;
+      text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.8);
+      padding: 15px 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      animation: fadeIn 2s ease-in-out;
+      margin-bottom: 16px;
+      width: 100%;
+    }
+    
+    .main-title ion-icon {
+      font-size: clamp(24px, 4vw, 40px);
+      color: white;
+    }
+    
+    /* Textos de bienvenida - imitando exactamente el estilo de tu versión */
+    .welcome-text {
+      text-align: center;
+      color: white;
+      text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.8);
+      animation: fadeIn 2s ease-in-out;
+      margin-top: clamp(16px, 3vh, 32px);
+      width: 100%;
+    }
+    
+    .welcome-text h1 {
+      font-size: clamp(24px, 4vw, 42px);
+      margin-bottom: 8px;
+      color: white;
+      text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.8);
+    }
+    
+    .welcome-text p {
+      font-size: clamp(14px, 2vw, 22px);
+      margin-bottom: 16px;
+      color: white;
+      text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.8);
+    }
+    
+    /* Tarjeta de información - replicando el estilo ion-card */
+    .info-card {
+      width: min(90%, 800px);
+      margin: 16px auto;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 15px;
+      box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+      animation: fadeIn 1.5s ease-in-out;
+      overflow: hidden;
+    }
+    
+    .info-card-header {
+      padding: 16px 16px 8px 16px;
+    }
+    
+    .info-card-title {
+      font-size: clamp(20px, 3vw, 28px);
+      font-weight: bold;
+      color: #333;
+      margin: 0;
+    }
+    
+    .info-card-content {
+      padding: 0 16px 16px 16px;
+    }
+    
+    .info-card-content p {
+      font-size: clamp(12px, 2vw, 16px);
+      color: #555;
+      margin: 0;
+    }
+    
+    /* Botones - modificar la propiedad gap en button-container */
+    .button-container {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;  /* Reducido de 16px a 8px */
+      width: min(90%, 800px);
+      margin: 0 auto;
+    }
+    
+    .ion-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      height: clamp(36px, 5vh, 44px);
+      border-radius: 10px;
+      font-weight: 500;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: none;
+      outline: none;
+      text-decoration: none;
+      color: white;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+      margin: 8px auto;
+    }
+    
+    .ion-button.tertiary {
+      background-color: var(--ion-color-tertiary, #5260ff);
+    }
+    
+    .ion-button.light {
+      background-color: var(--ion-color-light, #f4f5f8);
+      color: #000;
+    }
+    
+    .ion-button:hover {
+      opacity: 0.9;
+      transform: translateY(-2px);
+    }
+    
+    .ion-button ion-icon {
+      font-size: 18px;
+    }
+    
+    /* Añadimos animación de fadeIn - igual a tu versión */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Footer compacto - manteniendo mi implementación */
+    .footer-wrapper {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      padding: 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .footer-column {
+      flex: 1;
+      min-width: 150px;
+      padding: 0 10px;
+      margin-bottom: 15px;
+    }
+    
+    .footer-column h3 {
+      color: #4a90e2;
+      font-size: 16px;
+      margin-bottom: 10px;
+      font-weight: 600;
+      position: relative;
+      padding-bottom: 8px;
+    }
+    
+    .footer-column h3::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 30px;
+      height: 2px;
+      background-color: #4a90e2;
+    }
+    
+    .footer-column.brand {
+      flex: 2;
+    }
+    
+    .footer-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+    
+    .footer-logo ion-icon {
+      color: #4a90e2;
+      font-size: 20px;
+    }
+    
+    .footer-logo span {
+      color: white;
+      font-size: 18px;
+      font-weight: bold;
+    }
+    
+    .footer-column p {
+      color: #adb5bd;
+      font-size: 12px;
+      line-height: 1.5;
+      margin-bottom: 10px;
+    }
+    
+    .footer-links {
+      list-style: none;
+    }
+    
+    .footer-links li {
+      margin-bottom: 6px;
+    }
+    
+    .footer-links a {
+      color: #adb5bd;
+      text-decoration: none;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: color 0.2s;
+    }
+    
+    .footer-links a:hover {
+      color: #4a90e2;
+    }
+    
+    .footer-links a ion-icon {
+      font-size: 14px;
+      color: #4a90e2;
+    }
+    
+    .contact-info {
+      list-style: none;
+    }
+    
+    .contact-info li {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      color: #adb5bd;
+      font-size: 12px;
+      margin-bottom: 6px;
+    }
+    
+    .contact-info li ion-icon {
+      color: #4a90e2;
+      font-size: 14px;
+    }
+    
+    .social-row {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    
+    .social-icon {
+      background: rgba(255, 255, 255, 0.1);
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s;
+    }
+    
+    .social-icon:hover {
+      background: #4a90e2;
+      transform: translateY(-3px);
+    }
+    
+    .social-icon ion-icon {
+      color: white;
+      font-size: 16px;
+    }
+    
+    .language-selector {
+      margin-top: 10px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 5px 10px;
+      border-radius: 4px;
+      font-size: 12px;
+      color: #adb5bd;
+      cursor: pointer;
+    }
+    
+    .language-selector:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+    
+    .copyright-bar {
+      background: #151719;
+      padding: 10px 0;
+      text-align: center;
+      font-size: 12px;
+      color: #6c757d;
+    }
+    
+    /* Media queries */
+    @media (max-height: 700px) {
+      .main-title {
+        padding: 10px 0;
+        margin-bottom: 10px;
+      }
+      
+      .welcome-text {
+        margin-top: 10px;
+      }
+      
+      .info-card {
+        margin: 10px auto;
+      }
+      
+      .info-card-header {
+        padding: 10px 10px 5px 10px;
+      }
+      
+      .info-card-content {
+        padding: 0 10px 10px 10px;
+      }
+      
+      .footer-wrapper {
+        padding: 10px;
+      }
+      
+      .footer-column h3 {
+        margin-bottom: 5px;
+      }
+      
+      .footer-links li, .contact-info li {
+        margin-bottom: 3px;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .footer-column.brand {
+        flex: 1 1 100%;
+      }
+      
+      .footer-column {
+        flex: 1 1 40%;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .footer-column {
+        flex: 1 1 100%;
+      }
+      
+      .button-container {
+        gap: 8px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <ion-app>
+    <div class="main-container">
+      <!-- Sección de contenido principal -->
+      <div class="content-section">
+        <div class="center-content">
+          <!-- Título principal -->
+          <div class="main-title">
+            <ion-icon name="business-outline"></ion-icon>
+            CoWorkGo
+          </div>
+          
+          <!-- Texto de bienvenida -->
+          <div class="welcome-text">
+            <h1>Bienvenido</h1>
+            <p>Reserva tu espacio de trabajo fácilmente</p>
+          </div>
+          
+          <!-- Tarjeta de información - estilo similar a ion-card -->
+          <div class="info-card">
+            <div class="info-card-header">
+              <h2 class="info-card-title">¿Qué ofrecemos?</h2>
+            </div>
+            <div class="info-card-content">
+              <p>Encuentra espacios de trabajo modernos y adaptados a tus necesidades. ¡Reserva en segundos!</p>
+            </div>
+          </div>
+          
+          <!-- Botones de acción -->
+          <div class="button-container">
+            <button class="ion-button tertiary" id="login-button">
+              <ion-icon name="log-in-outline"></ion-icon>
+              Iniciar Sesión
+            </button>
+            <button class="ion-button light" id="register-button">
+              <ion-icon name="person-add-outline"></ion-icon>
+              Registrarse
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Footer compacto -->
+      <div class="footer-section">
+        <div class="footer-wrapper">
+          <!-- Columna de la marca -->
+          <div class="footer-column brand">
+            <div class="footer-logo">
+              <ion-icon name="business-outline"></ion-icon>
+              <span>CoWorkGo</span>
+            </div>
+            <p>Tu plataforma de reserva de espacios de trabajo para profesionales.</p>
+            
+            <!-- Redes sociales -->
+            <div class="social-row">
+              <a href="#" class="social-icon"><ion-icon name="logo-facebook"></ion-icon></a>
+              <a href="#" class="social-icon"><ion-icon name="logo-twitter"></ion-icon></a>
+              <a href="#" class="social-icon"><ion-icon name="logo-linkedin"></ion-icon></a>
+              <a href="#" class="social-icon"><ion-icon name="logo-instagram"></ion-icon></a>
+              <a href="#" class="social-icon"><ion-icon name="logo-linkedin"></ion-icon></a>
+            </div>
+            
+            <!-- Selector de idioma -->
+            <div class="language-selector">
+              <ion-icon name="language-outline"></ion-icon>
+              <span>ES</span>
+              <ion-icon name="chevron-down-outline"></ion-icon>
+            </div>
+          </div>
+          
+          <!-- Columna de enlaces - ACTUALIZADA con los enlaces solicitados -->
+          <div class="footer-column">
+            <h3>Enlaces Rápidos</h3>
+            <ul class="footer-links">
+              <li><a href="/web/enlacesRapidos/terminosYCondiciones.html"><ion-icon name="document-text-outline"></ion-icon> Términos y Condiciones</a></li>
+              <li><a href="/web/enlacesRapidos/politicasDePrivacidad.html"><ion-icon name="shield-outline"></ion-icon> Política de Privacidad</a></li>
+            </ul>
+          </div>
+          
+          <!-- Columna de servicios -->
+          <div class="footer-column">
+            <h3>Servicios</h3>
+            <ul class="footer-links">
+              <li><a href="#"><ion-icon name="desktop-outline"></ion-icon> Escritorios</a></li>
+              <li><a href="#"><ion-icon name="business-outline"></ion-icon> Oficinas</a></li>
+              <li><a href="#"><ion-icon name="people-outline"></ion-icon> Salas de reuniones</a></li>
+              <li><a href="#"><ion-icon name="layers-outline"></ion-icon> Empresas</a></li>
+            </ul>
+          </div>
+          
+          <!-- Columna de contacto -->
+          <div class="footer-column">
+            <h3>Contacto</h3>
+            <ul class="contact-info">
+              <li><ion-icon name="mail-outline"></ion-icon> info@coworkgo.com</li>
+              <li><ion-icon name="call-outline"></ion-icon> +34 900 123 456</li>
+              <li><ion-icon name="location-outline"></ion-icon> Calle Principal 123, Madrid</li>
+            </ul>
+          </div>
+        </div>
+        
+        <!-- Barra de copyright -->
+        <div class="copyright-bar">
+          &copy; 2025 CoWorkGo. Todos los derechos reservados.
+        </div>
+      </div>
+    </div>
+  </ion-app>
+  
+  <script>
+    // Script para botones
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('login-button').addEventListener('click', () => {
+        window.location.href = '/web/login_registro/iniciosesion.html';
+      });
+      
+      document.getElementById('register-button').addEventListener('click', () => {
+        window.location.href = '/web/login_registro/registro.html';
+      });
+      
+      // Opcional: Script para selector de idioma
+      document.querySelector('.language-selector')?.addEventListener('click', () => {
+        // Implementar cambio de idioma
+        alert('Cambio de idioma (funcionalidad en desarrollo)');
+      });
+    });
+  </script>
+</body>
+</html>
