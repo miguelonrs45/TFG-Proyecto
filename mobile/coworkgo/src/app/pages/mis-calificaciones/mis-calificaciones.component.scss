@@ -1,0 +1,223 @@
+.stats-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin: 10px 0;
+
+  .stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 8px;
+
+    .stat-value {
+      font-size: 24px;
+      font-weight: bold;
+      color: var(--ion-color-primary);
+
+      &.best-rated {
+        font-size: 18px;
+        max-width: 100px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        text-decoration: underline;
+        cursor: pointer;
+      }
+    }
+
+    .stat-label {
+      font-size: 14px;
+      color: var(--ion-color-medium);
+    }
+  }
+}
+
+.filter-bar {
+  padding: 10px;
+  background-color: var(--ion-color-light);
+
+  ion-searchbar {
+    margin-bottom: 10px;
+    border-radius: 8px;
+    --border-radius: 8px;
+    --background: #ffffff;
+    --box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .filter-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    ion-segment {
+      background: #ffffff;
+      border-radius: 8px;
+      margin-bottom: 5px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .orden-select {
+      --background: #ffffff;
+      --border-radius: 8px;
+      --box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      padding: 5px 10px;
+    }
+  }
+}
+
+@media (min-width: 576px) {
+  .filter-options {
+    flex-direction: row !important;
+    justify-content: space-between;
+
+    ion-segment {
+      flex: 1;
+      margin-right: 10px;
+    }
+
+    .orden-select {
+      min-width: 200px;
+    }
+  }
+}
+
+.pending-reviews {
+  margin-bottom: 16px;
+}
+
+.resenas-container {
+  width: 100%;
+  padding: 0;
+
+  .resena-card {
+    margin-bottom: 16px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+
+    .resena-header {
+      display: flex;
+      padding: 12px;
+      border-bottom: 1px solid var(--ion-color-light-shade);
+      width: 100%;
+
+      .espacio-imagen {
+        width: 60px;
+        height: 60px;
+        border-radius: 8px;
+        overflow: hidden;
+        margin-right: 12px;
+
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+      }
+
+      .resena-info {
+        flex-grow: 1;
+
+        .espacio-nombre {
+          font-size: 18px;
+          font-weight: bold;
+          margin: 0 0 4px 0;
+          color: var(--ion-color-dark);
+          cursor: pointer;
+        }
+
+        .calificacion {
+          display: flex;
+          margin-bottom: 4px;
+
+          ion-icon {
+            font-size: 18px;
+          }
+        }
+
+        .fechas {
+          display: flex;
+          flex-direction: column;
+          font-size: 12px;
+          color: var(--ion-color-medium);
+          margin-top: 4px;
+        }
+      }
+
+      .visibilidad-badge {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        padding: 4px 8px;
+        border-radius: 4px;
+
+        ion-icon {
+          font-size: 20px;
+          color: var(--ion-color-medium);
+        }
+
+        .visibilidad-texto {
+          font-size: 10px;
+          color: var(--ion-color-medium);
+          white-space: nowrap;
+        }
+
+        &:hover {
+          background-color: var(--ion-color-light);
+        }
+      }
+    }
+
+    .resena-contenido {
+      padding: 12px;
+      color: var(--ion-color-dark);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .resena-acciones {
+      display: flex;
+      justify-content: space-around;
+      padding: 8px;
+      border-top: 1px solid var(--ion-color-light-shade);
+      width: 100%;
+    }
+  }
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  text-align: center;
+
+  ion-card {
+    width: 100%;
+    max-width: 500px;
+  }
+}
+
+// Estilos para tablets y pantallas más grandes
+/* Sobrescribir estilos para pantallas más grandes - NO cambiar aquí,
+   ya que queremos que las tarjetas ocupen el ancho completo en todos los dispositivos */
+
+// Estilos para tablets y pantallas más grandes
+@media (min-width: 768px) {
+  .resenas-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+
+    .resena-card {
+      width: calc(50% - 8px);
+      margin-bottom: 0;
+    }
+  }
+}

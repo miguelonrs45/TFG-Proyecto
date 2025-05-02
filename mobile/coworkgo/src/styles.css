@@ -53,3 +53,74 @@ ion-button:active {
 .card-shadow {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
+
+/* Estilos personalizados para el diálogo de recuperación de contraseña */
+.custom-alert {
+  --background: white;
+  --border-radius: 16px;
+  --box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  --max-width: 400px;
+}
+
+.custom-alert .alert-head {
+  padding-top: 20px !important;
+  padding-bottom: 15px !important;
+  border-bottom: 1px solid #f1f1f1;
+}
+
+.custom-alert .alert-title {
+  color: #4D7CEA;
+  font-weight: 700;
+  font-size: 1.3rem;
+  text-align: center;
+}
+
+.custom-alert .alert-message {
+  color: #555;
+  font-size: 0.95rem;
+  text-align: center;
+  padding: 15px 20px 0;
+}
+
+.custom-alert .alert-input-group {
+  padding: 15px 20px;
+}
+
+.custom-alert .alert-input {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  margin-top: 10px;
+  --padding-start: 15px;
+  font-size: 0.95rem;
+  color: #333;
+  background-color: #f9f9f9;
+  height: 44px;
+  transition: border 0.2s ease;
+}
+
+.custom-alert .alert-input:focus {
+  border-color: #4D7CEA;
+  background-color: #f5f8ff;
+}
+
+.custom-alert .alert-button-group {
+  padding: 10px;
+}
+
+.custom-alert .alert-button {
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  height: 44px;
+  margin: 0 5px;
+}
+
+.custom-alert .cancel-button {
+  color: #555;
+  background-color: #f1f1f1;
+}
+
+.custom-alert .confirm-button {
+  background-color: #4D7CEA;
+  color: white;
+}

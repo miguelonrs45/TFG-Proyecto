@@ -2,9 +2,176 @@ a {
   cursor: pointer;
   color: var(--ion-color-primary);
   text-decoration: none;
+  font-weight: 500;
+}
+
+ion-content {
+  --background: url('../../../assets/images/fondoLoginRegister.png') no-repeat center center / cover;
+}
+
+ion-header {
+  --background: transparent;
+
+  ion-toolbar {
+    --background: transparent;
+    --border-style: none;
+    min-height: 40px !important;
+  }
 }
 
 ion-card {
-  max-width: 600px;
-  margin: 0 auto;
+  max-width: 500px;
+  margin: 5px auto !important;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  overflow: hidden;
+}
+
+ion-card-header {
+  background: rgba(77, 124, 234, 0.9);
+  padding: 10px !important;
+}
+
+ion-card-title {
+  color: white;
+  font-size: 1.3rem !important;
+  font-weight: 600;
+  text-align: center;
+  margin: 0 !important;
+}
+
+ion-card-content {
+  padding: 12px !important;
+}
+
+/* FONDO PARA EL FORMULARIO */
+ion-list {
+  background: linear-gradient(135deg, rgba(71, 119, 214, 0.95), rgba(118, 148, 207, 0.95)) !important;
+  border-radius: 8px;
+  padding: 8px !important;
+  margin-bottom: 8px !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* SOLUCIÓN DE ALTO CONTRASTE */
+/* Cambio completo del enfoque de diseño para inputs */
+ion-item {
+  --background: rgba(30, 50, 100, 0.8) !important; /* Fondo más oscuro */
+  --border-color: white;
+  --border-radius: 6px;
+  --border-width: 1px;
+  --padding-start: 12px;
+  --min-height: 40px !important;
+  margin-bottom: 8px !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  --inner-padding-end: 0;
+  --highlight-color-focused: white;
+}
+
+ion-label {
+  color: rgba(255, 255, 255, 0.9) !important;
+  font-weight: 600 !important;
+  font-size: 0.9rem !important;
+  margin-bottom: 2px !important;
+}
+
+ion-item:last-child {
+  margin-bottom: 0;
+}
+
+/* Estilos específicos para los inputs */
+ion-input {
+  --padding-start: 12px;
+  --placeholder-color: rgba(200, 210, 255, 0.7); /* Placeholder más visible */
+  --placeholder-opacity: 1;
+  --color: #FFFFFF !important; /* Blanco puro */
+  --background: transparent !important;
+  font-size: 0.9rem !important;
+  font-weight: 700 !important; /* Texto más grueso */
+  letter-spacing: 0.5px !important; /* Separación entre letras */
+}
+
+/* Cuando el input está enfocado */
+ion-item.item-has-focus {
+  --background: rgba(20, 40, 90, 0.9) !important; /* Aún más oscuro cuando tiene foco */
+  --border-color: #ffffff;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.5);
+}
+
+/* Los inputs nativos también necesitan estilos */
+.native-input {
+  color: white !important;
+  caret-color: white !important; /* Color del cursor */
+}
+
+ion-button {
+  --border-radius: 8px;
+  font-weight: 600;
+  margin-top: 8px !important;
+  height: 40px !important;
+  --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  font-size: 0.95rem !important;
+}
+
+.ion-text-center {
+  margin-top: 8px !important;
+  font-size: 0.85rem !important;
+}
+
+.legend {
+  font-size: 0.8rem !important;
+  color: var(--ion-color-medium);
+  margin-bottom: 8px !important;
+  margin-top: 0 !important;
+  text-align: center;
+}
+
+@media (max-height: 700px) {
+  ion-card {
+    margin: 2px auto !important;
+  }
+
+  ion-item {
+    --min-height: 35px !important;
+    margin-bottom: 5px !important;
+  }
+
+  ion-card-content {
+    padding: 8px !important;
+  }
+
+  ion-button {
+    height: 36px !important;
+  }
+
+  .ion-text-center, .legend {
+    margin-top: 5px !important;
+  }
+
+  ion-label {
+    font-size: 0.85rem !important;
+  }
+
+  ion-input {
+    font-size: 0.85rem !important;
+  }
+}
+
+@media (max-height: 600px) {
+  ion-header {
+    display: none !important;
+  }
+
+  ion-card-header {
+    padding: 8px !important;
+  }
+
+  ion-item {
+    --min-height: 32px !important;
+    margin-bottom: 4px !important;
+  }
 }

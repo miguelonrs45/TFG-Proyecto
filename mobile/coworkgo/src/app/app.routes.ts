@@ -19,6 +19,18 @@ export const routes: Routes = [
     loadComponent: () => import('./auth/register/register.component').then(m => m.RegisterComponent)
   },
   {
+    path: 'dashboard',
+    loadComponent: () => import('./pages/dashboard/dashboard.component').then(m => m.DashboardComponent)
+  },
+  {
+    path: 'mi-perfil',
+    loadComponent: () => import('./pages/mi-perfil/mi-perfil.component').then(m => m.MiPerfilComponent)
+  },
+  {
+    path: 'mis-calificaciones',
+    loadComponent: () => import('./pages/mis-calificaciones/mis-calificaciones.component').then(m => m.MisCalificacionesComponent)
+  },
+  {
     path: '**',
     redirectTo: 'home'
   }

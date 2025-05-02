@@ -36,7 +36,7 @@ export class AuthService {
     }
   }
 
-  async signIn(email: string, password: string) {
+  async signIn(email: string, password: string): Promise<any> {
     try {
       const { data, error } = await this.supabase.auth.signInWithPassword({
         email,
@@ -49,13 +49,16 @@ export class AuthService {
         this.currentUserSubject.next(data.user);
         return data.user;
       }
+
+      // Si no hay error pero tampoco hay usuario, devolvemos null
+      return null;
     } catch (error) {
       console.error('Error al iniciar sesión:', error);
       throw error;
     }
   }
 
-  async signUp(nombre: string, apellidos: string, email: string, password: string, telefono: string) {
+  async signUp(nombre: string, apellidos: string, email: string, password: string, telefono: string): Promise<any> {
     try {
       // Registrar al usuario en Supabase Auth
       const { data, error } = await this.supabase.auth.signUp({
@@ -86,13 +89,46 @@ export class AuthService {
         this.currentUserSubject.next(data.user);
         return data.user;
       }
+
+      // Si no hay error pero tampoco hay usuario, devolvemos null
+      return null;
     } catch (error) {
       console.error('Error al registrar usuario:', error);
       throw error;
     }
   }
 
-  async signOut() {
+  async resetPassword(email: string): Promise<{ success: boolean; message: string }> {
+    try {
+      const { error } = await this.supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: 'http://localhost:4200/reset-password',
+      });
+
+      if (error) throw error;
+
+      return { success: true, message: 'Se ha enviado un correo de recuperación a tu dirección de email' };
+    } catch (error) {
+      console.error('Error al solicitar restablecimiento de contraseña:', error);
+      throw error;
+    }
+  }
+
+  async updatePassword(newPassword: string): Promise<{ success: boolean; message: string }> {
+    try {
+      const { error } = await this.supabase.auth.updateUser({
+        password: newPassword
+      });
+
+      if (error) throw error;
+
+      return { success: true, message: 'Tu contraseña ha sido actualizada exitosamente' };
+    } catch (error) {
+      console.error('Error al actualizar la contraseña:', error);
+      throw error;
+    }
+  }
+
+  async signOut(): Promise<void> {
     await this.supabase.auth.signOut();
     this.currentUserSubject.next(null);
     this.router.navigate(['/home']);

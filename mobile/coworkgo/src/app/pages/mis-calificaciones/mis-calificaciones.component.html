@@ -1,0 +1,166 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/dashboard"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Mis Calificaciones</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <!-- Barra de filtrado mejorada -->
+  <div class="filter-bar">
+    <ion-searchbar
+      placeholder="Buscar en mis reseñas"
+      (ionChange)="buscar($event)"
+      animated
+      mode="md"
+      showCancelButton="focus">
+    </ion-searchbar>
+
+    <div class="filter-options">
+      <ion-segment [(ngModel)]="filtroActual" (ionChange)="aplicarFiltros()" mode="md">
+        <ion-segment-button value="todas">
+          <ion-label>Todas</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="publicas">
+          <ion-label>Públicas</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="privadas">
+          <ion-label>Privadas</ion-label>
+        </ion-segment-button>
+      </ion-segment>
+
+      <ion-select
+        [(ngModel)]="ordenActual"
+        (ionChange)="aplicarFiltros()"
+        interface="popover"
+        mode="md"
+        placeholder="Ordenar por"
+        class="orden-select">
+        <ion-select-option value="fecha-reciente">Más recientes</ion-select-option>
+        <ion-select-option value="fecha-antigua">Más antiguas</ion-select-option>
+        <ion-select-option value="calificacion-alta">Mayor puntuación</ion-select-option>
+        <ion-select-option value="calificacion-baja">Menor puntuación</ion-select-option>
+        <ion-select-option value="nombre-az">Nombre (A-Z)</ion-select-option>
+        <ion-select-option value="nombre-za">Nombre (Z-A)</ion-select-option>
+      </ion-select>
+    </div>
+  </div>
+
+  <div class="ion-padding">
+    <!-- Resumen de estadísticas -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Mis Estadísticas</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <div class="stats-container">
+          <div class="stat-item">
+            <div class="stat-value">{{estadisticas.totalResenas}}</div>
+            <div class="stat-label">Reseñas</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">{{estadisticas.calificacionMedia | number:'1.1-1'}}</div>
+            <div class="stat-label">Calificación Media</div>
+          </div>
+          <div class="stat-item" *ngIf="estadisticas.mejorValorado">
+            <div class="stat-value best-rated" (click)="verDetallesEspacio(estadisticas.mejorValorado?.id || 0)">
+              {{estadisticas.mejorValorado?.nombre}}
+            </div>
+            <div class="stat-label">Mejor Valorado</div>
+          </div>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Reseñas pendientes -->
+    <div *ngIf="resenasPendientes.length > 0" class="pending-reviews">
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title>Pendientes de calificar</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-list lines="none">
+            <ion-item *ngFor="let pendiente of resenasPendientes">
+              <ion-thumbnail slot="start">
+                <img [src]="pendiente.imagen" alt="Imagen del espacio">
+              </ion-thumbnail>
+              <ion-label>
+                <h2>{{pendiente.nombre}}</h2>
+                <p>Visitado: {{pendiente.fechaVisita | date:'dd/MM/yyyy'}}</p>
+              </ion-label>
+              <ion-button slot="end" (click)="calificarPendiente(pendiente.id)" color="secondary">
+                Calificar
+              </ion-button>
+            </ion-item>
+          </ion-list>
+        </ion-card-content>
+      </ion-card>
+    </div>
+
+    <!-- Lista de reseñas -->
+    <div class="resenas-container" *ngIf="resenasFiltradas.length > 0">
+      <ion-card class="resena-card" *ngFor="let resena of resenasFiltradas">
+        <div class="resena-header">
+          <ion-thumbnail class="espacio-imagen">
+            <img [src]="resena.espacioImagen" alt="Imagen del espacio">
+          </ion-thumbnail>
+          <div class="resena-info">
+            <h2 class="espacio-nombre" (click)="verDetallesEspacio(resena.espacioId)">
+              {{resena.espacioNombre}}
+            </h2>
+            <div class="calificacion">
+              <ion-icon
+                *ngFor="let star of estrellas(resena.calificacion); let i = index"
+                [name]="star ? 'star' : 'star-outline'"
+                color="warning">
+              </ion-icon>
+            </div>
+            <div class="fechas">
+              <span class="fecha-visita">
+                <strong>Visita:</strong> {{resena.fechaVisita | date:'dd/MM/yyyy'}}
+              </span>
+              <span class="fecha-resena">
+                <strong>Reseña:</strong> {{resena.fechaResena | date:'dd/MM/yyyy'}}
+              </span>
+            </div>
+          </div>
+          <div class="visibilidad-badge" (click)="cambiarVisibilidad(resena)">
+            <ion-icon [name]="resena.esPublica ? 'eye-outline' : 'eye-off-outline'"></ion-icon>
+            <span class="visibilidad-texto">{{resena.esPublica ? 'Pública' : 'Privada'}}</span>
+          </div>
+        </div>
+        <div class="resena-contenido">
+          <p>{{resena.comentario}}</p>
+        </div>
+        <div class="resena-acciones">
+          <ion-button fill="clear" (click)="editarResena(resena)">
+            <ion-icon name="create-outline" slot="start"></ion-icon>
+            Editar
+          </ion-button>
+          <ion-button fill="clear" color="danger" (click)="eliminarResena(resena)">
+            <ion-icon name="trash-outline" slot="start"></ion-icon>
+            Eliminar
+          </ion-button>
+        </div>
+      </ion-card>
+    </div>
+
+    <!-- Mensaje si no hay reseñas -->
+    <div class="empty-state" *ngIf="resenasFiltradas.length === 0">
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title>No hay reseñas</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <p>Aún no has realizado ninguna reseña o no se encontraron resultados con los filtros actuales.</p>
+        </ion-card-content>
+      </ion-card>
+    </div>
+  </div>
+</ion-content>

@@ -1,9 +1,8 @@
-<ion-header>
-  <ion-toolbar color="primary">
+<ion-header class="ion-no-border">
+  <ion-toolbar>
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/home"></ion-back-button>
     </ion-buttons>
-    <ion-title>Crear Cuenta</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -14,43 +13,51 @@
     </ion-card-header>
 
     <ion-card-content>
-      <ion-list>
+      <ion-list lines="none">
         <ion-item>
-          <ion-label position="floating">Nombre</ion-label>
-          <ion-input type="text" [(ngModel)]="user.nombre" required></ion-input>
+          <ion-label position="floating">Nombre <ion-text color="danger">*</ion-text></ion-label>
+          <ion-input type="text" [(ngModel)]="user.nombre" required placeholder="Tu nombre"></ion-input>
         </ion-item>
 
         <ion-item>
-          <ion-label position="floating">Apellidos</ion-label>
-          <ion-input type="text" [(ngModel)]="user.apellidos" required></ion-input>
+          <ion-label position="floating">Apellidos <ion-text color="danger">*</ion-text></ion-label>
+          <ion-input type="text" [(ngModel)]="user.apellidos" required placeholder="Tus apellidos"></ion-input>
         </ion-item>
 
         <ion-item>
-          <ion-label position="floating">Email</ion-label>
-          <ion-input type="email" [(ngModel)]="user.email" required></ion-input>
+          <ion-label position="floating">Email <ion-text color="danger">*</ion-text></ion-label>
+          <ion-input type="email" [(ngModel)]="user.email" required placeholder="ejemplo@correo.com"></ion-input>
         </ion-item>
 
         <ion-item>
-          <ion-label position="floating">Contraseña</ion-label>
-          <ion-input type="password" [(ngModel)]="user.contrasena" required></ion-input>
+          <ion-label position="floating">Contraseña <ion-text color="danger">*</ion-text></ion-label>
+          <ion-input type="password" [(ngModel)]="user.contrasena" required placeholder="********"></ion-input>
         </ion-item>
 
         <ion-item>
-          <ion-label position="floating">Teléfono</ion-label>
-          <ion-input type="tel" [(ngModel)]="user.telefono" required></ion-input>
+          <ion-label position="floating">Teléfono (opcional)</ion-label>
+          <ion-input type="tel" [(ngModel)]="user.telefono" placeholder="Ej: 612345678"></ion-input>
         </ion-item>
       </ion-list>
 
-      <div class="ion-padding">
-        <ion-button expand="block" (click)="register()" color="secondary">
-          Crear Cuenta
-        </ion-button>
+      <p class="legend"><ion-text color="danger">*</ion-text> Campos obligatorios</p>
 
-        <p class="ion-text-center ion-padding-top">
-          ¿Ya tienes una cuenta?
-          <a (click)="goToLogin()">Inicia sesión aquí</a>
-        </p>
-      </div>
+      <ion-button expand="block" (click)="register()" color="secondary">
+        Crear Cuenta
+      </ion-button>
+
+      <p class="ion-text-center">
+        ¿Ya tienes una cuenta?
+        <a (click)="goToLogin()">Inicia sesión aquí</a>
+      </p>
     </ion-card-content>
   </ion-card>
+
+  <!-- Toast para mostrar errores y mensajes -->
+  <ion-toast
+    [isOpen]="showError"
+    message="{{errorMessage}}"
+    duration="3000"
+    [color]="errorMessage.includes('éxito') ? 'success' : 'danger'">
+  </ion-toast>
 </ion-content>

@@ -1,9 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonIcon } from '@ionic/angular/standalone';
+import { IonHeader, IonToolbar, IonContent, IonButton, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonIcon } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { logInOutline, personAddOutline } from 'ionicons/icons';
+import { logInOutline, personAddOutline, businessOutline } from 'ionicons/icons';
 
 @Component({
   selector: 'app-home',
@@ -14,7 +14,6 @@ import { logInOutline, personAddOutline } from 'ionicons/icons';
     CommonModule,
     IonHeader,
     IonToolbar,
-    IonTitle,
     IonContent,
     IonButton,
     IonCard,
@@ -24,9 +23,13 @@ import { logInOutline, personAddOutline } from 'ionicons/icons';
     IonIcon
   ]
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
   constructor(private router: Router) {
-    addIcons({ logInOutline, personAddOutline });
+    addIcons({ logInOutline, personAddOutline, businessOutline });
+  }
+
+  ngOnInit() {
+
   }
 
   navigateToLogin() {
