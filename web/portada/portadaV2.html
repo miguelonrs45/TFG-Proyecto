@@ -289,9 +289,7 @@
       transition: color 0.2s;
     }
     
-    .footer-links a:hover {
-      color: #4a90e2;
-    }
+    /* Eliminando esta regla global ya que ahora está aplicada localmente */
     
     .footer-links a ion-icon {
       font-size: 14px;
@@ -486,18 +484,17 @@
               <a href="#" class="social-icon"><ion-icon name="logo-instagram"></ion-icon></a>
               <a href="#" class="social-icon"><ion-icon name="logo-linkedin"></ion-icon></a>
             </div>
-            
-            <!-- Selector de idioma -->
-            <div class="language-selector">
-              <ion-icon name="language-outline"></ion-icon>
-              <span>ES</span>
-              <ion-icon name="chevron-down-outline"></ion-icon>
-            </div>
           </div>
           
           <!-- Columna de enlaces - ACTUALIZADA con los enlaces solicitados -->
           <div class="footer-column">
             <h3>Enlaces Rápidos</h3>
+            <style>
+              /* Regla para el efecto hover solo de los enlaces rápidos */
+              .footer-column:nth-child(2) .footer-links a:hover {
+                color: #4a90e2;
+              }
+            </style>
             <ul class="footer-links">
               <li><a href="/web/enlacesRapidos/terminosYCondiciones.html"><ion-icon name="document-text-outline"></ion-icon> Términos y Condiciones</a></li>
               <li><a href="/web/enlacesRapidos/politicasDePrivacidad.html"><ion-icon name="shield-outline"></ion-icon> Política de Privacidad</a></li>
@@ -508,10 +505,10 @@
           <div class="footer-column">
             <h3>Servicios</h3>
             <ul class="footer-links">
-              <li><a href="#"><ion-icon name="desktop-outline"></ion-icon> Escritorios</a></li>
-              <li><a href="#"><ion-icon name="business-outline"></ion-icon> Oficinas</a></li>
-              <li><a href="#"><ion-icon name="people-outline"></ion-icon> Salas de reuniones</a></li>
-              <li><a href="#"><ion-icon name="layers-outline"></ion-icon> Empresas</a></li>
+              <li><a><ion-icon name="desktop-outline"></ion-icon> Escritorios</a></li>
+              <li><a><ion-icon name="business-outline"></ion-icon> Oficinas</a></li>
+              <li><a><ion-icon name="people-outline"></ion-icon> Salas de reuniones</a></li>
+              <li><a><ion-icon name="layers-outline"></ion-icon> Empresas</a></li>
             </ul>
           </div>
           
@@ -545,11 +542,6 @@
         window.location.href = '/web/login_registro/registro.html';
       });
       
-      // Opcional: Script para selector de idioma
-      document.querySelector('.language-selector')?.addEventListener('click', () => {
-        // Implementar cambio de idioma
-        alert('Cambio de idioma (funcionalidad en desarrollo)');
-      });
     });
   </script>
 </body>
