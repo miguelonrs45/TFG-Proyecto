@@ -1,0 +1,137 @@
+a {
+  cursor: pointer;
+  color: var(--ion-color-primary);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+ion-content {
+  --background: url('../../../assets/images/fondoLoginRegister.png') no-repeat center center / cover;
+}
+
+ion-header {
+  --background: transparent;
+
+  ion-toolbar {
+    --background: transparent;
+    --border-style: none;
+
+    ion-title {
+      font-weight: 600;
+    }
+  }
+}
+
+ion-card {
+  max-width: 500px;
+  margin: 20px auto;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  overflow: hidden;
+}
+
+ion-card-header {
+  background: rgba(77, 124, 234, 0.9);
+  padding: 20px;
+}
+
+ion-card-title {
+  color: white;
+  font-size: 1.4rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+ion-card-content {
+  padding: 24px;
+}
+
+/* FONDO PARA EL FORMULARIO */
+ion-list {
+  background: linear-gradient(135deg, rgba(71, 119, 214, 0.95), rgba(118, 148, 207, 0.95)) !important;
+  border-radius: 8px;
+  padding: 12px !important;
+  margin-bottom: 16px !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* Estilos base para todos los ion-item - UNIFORMES */
+ion-item {
+  --background: rgba(255, 255, 255, 0.2) !important;
+  --border-color: rgba(255, 255, 255, 0.6);
+  --border-radius: 6px;
+  --border-width: 2px;
+  --padding-start: 12px;
+  --padding-end: 12px;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  --inner-padding-end: 0;
+  --highlight-color-focused: white;
+  transition: all 0.2s ease;
+}
+
+ion-item:last-child {
+  margin-bottom: 0;
+}
+
+/* Estilo cuando el elemento está enfocado */
+ion-item.item-has-focus {
+  --background: rgba(255, 255, 255, 0.25) !important;
+  --border-color: white;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3);
+}
+
+ion-label {
+  color: white !important;
+  font-weight: 500 !important;
+  opacity: 0.9;
+}
+
+ion-input {
+  --padding-start: 12px;
+  --placeholder-color: rgba(255, 255, 255, 0.7);
+  --placeholder-opacity: 1;
+  --color: white;
+  --background: transparent !important;
+}
+
+ion-button {
+  --border-radius: 8px;
+  font-weight: 600;
+  margin-top: 16px;
+  height: 48px;
+  --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.ion-text-center {
+  margin-top: 20px;
+}
+
+/* Estilos para legend en página de registro */
+.legend {
+  font-size: 0.9rem;
+  color: var(--ion-color-medium);
+  margin-bottom: 16px;
+}
+
+/* Estilos para el enlace de recuperación de contraseña */
+.forgot-password-link {
+  text-align: right;
+  margin-top: 8px;
+  font-size: 0.9rem;
+}
+
+.forgot-password-link a {
+  color: var(--ion-color-primary);
+  font-weight: 500;
+  transition: opacity 0.2s ease;
+}
+
+.forgot-password-link a:hover {
+  opacity: 0.8;
+  text-decoration: underline;
+}
