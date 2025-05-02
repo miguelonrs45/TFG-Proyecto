@@ -613,11 +613,11 @@ document.addEventListener('DOMContentLoaded', () => {
     function calculateDuration() {
         if (!selectedStartTime || !selectedEndTime || !totalDurationSpan) return;
         
-        const start = new Date(`2024-01-01 ${selectedStartTime}`);
-        let end = new Date(`2024-01-01 ${selectedEndTime}`);
+        const start = new Date(`2025-01-01 ${selectedStartTime}`);
+        let end = new Date(`2025-01-01 ${selectedEndTime}`);
         
         if (selectedEndTime === '00:00') {
-            end = new Date(`2024-01-02 00:00`);
+            end = new Date(`2025-01-02 00:00`);
         }
         
         const diffHours = (end - start) / (1000 * 60 * 60);
@@ -629,11 +629,11 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateTimeRange() {
         if (!selectedStartTime || !selectedEndTime || !timeRangeSpan || !totalDurationSpan) return;
         
-        const startTime = new Date(`2024-01-01 ${selectedStartTime}`);
-        let endTime = new Date(`2024-01-01 ${selectedEndTime}`);
+        const startTime = new Date(`2025-01-01 ${selectedStartTime}`);
+        let endTime = new Date(`2025-01-01 ${selectedEndTime}`);
         
         if (selectedEndTime === '00:00') {
-            endTime = new Date(`2024-01-02 00:00`);
+            endTime = new Date(`2025-01-02 00:00`);
         }
         
         const diffHours = (endTime - startTime) / (1000 * 60 * 60);
