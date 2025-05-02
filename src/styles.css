@@ -1,0 +1,126 @@
+/* You can add global styles to this file, and also import other style files */
+/* Importaciones de CSS de Ionic - pueden estar ya presentes */
+/* @import deberían estar ya en tu archivo styles.css */
+
+/* Estilos personalizados para CoWorkGo */
+:root {
+  --ion-color-primary: #4D7CEA;
+  --ion-color-primary-rgb: 77, 124, 234;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-contrast-rgb: 255, 255, 255;
+  --ion-color-primary-shade: #446dce;
+  --ion-color-primary-tint: #5f89ec;
+
+  --ion-color-secondary: #34C759;
+  --ion-color-secondary-rgb: 52, 199, 89;
+  --ion-color-secondary-contrast: #ffffff;
+  --ion-color-secondary-contrast-rgb: 255, 255, 255;
+  --ion-color-secondary-shade: #2eaf4e;
+  --ion-color-secondary-tint: #48cd6a;
+}
+
+/* Ajuste para que el contenido ocupe toda la pantalla */
+ion-content {
+  --background: transparent;
+}
+
+/* Efecto para botones */
+ion-button {
+  --border-radius: 8px;
+  font-weight: 600;
+  --box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s ease-in-out;
+}
+
+ion-button:active {
+  --box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transform: translateY(1px);
+}
+
+/* Estilos adicionales que podrían ser útiles */
+.full-height {
+  height: 100%;
+}
+
+.text-white {
+  color: white;
+}
+
+.text-shadow {
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+.card-shadow {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Estilos personalizados para el diálogo de recuperación de contraseña */
+.custom-alert {
+  --background: white;
+  --border-radius: 16px;
+  --box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  --max-width: 400px;
+}
+
+.custom-alert .alert-head {
+  padding-top: 20px !important;
+  padding-bottom: 15px !important;
+  border-bottom: 1px solid #f1f1f1;
+}
+
+.custom-alert .alert-title {
+  color: #4D7CEA;
+  font-weight: 700;
+  font-size: 1.3rem;
+  text-align: center;
+}
+
+.custom-alert .alert-message {
+  color: #555;
+  font-size: 0.95rem;
+  text-align: center;
+  padding: 15px 20px 0;
+}
+
+.custom-alert .alert-input-group {
+  padding: 15px 20px;
+}
+
+.custom-alert .alert-input {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  margin-top: 10px;
+  --padding-start: 15px;
+  font-size: 0.95rem;
+  color: #333;
+  background-color: #f9f9f9;
+  height: 44px;
+  transition: border 0.2s ease;
+}
+
+.custom-alert .alert-input:focus {
+  border-color: #4D7CEA;
+  background-color: #f5f8ff;
+}
+
+.custom-alert .alert-button-group {
+  padding: 10px;
+}
+
+.custom-alert .alert-button {
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  height: 44px;
+  margin: 0 5px;
+}
+
+.custom-alert .cancel-button {
+  color: #555;
+  background-color: #f1f1f1;
+}
+
+.custom-alert .confirm-button {
+  background-color: #4D7CEA;
+  color: white;
+}

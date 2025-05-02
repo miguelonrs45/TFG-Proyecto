@@ -1,0 +1,96 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar color="primary" class="transparent-toolbar">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home" text="Salir" class="animate-button"></ion-back-button>
+    </ion-buttons>
+
+    <ion-title class="logo-title">
+      <div class="logo-container">
+        <ion-icon name="business-outline"></ion-icon>
+        <span>CoWorkGo</span>
+      </div>
+    </ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button (click)="toggleTheme()" class="animate-button">
+        <ion-icon [name]="isDarkMode ? 'sunny-outline' : 'moon-outline'" slot="icon-only"></ion-icon>
+      </ion-button>
+      <ion-button (click)="showNotifications()" class="animate-button">
+        <ion-icon name="notifications-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+      <ion-button (click)="miPerfil()" class="animate-button">
+        <ion-icon name="person-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [class]="isDarkMode ? 'dashboard-content dark-mode' : 'dashboard-content'">
+  <div class="greeting-container animate-fade-in">
+    <h1>Bienvenido a CoWorkGo</h1>
+    <p>¿Qué te gustaría hacer hoy?</p>
+  </div>
+
+  <ion-grid>
+    <ion-row>
+      <!-- Nueva Reserva -->
+      <ion-col size="6" size-md="3">
+        <ion-card class="dashboard-card animate-entry button-animated" (click)="nuevaReserva()">
+          <ion-card-content class="ion-text-center animate-ripple">
+            <div class="icon-container">
+              <ion-icon name="add-outline" size="large"></ion-icon>
+            </div>
+            <ion-label>Nueva Reserva</ion-label>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+
+      <!-- Mis Reservas -->
+      <ion-col size="6" size-md="3">
+        <ion-card class="dashboard-card animate-entry button-animated" (click)="misReservas()">
+          <ion-card-content class="ion-text-center animate-ripple">
+            <div class="icon-container">
+              <ion-icon name="list-outline" size="large"></ion-icon>
+            </div>
+            <ion-label>Mis Reservas</ion-label>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+
+      <!-- Espacios -->
+      <ion-col size="6" size-md="3">
+        <ion-card class="dashboard-card animate-entry button-animated" (click)="espacios()">
+          <ion-card-content class="ion-text-center animate-ripple">
+            <div class="icon-container">
+              <ion-icon name="business-outline" size="large"></ion-icon>
+            </div>
+            <ion-label>Espacios</ion-label>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+
+      <!-- Mis Calificaciones -->
+      <ion-col size="6" size-md="3">
+        <ion-card class="dashboard-card animate-entry button-animated" (click)="misCalificaciones()">
+          <ion-card-content class="ion-text-center animate-ripple">
+            <div class="icon-container">
+              <ion-icon name="star-outline" size="large"></ion-icon>
+            </div>
+            <ion-label>Mis Calificaciones</ion-label>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <!-- Espacio para futuras características o contenido adicional -->
+  <div class="additional-features animate-entry">
+    <ion-card>
+      <ion-card-content>
+        <h2>Tus próximas reservas</h2>
+        <p class="no-data-message">No tienes reservas próximas</p>
+        <!-- Aquí se podría mostrar una lista de reservas futuras -->
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

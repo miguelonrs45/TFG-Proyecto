@@ -1,0 +1,58 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Accede a tu cuenta</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      <ion-list lines="none">
+        <ion-item class="email-field">
+          <ion-label position="floating">Email</ion-label>
+          <ion-input type="email" [(ngModel)]="email" required placeholder="ejemplo@correo.com"></ion-input>
+        </ion-item>
+
+        <ion-item class="password-field">
+          <ion-label position="floating">Contraseña</ion-label>
+          <ion-input type="password" [(ngModel)]="password" required placeholder="********"></ion-input>
+        </ion-item>
+      </ion-list>
+
+      <div class="forgot-password-link">
+        <a (click)="forgotPassword()">¿Olvidaste tu contraseña?</a>
+      </div>
+
+      <ion-button expand="block" (click)="login()" class="ion-margin-top">
+        Iniciar Sesión
+      </ion-button>
+
+      <p class="ion-text-center">
+        ¿No tienes una cuenta?
+        <a (click)="goToRegister()">Regístrate aquí</a>
+      </p>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Toast para mostrar errores -->
+  <ion-toast
+    [isOpen]="showError"
+    message="{{errorMessage}}"
+    duration="3000"
+    color="danger">
+  </ion-toast>
+
+  <!-- Toast para mostrar mensajes de éxito -->
+  <ion-toast
+    [isOpen]="showSuccess"
+    message="{{successMessage}}"
+    duration="3000"
+    color="success">
+  </ion-toast>
+</ion-content>
