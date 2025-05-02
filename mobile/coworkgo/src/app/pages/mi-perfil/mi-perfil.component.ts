@@ -147,7 +147,7 @@ export class MiPerfilComponent implements OnInit {
     email: 'miguelangel@example.com',
     telefono: '612345678',
     avatar: 'https://ionicframework.com/docs/img/demos/avatar.svg',
-    fechaRegistro: '15/01/2024',
+    fechaRegistro: '15/04/2025',
     username: 'miguelangel_ramos' // Nombre de usuario añadido
   };
 
@@ -182,7 +182,7 @@ export class MiPerfilComponent implements OnInit {
 
   // Seguridad
   securitySettings = {
-    lastPasswordChange: '10/10/2024',
+    lastPasswordChange: '10/10/2025',
     twoFactorEnabled: false
   };
 
