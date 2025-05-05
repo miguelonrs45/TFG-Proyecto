@@ -1,0 +1,116 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/dashboard"></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      <div class="logo-title">
+        <ion-icon name="business-outline"></ion-icon>
+        <span>CoWorkGo</span>
+      </div>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="espacios-container">
+    <!-- Sección para cada ubicación -->
+    <div class="ubicacion-section" *ngFor="let ubicacion of ubicaciones">
+      <ion-card class="ubicacion-card" (click)="toggleUbicacion(ubicacion)">
+        <ion-item lines="none" class="ubicacion-header">
+          <ion-icon name="location-outline" slot="start"></ion-icon>
+          <ion-label>
+            <h2>{{ ubicacion.ciudad }}</h2>
+            <p>{{ ubicacion.espacios.length }} espacios disponibles</p>
+          </ion-label>
+          <ion-icon
+            [name]="ubicacion.expandido ? 'chevron-up-outline' : 'chevron-down-outline'"
+            slot="end"
+            class="expand-icon">
+          </ion-icon>
+        </ion-item>
+      </ion-card>
+
+      <!-- Espacios dentro de la ubicación -->
+      <div class="espacios-list" *ngIf="ubicacion.expandido">
+        <ion-card class="espacio-card" *ngFor="let espacio of ubicacion.espacios">
+          <div class="espacio-imagen-container">
+            <img [src]="espacio.imagen" alt="{{ espacio.nombre }}" class="espacio-imagen">
+            <div class="espacio-overlay">
+              <div class="calificacion-badge">
+                <ion-icon name="star"></ion-icon>
+                <span>{{ espacio.calificacion }}</span>
+              </div>
+            </div>
+          </div>
+
+          <ion-card-header>
+            <ion-card-title (click)="verDetallesEspacio(espacio.id)">{{ espacio.nombre }}</ion-card-title>
+          </ion-card-header>
+
+          <ion-card-content>
+            <div class="espacio-info">
+              <p class="espacio-direccion">
+                <ion-icon name="location-outline"></ion-icon>
+                {{ espacio.direccion }}
+              </p>
+
+              <p class="espacio-descripcion">{{ espacio.descripcion }}</p>
+
+              <div class="espacio-calificacion">
+                <ion-icon
+                  *ngFor="let estrella of getEstrellas(espacio.calificacion)"
+                  [name]="estrella === 2 ? 'star' : (estrella === 1 ? 'star-half-outline' : 'star-outline')"
+                  class="star-icon">
+                </ion-icon>
+                <span class="calificacion-texto">({{ espacio.calificacion }})</span>
+              </div>
+
+              <div class="espacio-detalles">
+                <div class="detalle-item">
+                  <ion-icon name="cash-outline"></ion-icon>
+                  <span>{{ espacio.precio_hora }}€/hora</span>
+                </div>
+                <div class="detalle-item">
+                  <ion-icon name="people-outline"></ion-icon>
+                  <span>Hasta {{ espacio.capacidad }} personas</span>
+                </div>
+              </div>
+
+              <div class="espacio-servicios">
+                <ion-chip *ngIf="espacio.servicios.wifi" color="primary" outline>
+                  <ion-icon name="wifi-outline"></ion-icon>
+                  <ion-label>WiFi</ion-label>
+                </ion-chip>
+                <ion-chip *ngIf="espacio.servicios.parking" color="primary" outline>
+                  <ion-icon name="car-outline"></ion-icon>
+                  <ion-label>Parking</ion-label>
+                </ion-chip>
+                <ion-chip *ngIf="espacio.servicios.accesible" color="primary" outline>
+                  <ion-icon name="accessibility-outline"></ion-icon>
+                  <ion-label>Accesible</ion-label>
+                </ion-chip>
+              </div>
+
+              <ion-button expand="block" class="reservar-btn" (click)="nuevaReserva(espacio.id)">
+                <ion-icon name="calendar-outline" slot="start"></ion-icon>
+                Reservar este espacio
+              </ion-button>
+            </div>
+          </ion-card-content>
+        </ion-card>
+      </div>
+    </div>
+
+    <!-- Mensaje cuando no hay espacios disponibles -->
+    <div class="no-espacios" *ngIf="ubicaciones.length === 0">
+      <ion-card>
+        <ion-card-content class="ion-text-center">
+          <ion-icon name="business-outline" size="large"></ion-icon>
+          <h2>No hay espacios disponibles</h2>
+          <p>No encontramos espacios de trabajo disponibles en este momento</p>
+        </ion-card-content>
+      </ion-card>
+    </div>
+  </div>
+</ion-content>
