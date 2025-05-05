@@ -12,7 +12,7 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
-  <!-- Barra de filtrado mejorada -->
+  <!-- Barra de filtrado mejorada con animación -->
   <div class="filter-bar">
     <ion-searchbar
       placeholder="Buscar en mis reseñas"
@@ -25,12 +25,15 @@
     <div class="filter-options">
       <ion-segment [(ngModel)]="filtroActual" (ionChange)="aplicarFiltros()" mode="md">
         <ion-segment-button value="todas">
+          <ion-icon name="grid-outline"></ion-icon>
           <ion-label>Todas</ion-label>
         </ion-segment-button>
         <ion-segment-button value="publicas">
+          <ion-icon name="eye-outline"></ion-icon>
           <ion-label>Públicas</ion-label>
         </ion-segment-button>
         <ion-segment-button value="privadas">
+          <ion-icon name="eye-off-outline"></ion-icon>
           <ion-label>Privadas</ion-label>
         </ion-segment-button>
       </ion-segment>
@@ -42,21 +45,36 @@
         mode="md"
         placeholder="Ordenar por"
         class="orden-select">
-        <ion-select-option value="fecha-reciente">Más recientes</ion-select-option>
-        <ion-select-option value="fecha-antigua">Más antiguas</ion-select-option>
-        <ion-select-option value="calificacion-alta">Mayor puntuación</ion-select-option>
-        <ion-select-option value="calificacion-baja">Menor puntuación</ion-select-option>
-        <ion-select-option value="nombre-az">Nombre (A-Z)</ion-select-option>
-        <ion-select-option value="nombre-za">Nombre (Z-A)</ion-select-option>
+        <ion-select-option value="fecha-reciente">
+          <ion-icon name="time-outline"></ion-icon> Más recientes
+        </ion-select-option>
+        <ion-select-option value="fecha-antigua">
+          <ion-icon name="hourglass-outline"></ion-icon> Más antiguas
+        </ion-select-option>
+        <ion-select-option value="calificacion-alta">
+          <ion-icon name="trending-up-outline"></ion-icon> Mayor puntuación
+        </ion-select-option>
+        <ion-select-option value="calificacion-baja">
+          <ion-icon name="trending-down-outline"></ion-icon> Menor puntuación
+        </ion-select-option>
+        <ion-select-option value="nombre-az">
+          <ion-icon name="text-outline"></ion-icon> Nombre (A-Z)
+        </ion-select-option>
+        <ion-select-option value="nombre-za">
+          <ion-icon name="text-outline"></ion-icon> Nombre (Z-A)
+        </ion-select-option>
       </ion-select>
     </div>
   </div>
 
   <div class="ion-padding">
-    <!-- Resumen de estadísticas -->
-    <ion-card>
+    <!-- Resumen de estadísticas mejorado -->
+    <ion-card class="stats-card">
       <ion-card-header>
-        <ion-card-title>Mis Estadísticas</ion-card-title>
+        <ion-card-title>
+          <ion-icon name="stats-chart-outline"></ion-icon>
+          Mis Estadísticas
+        </ion-card-title>
       </ion-card-header>
       <ion-card-content>
         <div class="stats-container">
@@ -78,11 +96,15 @@
       </ion-card-content>
     </ion-card>
 
-    <!-- Reseñas pendientes -->
+    <!-- Reseñas pendientes con contador -->
     <div *ngIf="resenasPendientes.length > 0" class="pending-reviews">
       <ion-card>
         <ion-card-header>
-          <ion-card-title>Pendientes de calificar</ion-card-title>
+          <ion-card-title>
+            <ion-icon name="time-outline"></ion-icon>
+            Pendientes de calificar
+            <ion-badge color="warning">{{resenasPendientes.length}}</ion-badge>
+          </ion-card-title>
         </ion-card-header>
         <ion-card-content>
           <ion-list lines="none">
@@ -92,9 +114,13 @@
               </ion-thumbnail>
               <ion-label>
                 <h2>{{pendiente.nombre}}</h2>
-                <p>Visitado: {{pendiente.fechaVisita | date:'dd/MM/yyyy'}}</p>
+                <p>
+                  <ion-icon name="calendar-outline"></ion-icon>
+                  Visitado: {{pendiente.fechaVisita | date:'dd/MM/yyyy'}}
+                </p>
               </ion-label>
               <ion-button slot="end" (click)="calificarPendiente(pendiente.id)" color="secondary">
+                <ion-icon name="star-outline" slot="start"></ion-icon>
                 Calificar
               </ion-button>
             </ion-item>
@@ -103,7 +129,7 @@
       </ion-card>
     </div>
 
-    <!-- Lista de reseñas -->
+    <!-- Lista de reseñas con efectos mejorados -->
     <div class="resenas-container" *ngIf="resenasFiltradas.length > 0">
       <ion-card class="resena-card" *ngFor="let resena of resenasFiltradas">
         <div class="resena-header">
@@ -120,12 +146,15 @@
                 [name]="star ? 'star' : 'star-outline'"
                 color="warning">
               </ion-icon>
+              <span class="calificacion-texto">{{resena.calificacion}}/5</span>
             </div>
             <div class="fechas">
               <span class="fecha-visita">
+                <ion-icon name="calendar-outline"></ion-icon>
                 <strong>Visita:</strong> {{resena.fechaVisita | date:'dd/MM/yyyy'}}
               </span>
               <span class="fecha-resena">
+                <ion-icon name="create-outline"></ion-icon>
                 <strong>Reseña:</strong> {{resena.fechaResena | date:'dd/MM/yyyy'}}
               </span>
             </div>
@@ -151,14 +180,24 @@
       </ion-card>
     </div>
 
-    <!-- Mensaje si no hay reseñas -->
+    <!-- Mensaje si no hay reseñas con ilustración -->
     <div class="empty-state" *ngIf="resenasFiltradas.length === 0">
       <ion-card>
         <ion-card-header>
-          <ion-card-title>No hay reseñas</ion-card-title>
+          <ion-card-title>
+            <ion-icon name="search-outline"></ion-icon>
+            No hay reseñas
+          </ion-card-title>
         </ion-card-header>
         <ion-card-content>
+          <div class="empty-icon">
+            <ion-icon name="document-text-outline"></ion-icon>
+          </div>
           <p>Aún no has realizado ninguna reseña o no se encontraron resultados con los filtros actuales.</p>
+          <ion-button expand="block" fill="solid" color="primary" class="mt-3" (click)="aplicarFiltros()">
+            <ion-icon name="refresh-outline" slot="start"></ion-icon>
+            Restablecer filtros
+          </ion-button>
         </ion-card-content>
       </ion-card>
     </div>

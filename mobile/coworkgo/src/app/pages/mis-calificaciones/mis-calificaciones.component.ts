@@ -7,7 +7,7 @@ import { IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonCard,
   IonSelectOption, IonList, IonItem, IonLabel, IonBackButton, IonButtons,
   IonSearchbar, IonChip, IonImg, IonBadge, IonItemSliding, IonItemOptions,
   IonItemOption, IonRefresher, IonRefresherContent, IonThumbnail,
-  IonSegment, IonSegmentButton } from '@ionic/angular/standalone';
+  IonSegment, IonSegmentButton, AlertController, ToastController } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import {
   starOutline, star, createOutline, trashOutline,
@@ -67,7 +67,14 @@ export class MisCalificacionesComponent implements OnInit {
   ordenActual: string = 'fecha-reciente';
   filtroActual: string = 'todas';
 
-  constructor(private router: Router) {
+  // Nueva propiedad para los valores temporales durante la edición
+  resenaEnEdicion: Resena | null = null;
+
+  constructor(
+    private router: Router,
+    private alertController: AlertController,
+    private toastController: ToastController
+  ) {
     addIcons({
       starOutline, star, createOutline, trashOutline,
       filterOutline, optionsOutline, arrowDownOutline,
@@ -225,25 +232,272 @@ export class MisCalificacionesComponent implements OnInit {
     console.log('Calificar espacio pendiente:', espacioId);
   }
 
-  editarResena(resena: Resena) {
-    // Aquí navegaríamos a la pantalla de edición de reseña
-    console.log('Editar reseña:', resena.id);
+  async editarResena(resena: Resena) {
+    // Creamos una copia para no modificar el original hasta confirmar los cambios
+    this.resenaEnEdicion = { ...resena };
+
+    // Variable para almacenar la calificación actual durante la edición
+    let calificacionActual = resena.calificacion;
+
+    // Creamos un componente HTML personalizado con estrellas
+    const customHtml = `
+      <div class="rating-stars-container">
+        <p class="rating-title">Selecciona tu calificación:</p>
+        <div class="rating-stars">
+          <div class="star-wrapper">
+            <ion-icon class="star-icon" data-value="1" name="${calificacionActual >= 1 ? 'star' : 'star-outline'}"></ion-icon>
+          </div>
+          <div class="star-wrapper">
+            <ion-icon class="star-icon" data-value="2" name="${calificacionActual >= 2 ? 'star' : 'star-outline'}"></ion-icon>
+          </div>
+          <div class="star-wrapper">
+            <ion-icon class="star-icon" data-value="3" name="${calificacionActual >= 3 ? 'star' : 'star-outline'}"></ion-icon>
+          </div>
+          <div class="star-wrapper">
+            <ion-icon class="star-icon" data-value="4" name="${calificacionActual >= 4 ? 'star' : 'star-outline'}"></ion-icon>
+          </div>
+          <div class="star-wrapper">
+            <ion-icon class="star-icon" data-value="5" name="${calificacionActual >= 5 ? 'star' : 'star-outline'}"></ion-icon>
+          </div>
+        </div>
+        <p class="rating-value">${calificacionActual} de 5 estrellas</p>
+      </div>
+    `;
+
+    const alert = await this.alertController.create({
+      header: 'Editar Reseña',
+      subHeader: resena.espacioNombre,
+      cssClass: 'custom-alert-resena',
+      backdropDismiss: false,
+      inputs: [
+        {
+          name: 'calificacionHidden',
+          type: 'hidden' as 'radio', // Truco TypeScript para usar un tipo válido
+          value: calificacionActual.toString()
+        },
+        {
+          name: 'comentario',
+          type: 'textarea',
+          value: resena.comentario,
+          placeholder: 'Describe tu experiencia con este espacio...'
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          cssClass: 'cancel-button',
+          handler: () => {
+            this.resenaEnEdicion = null;
+          }
+        },
+        {
+          text: 'Guardar Cambios',
+          cssClass: 'save-button',
+          handler: (data) => {
+            // Obtenemos la calificación del campo oculto
+            const inputElement = document.querySelector('input[name="calificacionHidden"]') as HTMLInputElement;
+            let calificacion = calificacionActual.toString();
+
+            if (inputElement) {
+              calificacion = inputElement.value;
+            }
+
+            // Validaciones
+            if (!calificacion || parseInt(calificacion) < 1 || parseInt(calificacion) > 5) {
+              this.mostrarMensaje('Por favor, selecciona una calificación válida', 'danger');
+              return false;
+            }
+
+            if (!data.comentario || data.comentario.trim() === '') {
+              this.mostrarMensaje('Por favor, ingresa un comentario', 'danger');
+              return false;
+            }
+
+            // Guardar los cambios
+            const index = this.resenas.findIndex(r => r.id === resena.id);
+            if (index !== -1) {
+              this.resenas[index].calificacion = parseInt(calificacion);
+              this.resenas[index].comentario = data.comentario;
+              this.resenas[index].fechaResena = new Date();
+
+              // Actualizar las reseñas filtradas
+              this.aplicarFiltros();
+              this.calcularEstadisticas();
+
+              // Confirmar al usuario
+              this.mostrarMensaje('Reseña actualizada con éxito', 'success');
+            }
+
+            this.resenaEnEdicion = null;
+            return true;
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+
+    // MODIFICADO PARA ASEGURAR QUE LAS ESTRELLAS APAREZCAN DEBAJO DEL TEXTAREA
+    setTimeout(() => {
+      console.log('Reestructurando el diálogo para poner estrellas debajo del texto...');
+
+      // Obtener la alerta
+      const alertElement = document.querySelector('.custom-alert-resena');
+      if (alertElement) {
+        // Intentamos encontrar el contenedor de botones
+        const buttonGroup = alertElement.querySelector('.alert-button-group');
+
+        // Intentamos encontrar el contenedor de entrada o el textarea
+        const inputWrapper = alertElement.querySelector('.alert-input-wrapper');
+
+        if (inputWrapper && buttonGroup) {
+          console.log('Encontrados elementos necesarios para reestructurar');
+
+          // Crear un contenedor para nuestras estrellas
+          const starsContainer = document.createElement('div');
+          starsContainer.className = 'stars-custom-container';
+          starsContainer.innerHTML = customHtml;
+
+          // Insertar el contenedor de estrellas entre el contenedor de input y los botones
+          buttonGroup.parentNode?.insertBefore(starsContainer, buttonGroup);
+
+          // Añadimos comportamiento interactivo a las estrellas
+          const stars = document.querySelectorAll('.rating-stars .star-icon');
+          const ratingValue = document.querySelector('.rating-value');
+          const hiddenInput = document.querySelector('input[name="calificacionHidden"]') as HTMLInputElement;
+
+          // Mejorar la interactividad añadiendo eventos tanto para móvil como desktop
+          stars.forEach(star => {
+            // Para clicks y toques
+            ['click', 'touchstart'].forEach(eventName => {
+              star.addEventListener(eventName, (event) => {
+                // Prevenir comportamiento por defecto para evitar problemas en móviles
+                event.preventDefault();
+
+                // Asegurarnos de que event.currentTarget es un Element
+                const target = event.currentTarget as Element;
+
+                // Ahora podemos acceder con seguridad a getAttribute
+                const dataValue = target.getAttribute('data-value');
+                if (dataValue) {
+                  const value = parseInt(dataValue);
+                  calificacionActual = value;
+
+                  if (hiddenInput) {
+                    hiddenInput.value = value.toString();
+                  }
+
+                  // Actualizar la visualización de las estrellas
+                  stars.forEach(s => {
+                    const starElement = s as Element;
+                    const starValue = starElement.getAttribute('data-value');
+                    if (starValue && parseInt(starValue) <= value) {
+                      starElement.setAttribute('name', 'star');
+                    } else {
+                      starElement.setAttribute('name', 'star-outline');
+                    }
+                  });
+
+                  // Actualizar el texto
+                  if (ratingValue) {
+                    ratingValue.textContent = `${value} de 5 estrellas`;
+                  }
+                }
+              });
+            });
+
+            // También añadimos efecto visual al pasar el ratón
+            star.addEventListener('mouseenter', (event) => {
+              const target = event.currentTarget as Element;
+              const hoverValue = target.getAttribute('data-value');
+
+              if (hoverValue) {
+                // Mostrar visual hover
+                stars.forEach(s => {
+                  const starElement = s as Element;
+                  const starValue = starElement.getAttribute('data-value');
+                  if (starValue && parseInt(starValue) <= parseInt(hoverValue)) {
+                    starElement.classList.add('star-hover');
+                  }
+                });
+              }
+            });
+
+            star.addEventListener('mouseleave', () => {
+              // Quitar visual hover
+              stars.forEach(s => {
+                const starElement = s as Element;
+                starElement.classList.remove('star-hover');
+              });
+            });
+          });
+        } else {
+          console.log('No se encontraron los elementos necesarios para reestructurar');
+        }
+      } else {
+        console.log('No se pudo encontrar la alerta con la clase custom-alert-resena');
+      }
+    }, );
+  }
+
+  // Método auxiliar para generar el HTML de las estrellas
+  private generarEstrellas(calificacion: number): string {
+    let starsHtml = '';
+    for (let i = 1; i <= 5; i++) {
+      if (i <= calificacion) {
+        starsHtml += '<ion-icon name="star" class="star-filled"></ion-icon>';
+      } else {
+        starsHtml += '<ion-icon name="star-outline" class="star-outline"></ion-icon>';
+      }
+    }
+    return starsHtml;
+  }
+  async mostrarMensaje(mensaje: string, color: string) {
+    const toast = await this.toastController.create({
+      message: mensaje,
+      duration: 2000,
+      color: color,
+      position: 'bottom'
+    });
+    toast.present();
   }
 
   async eliminarResena(resena: Resena) {
     // Aquí mostraríamos un diálogo de confirmación y se eliminaría la reseña
-    console.log('Eliminar reseña:', resena.id);
+    const alert = await this.alertController.create({
+      header: 'Confirmar eliminación',
+      message: '¿Estás seguro de que deseas eliminar esta reseña?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel'
+        }, {
+          text: 'Eliminar',
+          handler: () => {
+            // Simular eliminación
+            this.resenas = this.resenas.filter(r => r.id !== resena.id);
+            this.aplicarFiltros();
+            this.calcularEstadisticas();
+            this.mostrarMensaje('Reseña eliminada con éxito', 'success');
+          }
+        }
+      ]
+    });
 
-    // Simulación de eliminación
-    this.resenas = this.resenas.filter(r => r.id !== resena.id);
-    this.aplicarFiltros();
-    this.calcularEstadisticas();
+    await alert.present();
   }
 
   cambiarVisibilidad(resena: Resena) {
     resena.esPublica = !resena.esPublica;
     // Aquí actualizaríamos en el backend
     console.log('Cambiar visibilidad de reseña:', resena.id, 'a', resena.esPublica ? 'pública' : 'privada');
+
+    // Mostrar confirmación
+    this.mostrarMensaje(
+      `Reseña ahora es ${resena.esPublica ? 'pública' : 'privada'}`,
+      'success'
+    );
   }
 
   verDetallesEspacio(espacioId: number) {
