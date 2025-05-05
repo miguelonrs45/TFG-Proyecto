@@ -124,3 +124,391 @@ ion-button:active {
   background-color: #4D7CEA;
   color: white;
 }
+
+/* Estilos para el alert de edición de reseñas */
+.my-custom-alert {
+  --background: #ffffff;
+  --max-width: 400px;
+  --border-radius: 16px;
+  --box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.my-custom-alert .alert-head {
+  padding: 20px;
+}
+
+.my-custom-alert .alert-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--ion-color-primary);
+  text-align: center;
+}
+
+.my-custom-alert .alert-sub-title {
+  font-size: 14px;
+  color: var(--ion-color-medium);
+  text-align: center;
+}
+
+.my-custom-alert .alert-message {
+  color: var(--ion-color-dark);
+}
+
+.my-custom-alert .alert-input-group {
+  padding: 10px 20px;
+}
+
+.my-custom-alert .alert-input {
+  margin-top: 10px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 10px;
+  color: var(--ion-color-dark);
+  background-color: #f8f9fc;
+}
+
+.my-custom-alert .alert-input:focus {
+  border-color: var(--ion-color-primary);
+  outline: none;
+}
+
+.my-custom-alert textarea.alert-input {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.my-custom-alert .alert-button-group {
+  padding: 10px;
+}
+
+.my-custom-alert .alert-button {
+  border-radius: 8px;
+  margin: 0 5px;
+}
+
+.my-custom-alert .alert-button.secondary {
+  color: var(--ion-color-medium);
+}
+
+.my-custom-alert .alert-button.primary {
+  --background: var(--ion-color-primary);
+  color: white;
+}
+
+/* Estilos mejorados para el diálogo de edición de reseñas */
+.custom-alert-resena {
+  --backdrop-opacity: 0.9;
+  --background: linear-gradient(135deg, #1c2139, #2a3150);
+  --width: 90%;
+  --max-width: 400px;
+  --border-radius: 16px;
+  --box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  --max-height: 80%;
+}
+
+/* Cabecera del diálogo */
+.custom-alert-resena .alert-head {
+  padding: 20px 20px 10px 20px !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+  text-align: center !important;
+}
+
+.custom-alert-resena .alert-title {
+  color: white !important;
+  font-size: 22px !important;
+  font-weight: 600 !important;
+  margin-bottom: 5px !important;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) !important;
+}
+
+.custom-alert-resena .alert-sub-title {
+  color: #4D7CEA !important;
+  font-size: 16px !important;
+  margin-top: 0 !important;
+  font-weight: 500 !important;
+}
+
+/* Contenedor personalizado para estrellas */
+.custom-alert-resena .rating-stars-container {
+  padding: 20px 15px;
+  text-align: center;
+  margin-bottom: 10px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.custom-alert-resena .rating-title {
+  margin: 0 0 15px 0;
+  color: white;
+  font-weight: 500;
+  font-size: 16px;
+}
+
+.custom-alert-resena .rating-stars {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.custom-alert-resena .star-icon {
+  font-size: 36px;
+  margin: 0 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+  padding: 8px;
+}
+
+/* Mejora del estado hover de las estrellas */
+.custom-alert-resena .star-icon:hover,
+.custom-alert-resena .star-icon:active {
+  transform: scale(1.2) rotate(5deg);
+  opacity: 1;
+}
+
+/* Estrellas seleccionadas */
+.custom-alert-resena .star-icon[name="star"] {
+  color: #FFD700;
+  filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.4));
+  transform: scale(1.1);
+}
+
+.custom-alert-resena .star-icon[name="star-outline"] {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.custom-alert-resena .rating-value {
+  margin: 10px 0 0 0;
+  color: #FFD700;
+  font-weight: 600;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  font-size: 14px;
+}
+
+/* Área del textarea */
+.custom-alert-resena .alert-input-wrapper {
+  padding: 10px !important;
+  background: transparent !important;
+}
+
+.custom-alert-resena textarea {
+  background: rgba(255, 255, 255, 0.1) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  color: white !important;
+  border-radius: 12px !important;
+  padding: 12px !important;
+  min-height: 120px !important;
+  font-size: 15px !important;
+  margin-top: 5px !important;
+  resize: none !important;
+}
+
+.custom-alert-resena textarea:focus {
+  border-color: #4D7CEA !important;
+  box-shadow: 0 0 0 2px rgba(77, 124, 234, 0.3) !important;
+  outline: none !important;
+}
+
+.custom-alert-resena textarea::placeholder {
+  color: rgba(255, 255, 255, 0.5) !important;
+}
+
+/* Botones */
+.custom-alert-resena .alert-button-group {
+  padding: 15px !important;
+  justify-content: space-between !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.custom-alert-resena .alert-button {
+  border-radius: 30px !important;
+  min-width: 120px !important;
+  height: 48px !important;
+  font-weight: 600 !important;
+  text-transform: none !important;
+  font-size: 16px !important;
+  letter-spacing: 0.5px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.custom-alert-resena .cancel-button {
+  color: rgba(255, 255, 255, 0.8) !important;
+  background: rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2) !important;
+  text-align: center !important;
+}
+
+.custom-alert-resena .save-button {
+  color: white !important;
+  background: linear-gradient(135deg, #4D7CEA, #3a5db2) !important;
+  box-shadow: 0 4px 15px rgba(77, 124, 234, 0.4) !important;
+}
+
+.custom-alert-resena .save-button:active {
+  transform: scale(0.97) !important;
+  box-shadow: 0 2px 5px rgba(77, 124, 234, 0.4) !important;
+}
+
+/* Arreglos para asegurar que todo el contenido sea visible */
+.custom-alert-resena .alert-wrapper {
+  overflow-y: auto !important;
+  max-height: 80vh !important;
+}
+
+.custom-alert-resena .alert-message {
+  overflow-y: visible !important;
+  max-height: none !important;
+}
+
+.custom-alert-resena ion-textarea {
+  --padding-start: 12px;
+  --padding-end: 12px;
+  --padding-top: 12px;
+  --padding-bottom: 12px;
+}
+
+/* Estilos adicionales para mejorar la interacción con las estrellas */
+.custom-alert-resena .star-wrapper {
+  display: inline-block;
+  padding: 5px;
+  cursor: pointer;
+}
+
+.custom-alert-resena .star-hover {
+  color: #FFD700 !important;
+  filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.3)) !important;
+  transform: scale(1.1) !important;
+}
+
+/* Añadir efecto de pulsación para móviles */
+.custom-alert-resena .star-icon:active {
+  transform: scale(0.9) !important;
+  transition: transform 0.1s !important;
+}
+
+/* Asegurar que los botones tengan el texto centrado */
+.custom-alert-resena .alert-button {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0 16px !important;
+  margin: 0 8px !important;
+}
+
+/* Estilo específico para el botón de cancelar */
+.custom-alert-resena .cancel-button {
+  text-align: center !important;
+  justify-content: center !important;
+  margin: 0 !important;
+}
+
+/* Estilos para el input textarea */
+.custom-alert-resena ion-textarea {
+  margin-top: 15px !important;
+  margin-bottom: 10px !important;
+}
+
+/* dds*/
+/* Estilos para arreglar los botones en la alerta de reseña */
+.custom-alert-resena .alert-button-group {
+  display: flex !important;
+  justify-content: center !important;
+  padding: 15px !important;
+}
+
+.custom-alert-resena .alert-button {
+  flex: 0 1 auto !important;
+  min-width: 120px !important;
+  margin: 0 10px !important;
+  text-align: center !important;
+  justify-content: center !important;
+}
+
+/* ESTILOS REDUCIDOS para el contenedor personalizado de estrellas */
+.stars-custom-container {
+  margin: 10px 0 0 0;
+  padding: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+}
+
+/* Reducir tamaño de las estrellas */
+.rating-stars-container {
+  text-align: center;
+}
+
+.rating-stars-container .rating-title {
+  font-size: 14px !important;
+  margin: 0 0 8px 0 !important;
+  color: white !important;
+  font-weight: 500 !important;
+}
+
+.rating-stars {
+  display: flex !important;
+  justify-content: center !important;
+  margin-bottom: 5px !important;
+}
+
+.star-wrapper {
+  padding: 2px !important;
+}
+
+.star-icon {
+  font-size: 24px !important; /* Reducido de 36px */
+  margin: 0 2px !important; /* Reducido de 4px */
+  cursor: pointer !important;
+}
+
+.rating-value {
+  font-size: 13px !important;
+  margin: 5px 0 0 0 !important;
+  color: #FFD700 !important;
+}
+
+/* Para asegurarse de que el textarea tenga suficiente espacio */
+.custom-alert-resena textarea {
+  min-height: 100px !important;
+  margin-bottom: 10px !important;
+}
+/* Estilos mejorados para centrar correctamente los botones */
+.custom-alert-resena .alert-button-group {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  padding: 15px !important;
+}
+
+.custom-alert-resena .alert-button {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  min-width: 120px !important;
+  margin: 0 10px !important;
+  text-align: center !important;
+  padding: 0 16px !important;
+}
+
+.custom-alert-resena .alert-button-inner {
+  justify-content: center !important;
+  width: 100% !important;
+  text-align: center !important;
+}
+
+/* Estilos específicos para el botón de cancelar */
+.custom-alert-resena .alert-button.cancel-button {
+  padding: 0 !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+}
+
+.custom-alert-resena .alert-button.cancel-button .alert-button-inner {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  width: 100% !important;
+}
