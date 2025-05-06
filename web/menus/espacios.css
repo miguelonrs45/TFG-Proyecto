@@ -1,0 +1,364 @@
+/* Estilos para el header con logo */
+.logo-title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .logo-title ion-icon {
+    font-size: 24px;
+    margin-right: 8px;
+    color: white;
+  }
+  
+  .logo-title span {
+    font-weight: 600;
+    font-size: 18px;
+    letter-spacing: 0.5px;
+  }
+  
+  /* Contenedor principal */
+  .espacios-container {
+    padding: 16px;
+    max-width: 1200px;
+    margin: 0 auto;
+    background-color: #f5f7fa;
+    min-height: 100%;
+  }
+  
+  /* Estilos para las tarjetas de ubicación */
+  .ubicacion-card {
+    margin-bottom: 12px;
+    cursor: pointer;
+    border-radius: 12px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    background: linear-gradient(135deg, var(--ion-color-primary), var(--ion-color-primary-shade));
+  }
+  
+  .ubicacion-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  }
+  
+  .ubicacion-header {
+    --background: transparent;
+    --color: white;
+  }
+  
+  .ubicacion-header ion-icon {
+    color: white;
+    font-size: 20px;
+  }
+  
+  .ubicacion-header h2 {
+    color: white;
+    font-weight: 600;
+    font-size: 18px;
+    margin: 0;
+  }
+  
+  .ubicacion-header p {
+    color: rgba(255, 255, 255, 0.8);
+    margin: 4px 0 0 0;
+    font-size: 14px;
+  }
+  
+  .expand-icon {
+    font-size: 18px;
+    transition: transform 0.3s ease;
+  }
+  
+  /* Animación para el icono de expandir/colapsar */
+  .ubicacion-card:hover .expand-icon {
+    transform: translateY(2px);
+  }
+  
+  /* Lista de espacios */
+  .espacios-list {
+    padding: 8px 0;
+    animation: fadeIn 0.3s ease-in-out;
+  }
+  
+  .espacio-card {
+    margin-bottom: 16px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    background: linear-gradient(to bottom, rgba(60, 64, 160, 0.04), rgba(77, 124, 234, 0.08));
+    border: 1px solid rgba(77, 124, 234, 0.15);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .espacio-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+    border-color: rgba(77, 124, 234, 0.3);
+  }
+  
+  /* Contenedor de la imagen */
+  .espacio-imagen-container {
+    position: relative;
+    height: 180px;
+    overflow: hidden;
+  }
+  
+  .espacio-imagen {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+  
+  /* Capa de overlay sobre la imagen */
+  .espacio-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0) 50%);
+  }
+  
+  /* Badge de calificación */
+  .calificacion-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: var(--ion-color-primary);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    font-weight: 700;
+    font-size: 14px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+  
+  .calificacion-badge ion-icon {
+    margin-right: 4px;
+    color: var(--ion-color-warning);
+  }
+  
+  /* Efecto hover para la imagen */
+  .espacio-card:hover .espacio-imagen {
+    transform: scale(1.05);
+  }
+  
+  /* Encabezado de la tarjeta */
+  .espacio-card ion-card-header {
+    padding: 12px 16px 0;
+    background-color: rgba(255, 255, 255, 0.7);
+  }
+  
+  .espacio-card ion-card-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #2A4FA8;
+    margin-bottom: 4px;
+    cursor: pointer;
+  }
+  
+  .espacio-card ion-card-title:hover {
+    color: var(--ion-color-primary);
+  }
+  
+  /* Contenido de la tarjeta */
+  .espacio-card ion-card-content {
+    padding: 0 16px 16px;
+    background-color: rgba(255, 255, 255, 0.7);
+  }
+  
+  .espacio-info .espacio-direccion {
+    display: flex;
+    align-items: center;
+    color: #5d6b98;
+    font-size: 14px;
+    margin: 8px 0;
+    font-weight: 500;
+  }
+  
+  .espacio-info .espacio-direccion ion-icon {
+    margin-right: 6px;
+    font-size: 16px;
+    color: #5d6b98;
+  }
+  
+  .espacio-info .espacio-descripcion {
+    color: #333;
+    font-size: 14px;
+    line-height: 1.5;
+    margin: 12px 0;
+    font-weight: 500;
+  }
+  
+  /* Calificación con estrellas */
+  .espacio-info .espacio-calificacion {
+    display: flex;
+    align-items: center;
+    margin: 12px 0;
+  }
+  
+  .espacio-info .espacio-calificacion .star-icon {
+    color: var(--ion-color-warning);
+    font-size: 18px;
+    margin-right: 2px;
+  }
+  
+  .espacio-info .espacio-calificacion .calificacion-texto {
+    color: #5d6b98;
+    font-size: 14px;
+    margin-left: 4px;
+    font-weight: 500;
+  }
+  
+  /* Detalles adicionales */
+  .espacio-info .espacio-detalles {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin: 12px 0;
+    background-color: rgba(235, 238, 245, 0.7);
+    border-radius: 8px;
+    padding: 10px;
+  }
+  
+  .espacio-info .espacio-detalles .detalle-item {
+    display: flex;
+    align-items: center;
+  }
+  
+  .espacio-info .espacio-detalles .detalle-item ion-icon {
+    color: var(--ion-color-primary);
+    font-size: 18px;
+    margin-right: 6px;
+  }
+  
+  .espacio-info .espacio-detalles .detalle-item span {
+    color: #333;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  
+  /* Servicios disponibles */
+  .espacio-info .espacio-servicios {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 16px 0;
+  }
+  
+  .espacio-info .espacio-servicios ion-chip {
+    margin: 0;
+    height: 28px;
+    --background: rgba(77, 124, 234, 0.1);
+    --color: #2A4FA8;
+  }
+  
+  .espacio-info .espacio-servicios ion-chip ion-icon {
+    font-size: 16px;
+  }
+  
+  .espacio-info .espacio-servicios ion-chip ion-label {
+    font-size: 12px;
+    font-weight: 500;
+  }
+  
+  /* Botón de reserva */
+  .espacio-info .reservar-btn {
+    margin-top: 16px;
+    --border-radius: 10px;
+    font-weight: 600;
+    height: 44px;
+    --background: #2A4FA8;
+    --box-shadow: 0 4px 8px rgba(42, 79, 168, 0.2);
+  }
+  
+  .espacio-info .reservar-btn ion-icon {
+    margin-right: 4px;
+  }
+  
+  .espacio-info .reservar-btn:hover {
+    --background: #3a5db2;
+    --box-shadow: 0 6px 12px rgba(42, 79, 168, 0.3);
+  }
+  
+  /* Mensaje cuando no hay espacios */
+  .no-espacios {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 32px 16px;
+  }
+  
+  .no-espacios ion-card {
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+  }
+  
+  .no-espacios ion-card-content {
+    padding: 32px 16px;
+  }
+  
+  .no-espacios ion-card-content ion-icon {
+    font-size: 48px;
+    color: var(--ion-color-medium);
+    margin-bottom: 16px;
+  }
+  
+  .no-espacios ion-card-content h2 {
+    font-size: 18px;
+    color: var(--ion-color-dark);
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  
+  .no-espacios ion-card-content p {
+    color: var(--ion-color-medium);
+    font-size: 14px;
+  }
+  
+  /* Animaciones */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Media queries para pantallas medianas y grandes */
+  @media (min-width: 768px) {
+    .espacios-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 16px;
+    }
+  
+    .espacio-card {
+      margin-bottom: 0;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+  
+    .espacio-card ion-card-content {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+    }
+  
+    .espacio-card .espacio-info {
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+  
+    .reservar-btn {
+      margin-top: auto !important;
+    }
+  }

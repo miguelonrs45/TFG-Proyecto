@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Espacios - CoWorkGo</title>
+  <!-- Ionic Core CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ionic/core/css/ionic.bundle.css">
+  <!-- Custom styles -->
+  <link rel="stylesheet" href="espacios.css">
+</head>
+<body>
+  <ion-app>
+    <ion-header>
+      <ion-toolbar color="primary">
+        <ion-buttons slot="start">
+          <ion-back-button default-href="/web/pantalla_Inicio/inicio.html"></ion-back-button>
+        </ion-buttons>
+        <ion-title>
+          <div class="logo-title">
+            <ion-icon name="business-outline"></ion-icon>
+            <span>CoWorkGo</span>
+          </div>
+        </ion-title>
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-content>
+      <div class="espacios-container">
+        <!-- Contenido de espacios se generará dinámicamente con JavaScript -->
+        <div id="ubicaciones-container">
+          <!-- Aquí se insertarán las ubicaciones y espacios -->
+        </div>
+
+        <!-- Mensaje cuando no hay espacios disponibles -->
+        <div id="no-espacios" class="no-espacios" style="display: none;">
+          <ion-card>
+            <ion-card-content class="ion-text-center">
+              <ion-icon name="business-outline" size="large"></ion-icon>
+              <h2>No hay espacios disponibles</h2>
+              <p>No encontramos espacios de trabajo disponibles en este momento</p>
+            </ion-card-content>
+          </ion-card>
+        </div>
+      </div>
+    </ion-content>
+  </ion-app>
+
+  <!-- Ionic Core JS -->
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.esm.js"></script>
+  <script nomodule src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.js"></script>
+  
+  <!-- Ionicons -->
+  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+  
+  <!-- Custom JavaScript -->
+  <script src="espacios.js"></script>
+</body>
+</html>
