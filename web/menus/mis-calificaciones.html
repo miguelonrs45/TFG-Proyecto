@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mis Calificaciones - CoWorkGo</title>
+  <!-- Ionic Core CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ionic/core/css/ionic.bundle.css">
+  <!-- Custom styles -->
+  <link rel="stylesheet" href="mis-calificaciones.css">
+</head>
+<body>
+  <ion-app>
+    <ion-header>
+      <ion-toolbar color="primary">
+        <ion-buttons slot="start">
+          <ion-back-button default-href="/web/pantalla_Inicio/inicio.html"></ion-back-button>
+        </ion-buttons>
+        <ion-title>Mis Calificaciones</ion-title>
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-content>
+      <ion-refresher slot="fixed" id="refresher">
+        <ion-refresher-content></ion-refresher-content>
+      </ion-refresher>
+
+      <!-- Barra de filtrado mejorada con animación -->
+      <div class="filter-bar">
+        <ion-searchbar
+          placeholder="Buscar en mis reseñas"
+          id="searchbar"
+          animated
+          mode="md"
+          show-cancel-button="focus">
+        </ion-searchbar>
+
+        <div class="filter-options">
+          <ion-segment id="filter-segment" value="todas" mode="md">
+            <ion-segment-button value="todas">
+              <ion-icon name="grid-outline"></ion-icon>
+              <ion-label>Todas</ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="publicas">
+              <ion-icon name="eye-outline"></ion-icon>
+              <ion-label>Públicas</ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="privadas">
+              <ion-icon name="eye-off-outline"></ion-icon>
+              <ion-label>Privadas</ion-label>
+            </ion-segment-button>
+          </ion-segment>
+
+          <ion-select
+            id="order-select"
+            interface="popover"
+            mode="md"
+            placeholder="Ordenar por"
+            value="fecha-reciente"
+            class="orden-select">
+            <ion-select-option value="fecha-reciente">
+              <ion-icon name="time-outline"></ion-icon> Más recientes
+            </ion-select-option>
+            <ion-select-option value="fecha-antigua">
+              <ion-icon name="hourglass-outline"></ion-icon> Más antiguas
+            </ion-select-option>
+            <ion-select-option value="calificacion-alta">
+              <ion-icon name="trending-up-outline"></ion-icon> Mayor puntuación
+            </ion-select-option>
+            <ion-select-option value="calificacion-baja">
+              <ion-icon name="trending-down-outline"></ion-icon> Menor puntuación
+            </ion-select-option>
+            <ion-select-option value="nombre-az">
+              <ion-icon name="text-outline"></ion-icon> Nombre (A-Z)
+            </ion-select-option>
+            <ion-select-option value="nombre-za">
+              <ion-icon name="text-outline"></ion-icon> Nombre (Z-A)
+            </ion-select-option>
+          </ion-select>
+        </div>
+      </div>
+
+      <div class="ion-padding">
+        <!-- Resumen de estadísticas mejorado -->
+        <ion-card class="stats-card">
+          <ion-card-header>
+            <ion-card-title>
+              <ion-icon name="stats-chart-outline"></ion-icon>
+              Mis Estadísticas
+            </ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <div class="stats-container">
+              <div class="stat-item">
+                <div class="stat-value" id="stats-total">0</div>
+                <div class="stat-label">Reseñas</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-value" id="stats-media">0.0</div>
+                <div class="stat-label">Calificación Media</div>
+              </div>
+              <div class="stat-item" id="stats-mejor-container">
+                <div class="stat-value best-rated" id="stats-mejor">Ninguno</div>
+                <div class="stat-label">Mejor Valorado</div>
+              </div>
+            </div>
+          </ion-card-content>
+        </ion-card>
+
+        <!-- Reseñas pendientes con contador -->
+        <div id="pending-reviews-container" style="display: none;">
+          <ion-card>
+            <ion-card-header>
+              <ion-card-title>
+                <ion-icon name="time-outline"></ion-icon>
+                Pendientes de calificar
+                <ion-badge color="warning" id="pending-count">0</ion-badge>
+              </ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+              <ion-list lines="none" id="pending-list">
+                <!-- Las reseñas pendientes se cargarán aquí dinámicamente -->
+              </ion-list>
+            </ion-card-content>
+          </ion-card>
+        </div>
+
+        <!-- Lista de reseñas con efectos mejorados -->
+        <div class="resenas-container" id="resenas-container">
+          <!-- Las reseñas se cargarán aquí dinámicamente -->
+        </div>
+
+        <!-- Mensaje si no hay reseñas con ilustración -->
+        <div class="empty-state" id="empty-state" style="display: none;">
+          <ion-card>
+            <ion-card-header>
+              <ion-card-title>
+                <ion-icon name="search-outline"></ion-icon>
+                No hay reseñas
+              </ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+              <div class="empty-icon">
+                <ion-icon name="document-text-outline"></ion-icon>
+              </div>
+              <p>Aún no has realizado ninguna reseña o no se encontraron resultados con los filtros actuales.</p>
+              <ion-button expand="block" fill="solid" color="primary" class="mt-3" id="reset-filters">
+                <ion-icon name="refresh-outline" slot="start"></ion-icon>
+                Restablecer filtros
+              </ion-button>
+            </ion-card-content>
+          </ion-card>
+        </div>
+      </div>
+    </ion-content>
+  </ion-app>
+
+  <!-- Ionic Core JS -->
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.esm.js"></script>
+  <script nomodule src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.js"></script>
+  
+  <!-- Ionicons -->
+  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+  
+  <!-- Custom JavaScript -->
+  <script src="mis-calificaciones.js"></script>
+</body>
+</html>

@@ -1,0 +1,620 @@
+/* Estilo para el fondo de la página de calificaciones */
+ion-content {
+    --background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+                 url('/web/assets/images/imagenFondo_Inicio.png') no-repeat center center / cover;
+  }
+  
+  /* Estilo para todas las tarjetas - base común */
+  ion-card {
+    margin: 12px 0;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    overflow: hidden;
+  
+    /* Estilo para fondo de tarjeta con efecto de cristal (glassmorphism) */
+    background: linear-gradient(135deg,
+                rgba(255, 255, 255, 0.2) 0%,
+                rgba(255, 255, 255, 0.1) 100%);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+  
+  ion-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+  }
+  
+  /* Estilo para encabezados de tarjetas */
+  ion-card-header {
+    background: rgba(var(--ion-color-primary-rgb), 0.2);
+    padding: 12px 16px;
+  }
+  
+  ion-card-header ion-card-title {
+    color: white;
+    font-size: 1.3rem;
+    font-weight: 700;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    letter-spacing: 0.5px;
+  }
+  
+  /* Estilo para contenido de tarjetas */
+  ion-card-content {
+    padding: 16px;
+    color: rgba(255, 255, 255, 0.95);
+    font-weight: 400;
+  }
+  
+  /* Estadísticas mejoradas */
+  .stats-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin: 10px 0;
+  }
+  
+  .stats-container .stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 12px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+    min-width: 90px;
+    transition: transform 0.2s ease, background 0.2s ease;
+  }
+  
+  .stats-container .stat-item:hover {
+    transform: scale(1.05);
+    background: rgba(var(--ion-color-primary-rgb), 0.3);
+  }
+  
+  .stats-container .stat-item .stat-value {
+    font-size: 28px;
+    font-weight: bold;
+    color: white;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    margin-bottom: 5px;
+  }
+  
+  .stats-container .stat-item .stat-value.best-rated {
+    font-size: 18px;
+    max-width: 120px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-decoration: underline;
+    cursor: pointer;
+    color: var(--ion-color-secondary);
+  }
+  
+  .stats-container .stat-item .stat-value.best-rated:hover {
+    color: var(--ion-color-secondary-shade);
+  }
+  
+  .stats-container .stat-item .stat-label {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.8);
+    font-weight: 500;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  }
+  
+  /* Barra de filtros mejorada */
+  .filter-bar {
+    padding: 15px;
+    margin-bottom: 15px;
+    background: linear-gradient(to right,
+                rgba(var(--ion-color-primary-rgb), 0.3),
+                rgba(var(--ion-color-secondary-rgb), 0.3));
+    backdrop-filter: blur(15px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+  }
+  
+  .filter-bar ion-searchbar {
+    --background: rgba(255, 255, 255, 0.15);
+    --color: white;
+    --placeholder-color: rgba(255, 255, 255, 0.7);
+    --icon-color: rgba(255, 255, 255, 0.7);
+    --border-radius: 10px;
+    --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    margin-bottom: 12px;
+  }
+  
+  .filter-bar .filter-options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .filter-bar .filter-options ion-segment {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    margin-bottom: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    padding: 3px;
+  }
+  
+  .filter-bar .filter-options ion-segment ion-segment-button {
+    --color: rgba(255, 255, 255, 0.7);
+    --color-checked: white;
+    --indicator-color: var(--ion-color-primary);
+    --background-checked: rgba(var(--ion-color-primary-rgb), 0.3);
+    --border-radius: 8px;
+    min-height: 40px;
+    text-transform: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+  
+  .filter-bar .filter-options ion-segment ion-segment-button:hover {
+    --background-hover: rgba(var(--ion-color-primary-rgb), 0.1);
+  }
+  
+  .filter-bar .filter-options .orden-select {
+    --background: rgba(0, 0, 0, 0.2);
+    --color: white;
+    --placeholder-color: rgba(255, 255, 255, 0.7);
+    --border-radius: 10px;
+    --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    padding: 6px 12px;
+    min-width: 150px;
+  }
+  
+  /* Media query para pantallas medianas y grandes */
+  @media (min-width: 576px) {
+    .filter-options {
+      flex-direction: row !important;
+      justify-content: space-between;
+      align-items: center;
+    }
+  
+    .filter-options ion-segment {
+      flex: 1;
+      margin-right: 10px;
+    }
+  
+    .filter-options .orden-select {
+      min-width: 200px;
+    }
+  }
+  
+  /* Reseñas pendientes */
+  #pending-reviews-container ion-card {
+    background: linear-gradient(135deg,
+                rgba(var(--ion-color-warning-rgb), 0.2),
+                rgba(255, 255, 255, 0.1));
+  }
+  
+  #pending-reviews-container ion-item {
+    --background: transparent;
+    --border-color: rgba(255, 255, 255, 0.1);
+    --padding-start: 8px;
+    --padding-end: 8px;
+    --padding-top: 8px;
+    --padding-bottom: 8px;
+    margin-bottom: 8px;
+    border-radius: 8px;
+    transition: background 0.2s ease;
+  }
+  
+  #pending-reviews-container ion-item:hover {
+    --background: rgba(255, 255, 255, 0.05);
+  }
+  
+  #pending-reviews-container ion-item ion-label h2 {
+    font-weight: 600;
+    color: white;
+    margin-bottom: 4px;
+  }
+  
+  #pending-reviews-container ion-item ion-label p {
+    color: rgba(255, 255, 255, 0.7);
+  }
+  
+  #pending-reviews-container ion-item ion-button {
+    --box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  #pending-reviews-container ion-item ion-thumbnail {
+    --border-radius: 8px;
+    width: 60px;
+    height: 60px;
+    margin-right: 12px;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+  }
+  
+  #pending-reviews-container ion-item ion-thumbnail img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+  }
+  
+  /* Contenedor de reseñas */
+  .resenas-container {
+    width: 100%;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .resena-card {
+    margin-bottom: 0;
+    border-radius: 18px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+    background: linear-gradient(135deg,
+                rgba(255, 255, 255, 0.15) 0%,
+                rgba(255, 255, 255, 0.05) 100%);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .resena-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.35);
+  }
+  
+  .resena-header {
+    display: flex;
+    padding: 16px;
+    background: rgba(var(--ion-color-primary-rgb), 0.15);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    width: 100%;
+  }
+  
+  .espacio-imagen {
+    width: 70px;
+    height: 70px;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-right: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+  }
+  
+  .espacio-imagen img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+  
+  .espacio-imagen:hover img {
+    transform: scale(1.1);
+  }
+  
+  .resena-info {
+    flex-grow: 1;
+  }
+  
+  .espacio-nombre {
+    font-size: 20px;
+    font-weight: 700;
+    margin: 0 0 6px 0;
+    color: white;
+    cursor: pointer;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    transition: color 0.2s ease;
+    letter-spacing: 0.3px;
+  }
+  
+  .espacio-nombre:hover {
+    color: var(--ion-color-secondary);
+  }
+  
+  .calificacion {
+    display: flex;
+    margin-bottom: 8px;
+  }
+  
+  .calificacion ion-icon {
+    font-size: 20px;
+    color: var(--ion-color-warning);
+    filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.5));
+    margin-right: 2px;
+  }
+  
+  .calificacion .calificacion-texto {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.9);
+    margin-left: 6px;
+    font-weight: 600;
+  }
+  
+  .fechas {
+    display: flex;
+    flex-direction: column;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.8);
+    margin-top: 6px;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    gap: 4px;
+  }
+  
+  .fecha-visita, .fecha-resena {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+    padding: 2px 6px;
+    display: inline-block;
+    max-width: fit-content;
+  }
+  
+  .visibilidad-badge {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 8px 12px;
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.2);
+    transition: background 0.2s ease, transform 0.2s ease;
+    min-width: 60px;
+  }
+  
+  .visibilidad-badge:hover {
+    background-color: rgba(var(--ion-color-primary-rgb), 0.3);
+    transform: scale(1.05);
+  }
+  
+  .visibilidad-badge ion-icon {
+    font-size: 22px;
+    color: white;
+    filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.5));
+    margin-bottom: 4px;
+  }
+  
+  .visibilidad-badge .visibilidad-texto {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.9);
+    white-space: nowrap;
+    font-weight: 600;
+  }
+  
+  .resena-contenido {
+    padding: 18px;
+    color: white;
+    font-size: 15px;
+    line-height: 1.6;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+    background: rgba(0, 0, 0, 0.1);
+  }
+  
+  .resena-acciones {
+    display: flex;
+    justify-content: space-around;
+    padding: 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    width: 100%;
+    background: rgba(0, 0, 0, 0.2);
+  }
+  
+  .resena-acciones ion-button {
+    margin: 0;
+    width: 50%;
+    --padding-start: 0;
+    --padding-end: 0;
+    height: 50px;
+    --color: white;
+    --color-activated: white;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+    position: relative;
+  }
+  
+  .resena-acciones ion-button:first-child {
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .resena-acciones ion-button:hover {
+    --background: rgba(var(--ion-color-primary-rgb), 0.3);
+    background-color: rgba(var(--ion-color-primary-rgb), 0.3);
+    box-shadow: 0 0 10px rgba(var(--ion-color-primary-rgb), 0.5);
+  }
+  
+  .resena-acciones ion-button[color="danger"]:hover {
+    --background: rgba(var(--ion-color-danger-rgb), 0.3);
+    background-color: rgba(var(--ion-color-danger-rgb), 0.3);
+    transform: scale(1.05);
+    box-shadow: 0 0 10px rgba(var(--ion-color-danger-rgb), 0.5);
+  }
+  
+  .resena-acciones ion-button ion-icon {
+    margin-right: 6px;
+    font-size: 18px;
+    transition: transform 0.3s ease;
+  }
+  
+  .resena-acciones ion-button:hover ion-icon {
+    transform: scale(1.2);
+  }
+  
+  .resena-acciones ion-button:active {
+    transform: scale(0.95);
+  }
+  
+  /* Estado vacío */
+  .empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 30px 0;
+    text-align: center;
+  }
+  
+  .empty-state ion-card {
+    width: 100%;
+    max-width: 500px;
+    background: linear-gradient(135deg,
+                rgba(0, 0, 0, 0.2),
+                rgba(var(--ion-color-medium-rgb), 0.1));
+    padding: 20px 0;
+  }
+  
+  .empty-state .empty-icon {
+    margin: 10px 0 20px;
+  }
+  
+  .empty-state .empty-icon ion-icon {
+    font-size: 64px;
+    color: rgba(255, 255, 255, 0.5);
+  }
+  
+  .empty-state ion-card-content p {
+    font-size: 16px;
+    line-height: 1.6;
+  }
+  
+  .empty-state ion-card-content .mt-3 {
+    margin-top: 16px;
+  }
+  
+  /* Clases para el diálogo de edición */
+  .custom-alert-resena {
+    --backdrop-opacity: 0.8;
+  }
+  
+  .custom-alert-resena .alert-wrapper {
+    border-radius: 16px;
+    background: linear-gradient(135deg,
+                rgba(40, 40, 40, 0.95),
+                rgba(30, 30, 30, 0.95));
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+    max-width: 400px;
+    width: 90%;
+  }
+  
+  .custom-alert-resena .alert-head {
+    padding-bottom: 10px;
+  }
+  
+  .custom-alert-resena .alert-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: white;
+  }
+  
+  .custom-alert-resena .alert-sub-title {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--ion-color-primary);
+  }
+  
+  .custom-alert-resena .alert-input-wrapper {
+    padding: 10px 0;
+  }
+  
+  .custom-alert-resena textarea {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 12px;
+    color: white;
+    font-size: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    height: 100px;
+  }
+  
+  .custom-alert-resena textarea:focus {
+    border-color: var(--ion-color-primary);
+    box-shadow: 0 0 0 2px rgba(var(--ion-color-primary-rgb), 0.3);
+  }
+  
+  .stars-custom-container {
+    padding: 15px 0;
+  }
+  
+  .stars-custom-container .rating-title {
+    color: white;
+    font-size: 16px;
+    margin-bottom: 10px;
+    text-align: center;
+  }
+  
+  .stars-custom-container .rating-stars {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .stars-custom-container .star-wrapper {
+    cursor: pointer;
+  }
+  
+  .stars-custom-container .star-icon {
+    font-size: 32px;
+    color: var(--ion-color-warning);
+    filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.3));
+    transition: transform 0.2s ease, filter 0.2s ease;
+  }
+  
+  .stars-custom-container .star-icon.star-hover, 
+  .stars-custom-container .star-icon:hover {
+    transform: scale(1.2);
+    filter: drop-shadow(0 0 8px rgba(var(--ion-color-warning-rgb), 0.7));
+  }
+  
+  .stars-custom-container .rating-value {
+    color: white;
+    font-size: 16px;
+    text-align: center;
+    font-weight: 600;
+  }
+  
+  .custom-alert-resena .alert-button-group {
+    padding: 10px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .custom-alert-resena .alert-button {
+    border-radius: 8px;
+  }
+  
+  .custom-alert-resena .cancel-button {
+    color: var(--ion-color-medium);
+  }
+  
+  .custom-alert-resena .cancel-button:hover {
+    background: rgba(var(--ion-color-medium-rgb), 0.2);
+  }
+  
+  .custom-alert-resena .save-button {
+    background: var(--ion-color-primary);
+    color: white;
+    font-weight: 600;
+  }
+  
+  .custom-alert-resena .save-button:hover {
+    background: var(--ion-color-primary-shade);
+  }
+  
+  /* Animaciones para la carga */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  .resenas-container .resena-card {
+    animation: fadeIn 0.5s ease forwards;
+  }
+  
+  /* Aplicar retrasos diferentes a cada tarjeta */
+  .resenas-container .resena-card:nth-child(1) { animation-delay: 0.1s; }
+  .resenas-container .resena-card:nth-child(2) { animation-delay: 0.2s; }
+  .resenas-container .resena-card:nth-child(3) { animation-delay: 0.3s; }
+  .resenas-container .resena-card:nth-child(4) { animation-delay: 0.4s; }
+  .resenas-container .resena-card:nth-child(5) { animation-delay: 0.5s; }
+  .resenas-container .resena-card:nth-child(6) { animation-delay: 0.6s; }
+  .resenas-container .resena-card:nth-child(7) { animation-delay: 0.7s; }
+  .resenas-container .resena-card:nth-child(8) { animation-delay: 0.8s; }
+  .resenas-container .resena-card:nth-child(9) { animation-delay: 0.9s; }
+  .resenas-container .resena-card:nth-child(10) { animation-delay: 1s; }
