@@ -4,9 +4,11 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonCard,
   IonCardHeader, IonCardTitle, IonCardContent, IonInput,
-  IonList, IonItem, IonLabel, IonBackButton, IonButtons, IonToast } from '@ionic/angular/standalone';
+  IonList, IonItem, IonLabel, IonBackButton, IonButtons, IonToast, IonIcon } from '@ionic/angular/standalone';
 import { AlertController } from '@ionic/angular/standalone';
 import { AuthService } from '../../core/services/auth.service';
+import { addIcons } from 'ionicons';
+import { logoGoogle } from 'ionicons/icons';
 
 @Component({
   selector: 'app-login',
@@ -31,7 +33,8 @@ import { AuthService } from '../../core/services/auth.service';
     IonLabel,
     IonBackButton,
     IonButtons,
-    IonToast
+    IonToast,
+    IonIcon
   ]
 })
 export class LoginComponent {
@@ -41,12 +44,15 @@ export class LoginComponent {
   errorMessage: string = '';
   showSuccess: boolean = false;
   successMessage: string = '';
+  isLoading: boolean = false;
 
   constructor(
     private router: Router,
     private authService: AuthService,
     private alertController: AlertController
-  ) {}
+  ) {
+    addIcons({ logoGoogle });
+  }
 
   async login() {
     try {
@@ -61,6 +67,19 @@ export class LoginComponent {
     } catch (error: any) {
       console.error('Error al iniciar sesión:', error);
       this.showErrorMessage(error.message || 'Error al iniciar sesión. Verifica tus credenciales');
+    }
+  }
+
+  // Nuevo método para login con Google
+  async loginWithGoogle() {
+    try {
+      this.isLoading = true;
+      await this.authService.signInWithGoogle();
+      // La redirección la maneja Google y luego el componente AuthCallbackComponent
+    } catch (error: any) {
+      this.isLoading = false;
+      console.error('Error al iniciar sesión con Google:', error);
+      this.showErrorMessage(error.message || 'Error al iniciar sesión con Google');
     }
   }
 

@@ -135,3 +135,53 @@ ion-button {
   opacity: 0.8;
   text-decoration: underline;
 }
+
+/* Nuevos estilos para login con Google */
+.social-login-divider {
+  position: relative;
+  text-align: center;
+  margin: 20px 0;
+
+  &::before, &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 40%;
+    height: 1px;
+    background-color: rgba(255, 255, 255, 0.3);
+  }
+
+  &::before {
+    left: 0;
+  }
+
+  &::after {
+    right: 0;
+  }
+
+  span {
+    background: rgba(77, 124, 234, 0.9);
+    padding: 0 15px;
+    position: relative;
+    color: white;
+    font-size: 14px;
+  }
+}
+
+.google-btn {
+  --background: white;
+  --color: #5f6368;
+  --border-radius: 8px;
+  --box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  font-weight: 500;
+  margin-top: 10px;
+
+  &:hover {
+    --background: #f8f9fa;
+  }
+
+  ion-icon {
+    color: #4285F4;
+    font-size: 20px;
+  }
+}

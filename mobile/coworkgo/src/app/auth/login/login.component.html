@@ -33,6 +33,15 @@
         Iniciar Sesión
       </ion-button>
 
+      <div class="social-login-divider">
+        <span>o</span>
+      </div>
+
+      <ion-button expand="block" (click)="loginWithGoogle()" class="google-btn">
+        <ion-icon name="logo-google" slot="start"></ion-icon>
+        Iniciar sesión con Google
+      </ion-button>
+
       <p class="ion-text-center">
         ¿No tienes una cuenta?
         <a (click)="goToRegister()">Regístrate aquí</a>
