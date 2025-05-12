@@ -512,3 +512,82 @@ ion-button:active {
   align-items: center !important;
   width: 100% !important;
 }
+/* Corrección para iconos estirados en el dashboard */
+ion-icon {
+  /* Forzar proporción 1:1 en todos los iconos */
+  aspect-ratio: 1 / 1 !important;
+  /* Asegurar tamaño adecuado */
+  width: 1em !important;
+  height: 1em !important;
+  /* Escala dinámica basada en el tamaño de fuente */
+  font-size: inherit !important;
+}
+
+/* Específicamente para los iconos grandes en dashboard */
+.dashboard-card .icon-container ion-icon {
+  /* Tamaño fijo para iconos del dashboard */
+  font-size: 30px !important;
+  /* Evitar estiramiento */
+  width: 30px !important;
+  height: 30px !important;
+  /* Mejorar renderizado */
+  transform: translateZ(0);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Arreglo para el título de la aplicación */
+.logo-title .logo-container {
+  /* Ajustar espaciado y alineación */
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  /* Limitar ancho para evitar desbordamiento */
+  max-width: 100% !important;
+  overflow: hidden !important;
+}
+
+.logo-title .logo-container span {
+  /* Evitar que el texto se desborde */
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  /* Ajustar tamaño de fuente */
+  font-size: 1.2rem !important;
+}
+/* Solución específica para la tarjeta de pendientes de calificar */
+.pending-reviews ion-card {
+  /* Reemplazar el background actual con valores estáticos */
+  background: linear-gradient(135deg,
+              rgba(255, 196, 9, 0.2),
+              rgba(255, 255, 255, 0.1)) !important;
+  /* Asegurar que el efecto de cristal funcione en móviles */
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+  /* Bordes más visibles */
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Asegurar visibilidad del contenido */
+.pending-reviews ion-card-content,
+.pending-reviews ion-card-header,
+.pending-reviews ion-card-title {
+  color: white !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Asegurar que los ítems dentro de la lista sean visibles */
+.pending-reviews ion-item {
+  --background: rgba(0, 0, 0, 0.3) !important;
+  margin-bottom: 8px !important;
+  border-radius: 8px !important;
+}
+
+/* Mejorar contraste de textos */
+.pending-reviews ion-item ion-label h2 {
+  color: white !important;
+  font-weight: bold !important;
+}
+
+.pending-reviews ion-item ion-label p {
+  color: rgba(255, 255, 255, 0.9) !important;
+}
