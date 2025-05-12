@@ -31,6 +31,22 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/mis-calificaciones/mis-calificaciones.component').then(m => m.MisCalificacionesComponent)
   },
   {
+    path: 'espacios',
+    loadComponent: () => import('./pages/espacios/espacios.component').then(m => m.EspaciosComponent)
+  },
+  {
+    path: 'auth/callback',
+    loadComponent: () => import('./auth/auth-callback/auth-callback.component').then(m => m.AuthCallbackComponent)
+  },
+  {
+    path: 'nueva-reserva',
+    loadComponent: () => import('./pages/nueva-reserva/nueva-reserva.component').then(m => m.NuevaReservaComponent)
+  },
+  {
+    path: 'mis-reservas',
+    loadComponent: () => import('./pages/mis-reservas/mis-reservas.component').then(m => m.MisReservasPage)
+  },
+  {
     path: '**',
     redirectTo: 'home'
   }
