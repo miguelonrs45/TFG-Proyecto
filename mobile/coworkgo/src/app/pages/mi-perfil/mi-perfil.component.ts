@@ -89,7 +89,6 @@ interface Reservation {
   horaInicio: string;
   horaFin: string;
   estado: 'pendiente' | 'confirmada' | 'completada' | 'cancelada';
-  precio: number;
 }
 
 @Component({
@@ -148,7 +147,7 @@ export class MiPerfilComponent implements OnInit {
     telefono: '612345678',
     avatar: 'https://ionicframework.com/docs/img/demos/avatar.svg',
     fechaRegistro: '15/04/2025',
-    username: 'miguelangel_ramos' // Nombre de usuario añadido
+    username: 'miguelangel_ramos'
   };
 
   // Copia para edición
@@ -195,7 +194,6 @@ export class MiPerfilComponent implements OnInit {
       horaInicio: '09:00',
       horaFin: '14:00',
       estado: 'confirmada',
-      precio: 45.50
     },
     {
       id: 'res002',
@@ -204,7 +202,6 @@ export class MiPerfilComponent implements OnInit {
       horaInicio: '15:00',
       horaFin: '17:00',
       estado: 'completada',
-      precio: 25.00
     },
     {
       id: 'res003',
@@ -213,7 +210,6 @@ export class MiPerfilComponent implements OnInit {
       horaInicio: '10:00',
       horaFin: '18:00',
       estado: 'completada',
-      precio: 35.75
     },
     {
       id: 'res004',
@@ -222,7 +218,6 @@ export class MiPerfilComponent implements OnInit {
       horaInicio: '09:00',
       horaFin: '13:00',
       estado: 'cancelada',
-      precio: 40.00
     }
   ];
 
@@ -231,10 +226,6 @@ export class MiPerfilComponent implements OnInit {
     {
       question: '¿Cómo puedo cancelar una reserva?',
       answer: 'Puedes cancelar tu reserva desde la sección "Mis Reservas" hasta 24 horas antes del inicio. Para cancelaciones con menos antelación, contacta con soporte.'
-    },
-    {
-      question: '¿Cómo cambio mi método de pago predeterminado?',
-      answer: 'En la sección "Métodos de Pago", pulsa sobre la tarjeta que deseas establecer como predeterminada y selecciona la opción "Establecer como predeterminada".'
     },
     {
       question: '¿Qué ocurre si llego tarde a mi reserva?',

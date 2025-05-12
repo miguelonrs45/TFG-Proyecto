@@ -79,7 +79,6 @@
   animation: fadeIn 0.3s ease-in-out;
 }
 
-// Tarjeta de cada espacio - ESTILO MEJORADO
 .espacio-card {
   margin-bottom: 16px;
   border-radius: 12px;
@@ -334,7 +333,6 @@
   }
 }
 
-// Media queries para responsive
 @media (min-width: 768px) {
   .espacios-list {
     display: grid;

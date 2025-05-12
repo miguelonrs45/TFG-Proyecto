@@ -29,7 +29,7 @@
         <ion-icon name="camera-outline"></ion-icon>
       </div>
 
-      <!-- Botón alternativo para cambiar foto (versión más explícita) -->
+      <!-- Botón alternativo para cambiar foto  -->
       <ion-button size="small" class="change-photo-btn" (click)="openPhotoOptions()" *ngIf="!editMode">
         <ion-icon name="camera-outline"></ion-icon>
         Cambiar foto
@@ -75,7 +75,7 @@
 
   <!-- Secciones del perfil -->
   <div class="profile-sections">
-    <!-- 1. Sección de Información Personal -->
+    <!-- Sección de Información Personal -->
     <ion-card class="profile-card animate-card">
       <ion-card-header>
         <ion-card-title>
@@ -117,7 +117,7 @@
       </ion-card-content>
     </ion-card>
 
-    <!-- 2. Sección de Seguridad de la Cuenta -->
+    <!-- Sección de Seguridad de la Cuenta -->
     <ion-card class="profile-card animate-card">
       <ion-card-header>
         <ion-card-title>
@@ -152,7 +152,7 @@
       </ion-card-content>
     </ion-card>
 
-    <!-- 3. Preferencias de Notificaciones -->
+    <!-- Preferencias de Notificaciones -->
     <ion-card class="profile-card animate-card">
       <ion-card-header>
         <ion-card-title>
@@ -206,50 +206,7 @@
       </ion-card-content>
     </ion-card>
 
-    <!-- 6. Métodos de Pago -->
-    <ion-card class="profile-card animate-card">
-      <ion-card-header>
-        <ion-card-title>
-          <ion-icon name="card-outline"></ion-icon>
-          Métodos de Pago
-        </ion-card-title>
-      </ion-card-header>
-
-      <ion-card-content>
-        <ion-list lines="full">
-          <ion-item *ngFor="let method of paymentMethods">
-            <ion-icon
-              name="card-outline"
-              slot="start"
-              [style.color]="method.type === 'visa' ? '#1A1F71' : '#EB001B'"
-              [class.default-card]="method.isDefault">
-            </ion-icon>
-            <ion-label>
-              <h3>{{ method.type | titlecase }} •••• {{ method.lastDigits }}</h3>
-              <p>Expira: {{ method.expiryDate }}</p>
-              <ion-badge color="primary" *ngIf="method.isDefault">Predeterminada</ion-badge>
-            </ion-label>
-            <ion-buttons slot="end">
-              <ion-button color="primary" *ngIf="!method.isDefault" (click)="setDefaultPaymentMethod(method.id)">
-                Predeterminar
-              </ion-button>
-              <ion-button color="danger" (click)="removePaymentMethod(method.id)">
-                Eliminar
-              </ion-button>
-            </ion-buttons>
-          </ion-item>
-
-          <ion-item button (click)="addPaymentMethod()">
-            <ion-icon name="add-circle-outline" slot="start"></ion-icon>
-            <ion-label>
-              <h3>Añadir nuevo método de pago</h3>
-            </ion-label>
-          </ion-item>
-        </ion-list>
-      </ion-card-content>
-    </ion-card>
-
-    <!-- 12. Historial Completo -->
+    <!-- Historial Completo -->
     <ion-card class="profile-card animate-card">
       <ion-card-header>
         <ion-card-title>
@@ -264,7 +221,6 @@
             <ion-label>
               <h3>{{ reservation.espacio }}</h3>
               <p>{{ reservation.fecha }} | {{ reservation.horaInicio }} - {{ reservation.horaFin }}</p>
-              <p>€{{ reservation.precio.toFixed(2) }}</p>
             </ion-label>
             <ion-badge
               [color]="reservation.estado === 'confirmada' ? 'success' :
@@ -289,7 +245,7 @@
       </ion-card-content>
     </ion-card>
 
-    <!-- 13. Centro de Ayuda Personalizado -->
+    <!-- Centro de Ayuda Personalizado -->
     <ion-card class="profile-card animate-card">
       <ion-card-header>
         <ion-card-title>

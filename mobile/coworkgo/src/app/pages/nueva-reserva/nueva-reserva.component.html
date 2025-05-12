@@ -1,0 +1,422 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/dashboard" (click)="navigateBack()"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Reservar Espacio</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- Header banner -->
+  <div class="header-container">
+    <h1>Reserva tu espacio de trabajo</h1>
+    <p>Selecciona el tipo de espacio y la fecha deseada</p>
+  </div>
+
+  <div class="booking-container">
+    <!-- Workspace type selector -->
+    <ion-segment [value]="workspaceType" (ionChange)="changeWorkspaceType($event)">
+      <ion-segment-button value="desk">
+        <ion-icon name="desktop-outline"></ion-icon>
+        <ion-label>Escritorio</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="office">
+        <ion-icon name="business-outline"></ion-icon>
+        <ion-label>Oficina</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="meeting">
+        <ion-icon name="people-outline"></ion-icon>
+        <ion-label>Sala de Reuniones</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+
+    <!-- Location button -->
+    <div class="location-container">
+      <ion-item>
+        <ion-label position="stacked">Ubicación</ion-label>
+        <ion-select [(ngModel)]="selectedLocation" interface="popover" (ionChange)="onLocationChange()">
+          <ion-select-option *ngFor="let location of availableLocations" [value]="location.id">
+            {{ location.name }} - {{ location.address }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+    </div>
+
+
+    <!-- Location map modal (shown when toggleLocationMap is called) -->
+    <ion-modal [isOpen]="showLocationMap" (didDismiss)="showLocationMap = false">
+      <ng-template>
+        <ion-header>
+          <ion-toolbar color="primary">
+            <ion-title>Ubicación</ion-title>
+            <ion-buttons slot="end">
+              <ion-button (click)="showLocationMap = false">
+                <ion-icon name="close-outline"></ion-icon>
+              </ion-button>
+            </ion-buttons>
+          </ion-toolbar>
+        </ion-header>
+        <ion-content>
+          <div class="map-container">
+            <!-- En una app real, usarías un componente de mapa como Leaflet o Google Maps -->
+            <div class="map-placeholder">
+              <ion-icon name="map-outline"></ion-icon>
+              <h3>{{ workspaceLocations[workspaceType].address }}</h3>
+              <p>Latitud: {{ workspaceLocations[workspaceType].lat }}</p>
+              <p>Longitud: {{ workspaceLocations[workspaceType].lng }}</p>
+              <ion-button expand="block">
+                <ion-icon name="navigate-outline" slot="start"></ion-icon>
+                Abrir en Google Maps
+              </ion-button>
+            </div>
+          </div>
+        </ion-content>
+      </ng-template>
+    </ion-modal>
+
+    <!-- Selection summary -->
+    <div class="selection-summary" *ngIf="showSelectionSummary">
+      <div class="selection-header">
+        <ion-icon [name]="workspaceType === 'desk' ? 'desktop-outline' :
+                         workspaceType === 'office' ? 'business-outline' : 'people-outline'"></ion-icon>
+        <span>{{ workspaceType === 'desk' ? 'Escritorios' :
+               workspaceType === 'office' ? 'Oficinas' : 'Salas' }} seleccionados:
+          <span class="selected-count">{{ selectedCount }}</span>
+        </span>
+      </div>
+      <div class="selection-details">
+        <span *ngFor="let id of selectedWorkspaces"
+              [class]="workspaceType === 'desk' ? 'desk-tag' :
+                      workspaceType === 'office' ? 'office-tag' : 'meeting-tag'">
+          {{ id }}
+        </span>
+      </div>
+    </div>
+
+    <!-- Floor plan -->
+    <div class="floor-plan">
+      <!-- Desk grid -->
+      <div *ngIf="workspaceType === 'desk'" class="desk-grid">
+        <div *ngFor="let workspace of workspaces"
+             class="workspace-item"
+             [class.occupied]="workspace.occupied"
+             [class.selected]="isWorkspaceSelected(workspace.id)"
+             (click)="selectWorkspace(workspace)">
+          <ion-icon name="desktop-outline"></ion-icon>
+          <p>{{ workspace.name }}</p>
+        </div>
+      </div>
+
+      <!-- Office grid -->
+      <div *ngIf="workspaceType === 'office'" class="office-grid">
+        <div *ngFor="let workspace of workspaces"
+             class="workspace-item"
+             [class.occupied]="workspace.occupied"
+             [class.selected]="isWorkspaceSelected(workspace.id)"
+             (click)="selectWorkspace(workspace)">
+          <ion-icon name="business-outline"></ion-icon>
+          <p>{{ workspace.name }}</p>
+          <small>Capacidad: {{ workspace.capacity }} personas</small>
+        </div>
+      </div>
+
+      <!-- Meeting room grid -->
+      <div *ngIf="workspaceType === 'meeting'" class="meeting-grid">
+        <div *ngFor="let workspace of workspaces"
+             class="meeting-room"
+             [class.occupied]="workspace.occupied"
+             [class.selected]="isWorkspaceSelected(workspace.id)"
+             (click)="selectWorkspace(workspace)">
+          <ion-icon name="people-outline" class="room-icon"></ion-icon>
+          <div class="meeting-room-title">{{ workspace.name }}</div>
+          <div class="meeting-room-capacity">Capacidad: {{ workspace.capacity }} personas</div>
+          <div class="meeting-room-features">
+            <ion-icon *ngFor="let feature of workspace.features"
+                     [name]="feature === 'Proyector' ? 'tv-outline' :
+                            feature === 'Videoconferencia' ? 'videocam-outline' : 'cafe-outline'"
+                     [title]="feature"></ion-icon>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Additional services - Desks -->
+    <div class="additional-services" *ngIf="workspaceType === 'desk'">
+      <h4>Servicios Adicionales</h4>
+      <div class="services-grid">
+        <!-- Para el servicio de Parking -->
+<div class="service-item custom-checkbox-container" (click)="toggleService('parking')">
+  <div class="service-label">
+    <ion-icon name="car-outline"></ion-icon>
+    <span>Plaza de Parking</span>
+  </div>
+  <div class="custom-checkbox" [class.checked]="isServiceSelected('parking')">
+    <div class="checkmark"></div>
+  </div>
+</div>
+
+<!-- Para el servicio de Café -->
+<div class="service-item custom-checkbox-container" (click)="toggleService('coffee')">
+  <div class="service-label">
+    <ion-icon name="cafe-outline"></ion-icon>
+    <span>Cafetera</span>
+  </div>
+  <div class="custom-checkbox" [class.checked]="isServiceSelected('coffee')">
+    <div class="checkmark"></div>
+  </div>
+</div>
+
+<!-- Para el servicio de Agua -->
+<div class="service-item custom-checkbox-container" (click)="toggleService('water')">
+  <div class="service-label">
+    <ion-icon name="water-outline"></ion-icon>
+    <span>Dispensador de Agua</span>
+  </div>
+  <div class="custom-checkbox" [class.checked]="isServiceSelected('water')">
+    <div class="checkmark"></div>
+  </div>
+</div>
+
+<!-- Para el servicio de Impresora -->
+<div class="service-item custom-checkbox-container" (click)="toggleService('printer')">
+  <div class="service-label">
+    <ion-icon name="print-outline"></ion-icon>
+    <span>Impresora</span>
+  </div>
+  <div class="custom-checkbox" [class.checked]="isServiceSelected('printer')">
+    <div class="checkmark"></div>
+  </div>
+</div>
+      </div>
+    </div>
+
+    <!-- Additional services - Offices -->
+    <div class="additional-services" *ngIf="workspaceType === 'office'">
+      <h4>Servicios Adicionales - Oficinas</h4>
+      <div class="services-grid">
+        <!-- WiFi Premium -->
+        <div class="service-item custom-checkbox-container" (click)="toggleService('wifi')">
+          <div class="service-label">
+            <ion-icon name="wifi-outline"></ion-icon>
+            <span>WiFi Premium</span>
+          </div>
+          <div class="custom-checkbox" [class.checked]="isServiceSelected('wifi')">
+            <div class="checkmark"></div>
+          </div>
+        </div>
+
+        <!-- Plaza de Parking -->
+        <div class="service-item custom-checkbox-container" (click)="toggleService('parking')">
+          <div class="service-label">
+            <ion-icon name="car-outline"></ion-icon>
+            <span>Plaza de Parking</span>
+          </div>
+          <div class="custom-checkbox" [class.checked]="isServiceSelected('parking')">
+            <div class="checkmark"></div>
+          </div>
+        </div>
+
+        <!-- Cafetera -->
+        <div class="service-item custom-checkbox-container" (click)="toggleService('coffee')">
+          <div class="service-label">
+            <ion-icon name="cafe-outline"></ion-icon>
+            <span>Cafetera</span>
+          </div>
+          <div class="custom-checkbox" [class.checked]="isServiceSelected('coffee')">
+            <div class="checkmark"></div>
+          </div>
+        </div>
+
+        <!-- Dispensador de Agua -->
+        <div class="service-item custom-checkbox-container" (click)="toggleService('water')">
+          <div class="service-label">
+            <ion-icon name="water-outline"></ion-icon>
+            <span>Dispensador de Agua</span>
+          </div>
+          <div class="custom-checkbox" [class.checked]="isServiceSelected('water')">
+            <div class="checkmark"></div>
+          </div>
+        </div>
+
+        <!-- Proyector -->
+        <div class="service-item custom-checkbox-container" (click)="toggleService('projector')">
+          <div class="service-label">
+            <ion-icon name="tv-outline"></ion-icon>
+            <span>Proyector</span>
+          </div>
+          <div class="custom-checkbox" [class.checked]="isServiceSelected('projector')">
+            <div class="checkmark"></div>
+          </div>
+        </div>
+
+        <!-- Impresora -->
+        <div class="service-item custom-checkbox-container" (click)="toggleService('printer')">
+          <div class="service-label">
+            <ion-icon name="print-outline"></ion-icon>
+            <span>Impresora</span>
+          </div>
+          <div class="custom-checkbox" [class.checked]="isServiceSelected('printer')">
+            <div class="checkmark"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Additional services - Meeting Rooms -->
+    <div class="additional-services" *ngIf="workspaceType === 'meeting'">
+      <h4>Servicios Adicionales - Salas de Reuniones</h4>
+      <div class="services-grid">
+        <!-- WiFi Alta Velocidad -->
+        <div class="service-item custom-checkbox-container" (click)="toggleService('wifi_meeting')">
+          <div class="service-label">
+            <ion-icon name="wifi-outline"></ion-icon>
+            <span>WiFi Alta Velocidad</span>
+          </div>
+          <div class="custom-checkbox" [class.checked]="isServiceSelected('wifi_meeting')">
+            <div class="checkmark"></div>
+          </div>
+        </div>
+
+        <!-- Servicio de Café -->
+        <div class="service-item custom-checkbox-container" (click)="toggleService('coffee_meeting')">
+          <div class="service-label">
+            <ion-icon name="cafe-outline"></ion-icon>
+            <span>Servicio de Café</span>
+          </div>
+          <div class="custom-checkbox" [class.checked]="isServiceSelected('coffee_meeting')">
+            <div class="checkmark"></div>
+          </div>
+        </div>
+
+        <!-- Agua Mineral -->
+        <div class="service-item custom-checkbox-container" (click)="toggleService('water_meeting')">
+          <div class="service-label">
+            <ion-icon name="water-outline"></ion-icon>
+            <span>Agua Mineral</span>
+          </div>
+          <div class="custom-checkbox" [class.checked]="isServiceSelected('water_meeting')">
+            <div class="checkmark"></div>
+          </div>
+        </div>
+
+        <!-- Proyector Profesional -->
+        <div class="service-item custom-checkbox-container" (click)="toggleService('projector_meeting')">
+          <div class="service-label">
+            <ion-icon name="tv-outline"></ion-icon>
+            <span>Proyector Profesional</span>
+          </div>
+          <div class="custom-checkbox" [class.checked]="isServiceSelected('projector_meeting')">
+            <div class="checkmark"></div>
+          </div>
+        </div>
+
+        <!-- Videoconferencia -->
+        <div class="service-item custom-checkbox-container" (click)="toggleService('videoconf')">
+          <div class="service-label">
+            <ion-icon name="videocam-outline"></ion-icon>
+            <span>Videoconferencia</span>
+          </div>
+          <div class="custom-checkbox" [class.checked]="isServiceSelected('videoconf')">
+            <div class="checkmark"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Booking form -->
+    <div class="booking-form" *ngIf="!showBookingSummary">
+      <ion-item>
+        <ion-label position="stacked">Fecha de reserva</ion-label>
+        <ion-input
+            type="date"
+            [(ngModel)]="selectedDate"
+            required>
+        </ion-input>
+      </ion-item>
+
+      <h4>Horario de reserva</h4>
+      <div class="time-selection">
+        <ion-item>
+          <ion-label position="stacked">Hora de inicio</ion-label>
+          <ion-select [(ngModel)]="selectedStartTime" interface="popover"
+                      placeholder="Selecciona hora de inicio"
+                      (ionChange)="updateEndTimeOptions()">
+            <ion-select-option *ngFor="let time of availableStartTimes" [value]="time">
+              {{ time }}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked">Hora de fin</ion-label>
+          <ion-select [(ngModel)]="selectedEndTime" interface="popover"
+                      placeholder="Selecciona hora de fin"
+                      [disabled]="!selectedStartTime">
+            <ion-select-option *ngFor="let time of availableEndTimes" [value]="time">
+              {{ time }}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <div class="time-summary">
+          <p>Duración de la reserva: <span>{{ timeRangeDisplay }}</span> (<span>{{ durationDisplay }}</span>)</p>
+        </div>
+      </div>
+
+      <ion-button expand="block" (click)="confirmBooking()" [disabled]="isConfirmButtonDisabled">
+        Confirmar Reserva
+      </ion-button>
+    </div>
+
+    <!-- Booking summary -->
+    <div class="summary-card" *ngIf="showBookingSummary">
+      <h3>Resumen de tu reserva</h3>
+      <div class="summary-info">
+        <p>
+          <strong>Espacio:</strong>
+          {{ workspaceType === 'desk' ? 'Escritorio' :
+             workspaceType === 'office' ? 'Oficina' : 'Sala de Reuniones' }}{{ selectedCount > 1 ? 's' : '' }}:
+             {{ getSelectedWorkspacesArray().join(', ') }}
+        </p>
+        <p><strong>Fecha:</strong> {{ formatDate(selectedDate) }}</p>
+        <p><strong>Horario:</strong> {{ timeRangeDisplay }}</p>
+        <p><strong>Duración:</strong> {{ durationDisplay }}</p>
+
+        <div class="services-summary" *ngIf="selectedServices.size > 0">
+          <h4>Servicios adicionales:</h4>
+          <div class="selected-service" *ngFor="let service of selectedServices">
+            <ion-icon [name]="getServiceIcon(service)"></ion-icon>
+            {{ getServiceName(service) }}
+          </div>
+        </div>
+
+        <!-- Location info in summary -->
+        <div class="location-summary">
+          <h4>Ubicación:</h4>
+          <p>
+            <ion-icon name="location-outline"></ion-icon>
+            {{ getSelectedLocationName() }}
+          </p>
+        </div>
+      </div>
+
+      <div class="summary-actions">
+        <ion-button expand="block" color="primary" (click)="saveBooking()">
+          <ion-icon name="save-outline" slot="start"></ion-icon>
+          Guardar Reserva
+        </ion-button>
+        <ion-button expand="block" color="medium" (click)="modifyBooking()">
+          <ion-icon name="create-outline" slot="start"></ion-icon>
+          Modificar
+        </ion-button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading indicator -->
+  <ion-loading
+    [isOpen]="isLoading"
+    message="Guardando reserva...">
+  </ion-loading>
+</ion-content>

@@ -130,18 +130,17 @@ export class DashboardComponent implements OnInit {
 
   nuevaReserva() {
     console.log('Navegando a Nueva Reserva');
-    // Descomentar cuando se implementen las rutas
-    // this.navigate('/nueva-reserva');
+    this.navigate('/nueva-reserva');
   }
 
   misReservas() {
     console.log('Navegando a Mis Reservas');
-    // this.navigate('/mis-reservas');
+    this.navigate('/mis-reservas');
   }
 
   espacios() {
     console.log('Navegando a Espacios');
-    // this.navigate('/espacios');
+    this.navigate('/espacios');
   }
 
   misCalificaciones() {

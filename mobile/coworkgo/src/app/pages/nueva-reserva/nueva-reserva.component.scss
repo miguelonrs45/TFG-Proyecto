@@ -1,0 +1,1174 @@
+/* Base styles */
+:host {
+  --background-gradient: linear-gradient(135deg, var(--ion-color-primary), var(--ion-color-primary-shade));
+  --card-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  --selection-background: rgba(var(--ion-color-primary-rgb), 0.15);
+  --selection-border: 2px solid var(--ion-color-primary);
+}
+
+ion-content {
+  --background: #f4f5f8;
+}
+
+/* Header styles */
+.header-container {
+  background: var(--background-gradient);
+  color: white;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+
+  h1 {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+
+  p {
+    margin: 0;
+    font-size: 14px;
+    opacity: 0.9;
+  }
+}
+
+/* Main container */
+.booking-container {
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+/* MEJORADO: Segmento de tipo de espacio */
+ion-segment {
+  background: white;
+  padding: 5px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+
+  ion-segment-button {
+    --color: #666666;
+    --color-checked: var(--ion-color-primary);
+    --background: transparent;
+    --background-checked: rgba(var(--ion-color-primary-rgb), 0.1);
+    --border-radius: 8px;
+    --border-color: transparent;
+    --indicator-color: transparent;
+    --padding-top: 12px;
+    --padding-bottom: 12px;
+    --padding-start: 6px;
+    --padding-end: 6px;
+    margin: 0 3px;
+    min-height: 50px;
+
+    ion-icon {
+      font-size: 28px;
+      margin-bottom: 8px;
+      --ionicon-stroke-width: 40px;
+      filter: drop-shadow(0 2px 2px rgba(0,0,0,0.1));
+    }
+
+    ion-label {
+      font-size: 16px;
+      font-weight: 600;
+      margin-top: 5px;
+    }
+
+    &.segment-button-checked {
+      ion-icon {
+        color: var(--ion-color-primary);
+        filter: drop-shadow(0 2px 4px rgba(var(--ion-color-primary-rgb), 0.3));
+        transform: scale(1.1);
+      }
+
+      ion-label {
+        color: var(--ion-color-primary);
+        font-weight: 700;
+      }
+    }
+  }
+}
+
+/* Floor plan styles */
+.floor-plan {
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+  margin: 16px 0;
+  box-shadow: var(--card-shadow);
+}
+
+/* Common workspace styles */
+.workspace-item {
+  aspect-ratio: 1 / 0.8;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+  border-radius: 10px;
+  background: white;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  text-align: center;
+  border: 2px solid #eee;
+  box-shadow: var(--card-shadow);
+  position: relative; /* Añadido para posicionar correctamente el ::after */
+
+  ion-icon {
+    font-size: 32px;
+    margin-bottom: 10px;
+    color: var(--ion-color-primary);
+    filter: drop-shadow(0 2px 3px rgba(0,0,0,0.2));
+    --ionicon-stroke-width: 40px;
+  }
+
+  p {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: #333333;
+    text-shadow: 0 1px 1px rgba(255,255,255,0.8);
+  }
+
+  small {
+    display: block;
+    color: #666;
+    font-size: 14px;
+    margin-top: 5px;
+    font-weight: 500;
+  }
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  }
+
+  &.selected {
+    border-color: var(--ion-color-success);
+    background: rgba(var(--ion-color-success-rgb), 0.1);
+
+    ion-icon {
+      color: var(--ion-color-success);
+    }
+
+    p {
+      color: var(--ion-color-success);
+    }
+  }
+
+  &.occupied {
+    background: #ffebee;
+    cursor: not-allowed;
+    opacity: 0.7;
+  }
+}
+
+/* Desk grid */
+.desk-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Office grid */
+.office-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Meeting room grid and styles */
+.meeting-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+
+  @media (min-width: 576px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.meeting-room {
+  background: white;
+  border: 2px solid var(--ion-color-primary);
+  border-radius: 12px;
+  padding: 15px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  box-shadow: var(--card-shadow);
+  position: relative; /* Añadido para posicionar correctamente el ::after */
+
+  ion-icon {
+    font-size: 34px;
+    color: var(--ion-color-primary);
+    filter: drop-shadow(0 2px 3px rgba(0,0,0,0.2));
+    --ionicon-stroke-width: 40px;
+  }
+
+  .meeting-room-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0;
+    color: #333333;
+    text-shadow: 0 1px 1px rgba(255,255,255,0.8);
+  }
+
+  .meeting-room-capacity {
+    font-size: 16px;
+    color: #666;
+    margin: 0;
+    font-weight: 500;
+  }
+
+  .meeting-room-features {
+    display: flex;
+    gap: 10px;
+    margin-top: auto;
+
+    ion-icon {
+      font-size: 22px;
+      color: #666;
+    }
+  }
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+  }
+
+  &.occupied {
+    border-color: #dc3545;
+    background: #ffebee;
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+
+  &.selected {
+    border-color: var(--ion-color-success);
+    background: rgba(var(--ion-color-success-rgb), 0.1);
+
+    .meeting-room-title {
+      color: var(--ion-color-success);
+    }
+
+    ion-icon {
+      color: var(--ion-color-success);
+    }
+  }
+}
+
+/* MEJORADO: Selection summary */
+.selection-summary {
+  background: rgba(var(--ion-color-primary-rgb), 0.1);
+  border-radius: 12px;
+  padding: 16px;
+  margin: 16px 0;
+  border: 2px solid var(--ion-color-primary);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+
+  .selection-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+    border-bottom: 1px solid rgba(var(--ion-color-primary-rgb), 0.2);
+    padding-bottom: 10px;
+
+    ion-icon {
+      font-size: 24px;
+      color: var(--ion-color-primary);
+      filter: drop-shadow(0 2px 3px rgba(0,0,0,0.2));
+      --ionicon-stroke-width: 40px;
+    }
+
+    span {
+      font-size: 18px;
+      font-weight: 600;
+      color: #333333;
+    }
+
+    .selected-count {
+      font-weight: 700;
+      color: var(--ion-color-primary);
+      font-size: 20px;
+    }
+  }
+
+  .selection-details {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 8px 0;
+  }
+}
+
+/* Tags MEJORADOS */
+.desk-tag, .office-tag, .meeting-tag {
+  background: rgba(var(--ion-color-primary-rgb), 0.15);
+  color: var(--ion-color-primary);
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  border: 1px solid rgba(var(--ion-color-primary-rgb), 0.3);
+}
+
+.office-tag {
+  background: rgba(var(--ion-color-success-rgb), 0.15);
+  color: var(--ion-color-success);
+  border-color: rgba(var(--ion-color-success-rgb), 0.3);
+}
+
+.meeting-tag {
+  background: rgba(var(--ion-color-tertiary-rgb), 0.15);
+  color: var(--ion-color-tertiary);
+  border-color: rgba(var(--ion-color-tertiary-rgb), 0.3);
+}
+
+/* MEJORADO: Additional services */
+.additional-services {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  margin: 16px 0;
+  box-shadow: var(--card-shadow);
+
+  h4 {
+    color: #222222;
+    margin-top: 0;
+    margin-bottom: 16px;
+    font-size: 18px;
+    font-weight: 600;
+    text-shadow: 0 1px 1px rgba(255,255,255, 0.8);
+    border-bottom: 1px solid #eee;
+    padding-bottom: 8px;
+  }
+}
+
+/* MEJORADO: Services grid */
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* MEJORADO: Service items y checkboxes */
+.service-item {
+  background: #f0f4f8;
+  border-radius: 10px;
+  padding: 12px;
+  transition: all 0.2s ease;
+  border: 1px solid #e0e6ed;
+
+  &:hover {
+    background: #e6edf5;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  }
+
+  /* Corregido checkbox */
+  ion-checkbox {
+    --size: 20px;
+    --background: white;
+    --background-checked: var(--ion-color-primary);
+    --border-color: #ccc;
+    --border-color-checked: var(--ion-color-primary);
+    --checkmark-color: white;
+    --border-radius: 4px;
+    --border-width: 2px;
+    margin-right: 10px;
+    opacity: 1 !important;
+  }
+
+  /* Mejorado label */
+  ion-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #333333;
+    margin: 0;
+    text-shadow: 0 1px 1px rgba(255,255,255, 0.8);
+  }
+
+  /* Mejorado íconos */
+  ion-icon {
+    font-size: 22px;
+    color: var(--ion-color-primary);
+    filter: drop-shadow(0 1px 2px rgba(0,0,0,0.1));
+    --ionicon-stroke-width: 32px;
+  }
+}
+
+/* Booking form */
+.booking-form {
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+  margin: 16px 0;
+  box-shadow: var(--card-shadow);
+
+  h4 {
+    color: #333;
+    margin: 16px 0 8px;
+    font-size: 16px;
+    font-weight: 500;
+  }
+}
+
+.time-selection {
+  background: #f8f9fa;
+  border-radius: 10px;
+  padding: 12px;
+  margin: 12px 0;
+}
+
+.time-summary {
+  margin-top: 12px;
+  padding: 8px;
+  background: rgba(var(--ion-color-primary-rgb), 0.1);
+  border-radius: 5px;
+  text-align: center;
+  font-weight: 500;
+
+  span {
+    color: var(--ion-color-primary);
+    font-weight: bold;
+  }
+}
+
+/* Summary card */
+.summary-card {
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+  margin: 16px 0;
+  box-shadow: var(--card-shadow);
+
+  h3 {
+    color: #333;
+    margin-top: 0;
+    margin-bottom: 16px;
+    font-size: 18px;
+    font-weight: 500;
+  }
+}
+
+.summary-info {
+  margin: 12px 0;
+  padding: 12px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border-left: 4px solid var(--ion-color-primary);
+
+  p {
+    margin: 6px 0;
+    color: #555;
+    font-size: 14px;
+  }
+
+  strong {
+    color: #333;
+  }
+
+  h4 {
+    margin: 16px 0 8px;
+    font-size: 15px;
+    font-weight: 500;
+    color: #333;
+  }
+}
+
+.services-summary {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid #eee;
+}
+
+.selected-service {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 5px 0;
+  color: #555;
+  font-size: 14px;
+
+  ion-icon {
+    color: var(--ion-color-primary);
+    font-size: 16px;
+  }
+}
+
+.summary-actions {
+  margin-top: 16px;
+  display: grid;
+  gap: 8px;
+}
+
+/* Location styles */
+.location-container {
+  margin: 12px 0;
+  display: flex;
+  justify-content: center;
+}
+
+.map-container {
+  width: 100%;
+  height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.map-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #f5f5f5;
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+
+  ion-icon {
+    font-size: 50px;
+    color: var(--ion-color-primary);
+    margin-bottom: 16px;
+  }
+
+  h3 {
+    margin: 0 0 8px;
+    font-size: 18px;
+    color: #333;
+  }
+
+  p {
+    margin: 4px 0;
+    color: #666;
+  }
+
+  ion-button {
+    margin-top: 20px;
+  }
+}
+
+.location-summary {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #eee;
+
+  h4 {
+    margin: 0 0 8px;
+    font-size: 15px;
+    font-weight: 500;
+  }
+
+  p {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 8px 0;
+
+    ion-icon {
+      color: var(--ion-color-danger);
+      font-size: 18px;
+    }
+  }
+}
+
+/* Corrección para las áreas ocupadas */
+.workspace-item.occupied, .meeting-room.occupied {
+  background: rgba(var(--ion-color-danger-rgb), 0.1);
+  border: 1px solid rgba(var(--ion-color-danger-rgb), 0.3);
+
+  &::after {
+    content: 'Ocupado';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-15deg);
+    background: rgba(var(--ion-color-danger-rgb), 0.8);
+    color: white;
+    padding: 2px 10px;
+    border-radius: 4px;
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 1px;
+    z-index: 1;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+  }
+
+  /* Opacidad para mostrar que está ocupado */
+  ion-icon, p, small, .meeting-room-title, .meeting-room-capacity, .room-icon, .meeting-room-features {
+    opacity: 0.5;
+  }
+}
+
+/* MEJORADO: Service items y checkboxes */
+.service-item {
+  background: #f0f4f8;
+  border-radius: 10px;
+  padding: 12px;
+  transition: all 0.2s ease;
+  border: 1px solid #e0e6ed;
+
+  &:hover {
+    background: #e6edf5;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  }
+
+  /* Corregido checkbox */
+  ion-checkbox {
+    --size: 20px;
+    --background: white;
+    --background-checked: var(--ion-color-primary);
+    --border-color: #ccc;
+    --border-color-checked: var(--ion-color-primary);
+    --checkmark-color: white;
+    --border-radius: 4px;
+    --border-width: 2px;
+    margin-right: 10px;
+    opacity: 1 !important;
+
+    /* Específicamente para el ícono del checkbox */
+    .checkbox-icon {
+      background: white !important;
+      border: 2px solid #ccc;
+      border-radius: 4px;
+    }
+
+    /* Cuando está marcado */
+    &.checkbox-checked .checkbox-icon {
+      background: var(--ion-color-primary) !important;
+      border-color: var(--ion-color-primary);
+    }
+  }
+
+  /* Mejorado label */
+  ion-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #333333;
+    margin: 0;
+    text-shadow: 0 1px 1px rgba(255,255,255, 0.8);
+  }
+
+  /* Mejorado íconos */
+  ion-icon {
+    font-size: 22px;
+    color: var(--ion-color-primary);
+    filter: drop-shadow(0 1px 2px rgba(0,0,0,0.1));
+    --ionicon-stroke-width: 32px;
+  }
+}
+
+/* Corrección global para los checkboxes - AÑADIR AL FINAL DEL ARCHIVO */
+:host {
+  /* Selector extremadamente específico para el fondo del checkbox */
+  .checkbox-icon {
+    background-color: white !important;
+    background: white !important;
+    border: 2px solid #ccc !important;
+    border-radius: 4px !important;
+  }
+
+  /* Cuando el checkbox está marcado */
+  ion-checkbox.checkbox-checked .checkbox-icon {
+    background-color: var(--ion-color-primary) !important;
+    background: var(--ion-color-primary) !important;
+    border-color: var(--ion-color-primary) !important;
+  }
+
+  /* Para asegurar que el icono de verificación sea visible */
+  ion-checkbox.checkbox-checked .checkbox-icon .checkbox-inner {
+    border-color: white !important;
+  }
+}
+
+/* Corrige problemas de especificidad usando :not */
+ion-checkbox .checkbox-icon:not(.checkbox-checked) {
+  background-color: white !important;
+  background: white !important;
+}
+
+/* Reglas adicionales para forzar el estilo correcto */
+.service-item ion-checkbox {
+  --background: white !important;
+  --border-color: #ccc !important;
+}
+
+.service-item ion-checkbox.checkbox-checked {
+  --background: var(--ion-color-primary) !important;
+  --border-color: var(--ion-color-primary) !important;
+}
+
+/* Arreglo específico para dispositivos iOS */
+.ios ion-checkbox {
+  --background-checked: var(--ion-color-primary) !important;
+  --border-color-checked: var(--ion-color-primary) !important;
+  --checkmark-color: white !important;
+}
+
+/* Estilo para contenedor de checkbox personalizado - AJUSTADO para posición menos extrema */
+.custom-checkbox-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Mantiene la separación */
+  gap: 12px;
+  cursor: pointer;
+  padding: 8px 10px; /* Padding uniforme */
+}
+
+/* Estilo para el checkbox personalizado */
+.custom-checkbox {
+  width: 22px;
+  height: 22px;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  background-color: white;
+  position: relative;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  order: 2; /* Mantiene el checkbox al final */
+  margin-left: 10px; /* Espacio entre el texto y el checkbox */
+}
+
+/* Cuando está seleccionado */
+.custom-checkbox.checked {
+  background-color: var(--ion-color-primary);
+  border-color: var(--ion-color-primary);
+}
+
+/* Estilo para la marca de verificación */
+.custom-checkbox .checkmark {
+  display: none;
+  position: relative;
+  width: 6px;
+  height: 12px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+  margin-top: -2px;
+}
+
+/* Mostrar marca cuando está seleccionado */
+.custom-checkbox.checked .checkmark {
+  display: block;
+}
+
+/* Estilo para etiqueta de servicio - MODIFICADO para posición a la izquierda */
+.service-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #333333;
+  order: 1; /* Esto mueve la etiqueta al principio del contenedor */
+  flex: 1; /* Esto hace que la etiqueta ocupe todo el espacio disponible */
+}
+
+.service-label ion-icon {
+  font-size: 22px;
+  color: var(--ion-color-primary);
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.1));
+  --ionicon-stroke-width: 32px;
+}
+/* Corrección para el fondo negro y legibilidad en el formulario de reserva */
+
+/* Estilos para los inputs de fecha y hora */
+ion-item {
+  --background: white !important;
+  --background-hover: #f8f9fa !important;
+  --background-focused: #f0f4f8 !important;
+  --border-color: #e0e6ed !important;
+  --highlight-color-focused: var(--ion-color-primary) !important;
+  --padding-start: 12px !important;
+  --inner-padding-end: 12px !important;
+  --color: #333333 !important;
+
+  /* Aplicar borde y bordes redondeados */
+  border: 1px solid #e0e6ed !important;
+  border-radius: 8px !important;
+  margin-bottom: 10px !important;
+}
+
+/* Estilo para labels dentro de items */
+ion-item ion-label {
+  --color: #333333 !important;
+  font-weight: 600 !important;
+  font-size: 16px !important;
+  color: #333333 !important;
+}
+
+/* Estilos para inputs */
+ion-input, ion-select {
+  --placeholder-color: #888 !important;
+  --placeholder-opacity: 1 !important;
+  --padding-start: 0 !important;
+  --padding-top: 10px !important;
+  --padding-bottom: 10px !important;
+  --color: #333333 !important;
+  color: #333333 !important;
+  font-weight: 500 !important;
+}
+
+/* Mejorar la visibilidad del resumen de tiempo */
+.time-summary {
+  background: rgba(var(--ion-color-primary-rgb), 0.15) !important;
+  border-radius: 8px !important;
+  padding: 12px !important;
+  margin-top: 15px !important;
+  border: 1px solid rgba(var(--ion-color-primary-rgb), 0.3) !important;
+
+  p {
+    margin: 0 !important;
+    color: #333333 !important;
+    font-size: 16px !important;
+    font-weight: 500 !important;
+    text-align: center !important;
+
+    span {
+      color: var(--ion-color-primary) !important;
+      font-weight: 700 !important;
+      padding: 0 4px !important;
+    }
+  }
+}
+
+/* Para los selects de hora */
+ion-select::part(icon) {
+  color: var(--ion-color-primary) !important;
+  opacity: 1 !important;
+}
+
+/* Para los placeholders y texto dentro de inputs de fecha */
+ion-input[type="date"] {
+  --color: #333333 !important;
+  color: #333333 !important;
+}
+
+/* Estilos específicos para el área de selección de tiempo */
+.time-selection {
+  background: #f8f9fa !important;
+  border: 1px solid #e0e6ed !important;
+  border-radius: 10px !important;
+  padding: 16px !important;
+  margin: 15px 0 !important;
+
+  h4 {
+    margin-top: 0 !important;
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    color: #333333 !important;
+    margin-bottom: 12px !important;
+  }
+
+  ion-item {
+    margin-bottom: 10px !important;
+  }
+}
+
+/* Estilos para selects en el popover */
+.select-interface-option {
+  --color: #333333 !important;
+  --background: white !important;
+
+  &.select-interface-option-selected {
+    --background: rgba(var(--ion-color-primary-rgb), 0.15) !important;
+    --color: var(--ion-color-primary) !important;
+  }
+}
+/* Corrección para el desplegable de selección de horas con fondo negro */
+
+/* Estilos para el popover de selección */
+:root,
+:host {
+  /* Clases para el popover de selección de hora */
+  --ion-overlay-background-color: white !important;
+  --ion-picker-background-color: white !important;
+  --ion-item-background: white !important;
+  --ion-popover-background: white !important;
+  --select-interface-option-background: white !important;
+}
+
+/* Estilo para el popover y su contenido */
+ion-popover,
+ion-action-sheet,
+ion-alert,
+ion-select-popover {
+  --background: white !important;
+  --color: #333333 !important;
+  --width: auto !important;
+  --backdrop-opacity: 0.3 !important;
+  --box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15) !important;
+
+  .popover-content,
+  .action-sheet-content,
+  .alert-content,
+  .select-popover {
+    background: white !important;
+    color: #333333 !important;
+  }
+
+  .action-sheet-title,
+  .alert-title,
+  .select-title {
+    color: #333333 !important;
+  }
+}
+
+/* Estilos específicos para opciones de selección */
+.select-interface-option {
+  --background: white !important;
+  --color: #333333 !important;
+  background: white !important;
+  color: #333333 !important;
+
+  &:hover, &:focus {
+    --background: #f8f9fa !important;
+    background: #f8f9fa !important;
+  }
+
+  &.select-interface-option-selected {
+    --background: rgba(var(--ion-color-primary-rgb), 0.15) !important;
+    --color: var(--ion-color-primary) !important;
+    background: rgba(var(--ion-color-primary-rgb), 0.15) !important;
+    color: var(--ion-color-primary) !important;
+  }
+}
+
+/* Para los ítems en el popover */
+.select-popover ion-item {
+  --background: white !important;
+  --background-hover: #f8f9fa !important;
+  --color: #333333 !important;
+  --border-color: #e0e6ed !important;
+}
+
+/* Para el picker de tiempo */
+ion-picker,
+ion-picker-column {
+  background: white !important;
+  color: #333333 !important;
+  --background: white !important;
+  --color: #333333 !important;
+}
+
+/* Para las opciones del picker */
+.picker-opts,
+.picker-opt {
+  color: #333333 !important;
+}
+
+/* Selección actual en el picker */
+.picker-opt.picker-opt-selected {
+  color: var(--ion-color-primary) !important;
+}
+
+/* Para backdrop del popover */
+ion-backdrop {
+  background-color: rgba(0, 0, 0, 0.4) !important;
+}
+/* Solución específica para el desplegable de selección con fondo negro */
+
+/* Atacando directamente las clases del popover de selección */
+.sc-ion-select-popover-md,
+.sc-ion-select-popover-ios,
+.sc-ion-select-popover,
+.select-popover,
+.sc-ion-popover-md-h {
+  --background: white !important;
+  background-color: white !important;
+}
+
+/* Atacando las listas dentro del popover */
+.sc-ion-select-popover-md .md.list-md,
+.sc-ion-select-popover-ios .ios.list-ios,
+.ion-popover-content {
+  background-color: white !important;
+}
+
+/* Atacando los ítems de la lista */
+.sc-ion-select-popover-md ion-item,
+.sc-ion-select-popover-ios ion-item,
+.select-popover ion-item {
+  --background: white !important;
+  --background-hover: #f0f4f8 !important;
+  --background-activated: rgba(var(--ion-color-primary-rgb), 0.1) !important;
+  --background-focused: rgba(var(--ion-color-primary-rgb), 0.1) !important;
+  --color: #333333 !important;
+  --border-color: #e0e6ed !important;
+  background-color: white !important;
+  color: #333333 !important;
+}
+
+/* Atacando directamente el texto de las opciones */
+.sc-ion-select-popover-md ion-item-divider,
+.sc-ion-select-popover-md ion-label,
+.sc-ion-select-popover-ios ion-item-divider,
+.sc-ion-select-popover-ios ion-label {
+  color: #333333 !important;
+}
+
+/* Solución para popover y action sheet (específica para MD) */
+.popover-content.sc-ion-popover-md,
+.action-sheet-group.sc-ion-action-sheet-md {
+  background: white !important;
+}
+
+/* Aplicando al elemento raíz para popover */
+ion-popover {
+  --width: auto;
+  --max-width: 90% !important;
+  --height: auto;
+  --max-height: 90% !important;
+  --box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2) !important;
+  --backdrop-opacity: 0.4 !important;
+}
+
+/* Atacando directamente el contenedor del popover */
+.popover-content {
+  background: white !important;
+}
+
+/* Reglas para el selector de hora */
+ion-select::part(text),
+ion-select::part(placeholder),
+ion-select::part(icon) {
+  color: #333333 !important;
+}
+
+/* Sobrescritura global para elementos de la UI en capas superiores */
+:root {
+  --ion-backdrop-color: rgba(0, 0, 0, 0.4) !important;
+  --ion-overlay-background-color: white !important;
+  --ion-popover-background: white !important;
+  --ion-action-sheet-background: white !important;
+}
+
+/* Sobrescritura extremadamente específica para Material Design */
+.md ion-popover ion-item.sc-ion-select-popover-md,
+.md ion-popover ion-list.list-md {
+  background-color: white !important;
+  --background: white !important;
+  color: #333333 !important;
+  --color: #333333 !important;
+}
+
+/* Otra sobrescritura para los ítems de popover */
+.sc-ion-popover-md.popover-viewport ion-item {
+  --background: white !important;
+  background-color: white !important;
+}
+/* Añadir estos estilos al final del archivo nueva-reserva.component.scss */
+
+/* Estilos para corregir el fondo negro del selector de hora */
+::ng-deep .popover-content,
+::ng-deep ion-select-popover,
+::ng-deep .select-interface-option {
+  --background: white !important;
+  background-color: white !important;
+  color: #333333 !important;
+}
+
+::ng-deep ion-popover {
+  --background: white !important;
+  --width: auto !important;
+  --max-width: 90% !important;
+  --backdrop-opacity: 0.4 !important;
+  --box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Estilos para las opciones del selector */
+::ng-deep .select-interface-option {
+  --color: #333333 !important;
+
+  &.select-interface-option-selected {
+    --background: rgba(var(--ion-color-primary-rgb), 0.15) !important;
+    --color: var(--ion-color-primary) !important;
+    color: var(--ion-color-primary) !important;
+  }
+}
+
+/* Estilos para las listas de opciones */
+::ng-deep .list-md,
+::ng-deep .list-ios {
+  background-color: white !important;
+}
+
+/* Estilos para el texto del selector */
+::ng-deep ion-select-popover ion-item {
+  --background: white !important;
+  --color: #333333 !important;
+  color: #333333 !important;
+}
+
+/* Forzar color blanco en los fondos de popover */
+:root {
+  --ion-popover-background: white !important;
+  --ion-popover-background-color: white !important;
+}
+/* Añadir al archivo de estilos */
+.location-container {
+  background: white;
+  border-radius: 12px;
+  padding: 12px;
+  margin: 16px 0;
+  box-shadow: var(--card-shadow);
+
+  ion-item {
+    --background: #f8f9fa !important;
+    --background-hover: #f0f4f8 !important;
+    --background-focused: #e6edf5 !important;
+    border-radius: 8px !important;
+    border: 1px solid #e0e6ed !important;
+    --padding-start: 12px !important;
+    --padding-end: 12px !important;
+    margin: 0 !important;
+  }
+
+  ion-label {
+    color: #333333 !important;
+    font-weight: 600 !important;
+    font-size: 16px !important;
+  }
+
+  ion-select {
+    --placeholder-color: #666 !important;
+    --placeholder-opacity: 1 !important;
+    color: var(--ion-color-primary) !important;
+    font-weight: 500 !important;
+  }
+}

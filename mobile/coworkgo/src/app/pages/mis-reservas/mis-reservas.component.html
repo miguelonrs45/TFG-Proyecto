@@ -1,0 +1,80 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar color="primary" class="toolbar-gradient">
+    <ion-buttons slot="start">
+      <!-- Botón personalizado con flecha Unicode -->
+      <button class="custom-back-button" (click)="navigateBack()">
+        &#8592; <!-- Carácter Unicode para flecha izquierda -->
+      </button>
+    </ion-buttons>
+    <ion-title>Mis Reservas</ion-title>
+    <ion-buttons slot="end">
+      <ion-button>
+        <ion-icon slot="icon-only" name="filter-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding-horizontal">
+  <div class="header-container">
+    <h1>Mis Reservas</h1>
+    <p>Gestiona tus reservas activas y pasadas</p>
+  </div>
+
+  <div class="reservations-container">
+    <div *ngIf="activeReservations.length > 0; else emptyState">
+      <div class="summary-header">
+        <div class="summary-content">
+          <h2>Reservas Activas ({{ activeReservations.length }})</h2>
+          <p>Mostrando solo las reservas vigentes y futuras</p>
+        </div>
+        <ion-badge color="success" class="counter-badge">{{ activeReservations.length }}</ion-badge>
+      </div>
+
+      <div class="reservation-card animate__animated animate__fadeIn" *ngFor="let reservation of activeReservations; let i = index">
+        <div class="status-indicator" [ngClass]="{'status-active': true}"></div>
+        <div class="reservation-header">
+          <span class="reservation-date">
+            <ion-icon name="calendar-outline" class="date-icon"></ion-icon>
+            {{ formatDate(reservation.date) }}
+          </span>
+          <span class="status-badge">Activa</span>
+        </div>
+        <div class="reservation-details">
+          <div class="detail-item">
+            <ion-icon [name]="getWorkspaceIcon(reservation.workspaces[0])"></ion-icon>
+            <span>{{ getWorkspaceDescription(reservation.workspaces) }}</span>
+          </div>
+          <div class="detail-item">
+            <ion-icon name="time-outline"></ion-icon>
+            <span>{{ reservation.startTime }} - {{ reservation.endTime }}</span>
+            <ion-badge color="medium" class="duration-badge">{{ reservation.duration }}</ion-badge>
+          </div>
+          <div class="services-list" *ngIf="reservation.services && reservation.services.length > 0">
+            <div class="service-tag" *ngFor="let service of reservation.services">
+              <span>{{ getServiceName(service) }}</span>
+            </div>
+          </div>
+        </div>
+        <div class="action-buttons">
+          <ion-button color="danger" expand="block" (click)="cancelReservation(i)">
+            <ion-icon name="close-circle-outline" slot="start"></ion-icon>
+            Cancelar Reserva
+          </ion-button>
+        </div>
+      </div>
+    </div>
+
+    <ng-template #emptyState>
+      <div class="empty-state animate__animated animate__fadeIn">
+        <ion-icon name="calendar-outline" class="empty-icon"></ion-icon>
+        <h2>No tienes reservas activas</h2>
+        <p>Cuando reserves un espacio de trabajo, aparecerá aquí</p>
+        <ion-button color="primary" expand="block" class="reserve-button" routerLink="/reservar">
+          <ion-icon name="add-circle-outline" slot="start"></ion-icon>
+          Hacer una reserva
+        </ion-button>
+      </div>
+    </ng-template>
+  </div>
+</ion-content>
