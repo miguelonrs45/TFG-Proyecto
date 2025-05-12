@@ -1,3 +1,8 @@
+[build]
+  base = "mobile/coworkgo"
+  publish = "dist/coworkgo/browser"
+  command = "npm run build"
+
 [[redirects]]
   from = "/*"
   to = "/index.html"
