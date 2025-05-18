@@ -22,6 +22,12 @@ const config: CapacitorConfig = {
     StatusBar: {
       backgroundColor: "#4D7CEA",
       style: "light"
+    },
+    // Añadimos la configuración de App para manejar el esquema personalizado
+    App: {
+      url: 'https://coworkgo.app', // URL base de tu app (cámbiala si es diferente)
+      androidScheme: 'coworkgo',   // Esquema para redirecciones en Android
+      iosScheme: 'coworkgo'        // Esquema para redirecciones en iOS
     }
   }
 };

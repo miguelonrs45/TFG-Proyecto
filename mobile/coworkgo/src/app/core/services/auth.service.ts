@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Router } from '@angular/router';
+import { Platform } from '@ionic/angular/standalone'; // Importar Platform
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,10 @@ export class AuthService {
   private currentUserSubject = new BehaviorSubject<any>(null);
   private sessionInitialized = false; // Bandera para seguir estado de inicialización
 
-  constructor(private router: Router) {
+  constructor(
+    private router: Router,
+    private platform: Platform // Inyectar Platform
+  ) {
     // Estos valores deberían estar en un entorno de variables
     const supabaseUrl = 'https://dvtkkaxjehfotylwwsea.supabase.co';
     const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2dGtrYXhqZWhmb3R5bHd3c2VhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI4MzEyOTUsImV4cCI6MjA1ODQwNzI5NX0.VjR1V7PBZuOtvSUIOnjrXBb_O-w6W2wabHhjahaom1A';
@@ -100,18 +104,33 @@ export class AuthService {
     }
   }
 
-  // Nuevo método para inicio de sesión con Google
+  // Método mejorado para inicio de sesión con Google
   async signInWithGoogle(): Promise<any> {
     try {
+      // Determinar si estamos en el navegador o en una app nativa
+      const isApp = this.platform.is('capacitor') || this.platform.is('cordova');
+
+      // Configurar URL de redirección basada en el entorno
+      let redirectTo;
+      if (isApp) {
+        // Usar URL de esquema personalizado para apps nativas
+        redirectTo = 'coworkgo://auth/callback';
+      } else {
+        // Usar URL web para navegadores
+        redirectTo = window.location.origin + '/auth/callback';
+      }
+
+      console.log('URL de redirección OAuth:', redirectTo);
+
       const { data, error } = await this.supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: window.location.origin + '/auth/callback'
+          redirectTo: redirectTo,
+          skipBrowserRedirect: isApp // Evitar redirección automática del navegador en apps
         }
       });
 
       if (error) throw error;
-
       return data;
     } catch (error) {
       console.error('Error al iniciar sesión con Google:', error);
