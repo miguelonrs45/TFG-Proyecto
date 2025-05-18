@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Autenticación - CoWorkGo</title>
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.esm.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ionic/core/css/ionic.bundle.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, 
+        rgba(0, 0, 0, 0.8),
+        rgba(74, 144, 226, 0.8),
+        rgba(0, 0, 0, 0.8)),
+        url('/web/portada/portada.png') no-repeat center center / cover;
+      background-size: 400% 400%;
+      min-height: 100vh;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .auth-container {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      width: 90%;
+      max-width: 400px;
+      text-align: center;
+      padding: 30px;
+    }
+    
+    .logo {
+      margin-bottom: 20px;
+      font-size: 24px;
+      font-weight: bold;
+      color: #4a90e2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    
+    .spinner {
+      margin: 20px auto;
+      width: 40px;
+      height: 40px;
+      border: 3px solid rgba(74, 144, 226, 0.3);
+      border-radius: 50%;
+      border-top-color: #4a90e2;
+      animation: spin 1s ease-in-out infinite;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    .message {
+      color: #333;
+      margin: 20px 0;
+    }
+    
+    .error {
+      color: #e74c3c;
+      margin: 10px 0;
+      font-weight: bold;
+    }
+  </style>
+  <script src="/web/conexion/services/supabase-service.js"></script>
+</head>
+<body>
+  <div class="auth-container">
+    <div class="logo">
+      <ion-icon name="business-outline"></ion-icon>
+      <span>CoWorkGo</span>
+    </div>
+    
+    <div class="spinner"></div>
+    
+    <p class="message" id="statusMessage">Completando inicio de sesión...</p>
+    <p class="error" id="errorMessage" style="display: none;"></p>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      const statusMessage = document.getElementById('statusMessage');
+      const errorMessage = document.getElementById('errorMessage');
+      
+      try {
+        statusMessage.textContent = 'Verificando autenticación...';
+        
+        // Esperar a que el servicio de Supabase esté disponible
+        if (!window.supabaseService) {
+          statusMessage.textContent = 'Cargando servicios...';
+          await waitForSupabaseService();
+        }
+        
+        // Procesar la respuesta de autenticación
+        statusMessage.textContent = 'Procesando respuesta de autenticación...';
+        
+        // Usar el método específico para procesar la respuesta de autenticación OAuth
+        if (window.supabaseService && typeof window.supabaseService.procesarRespuestaAuth === 'function') {
+          const sessionData = await window.supabaseService.procesarRespuestaAuth();
+          
+          if (sessionData && sessionData.session) {
+            statusMessage.textContent = 'Iniciando sesión exitosa...';
+            
+            // Los datos del usuario ya deberían estar en sessionStorage
+            // gracias al método procesarRespuestaAuth
+            
+            // Redirigir al usuario a la página de inicio
+            setTimeout(() => {
+              window.location.href = '/web/pantalla_Inicio/inicio.html';
+            }, 1000);
+          } else {
+            throw new Error('No se pudo obtener la sesión de usuario');
+          }
+        } else {
+          // Fallback: obtener la sesión directamente si el método personalizado no está disponible
+          const client = window.supabase || 
+                        (window.supabaseService ? window.supabaseService.getClient() : null);
+                          
+          if (!client) {
+            throw new Error('El cliente de Supabase no está disponible');
+          }
+          
+          const { data, error } = await client.auth.getSession();
+          
+          if (error) throw error;
+          
+          if (data && data.session) {
+            statusMessage.textContent = 'Iniciando sesión exitosa...';
+            
+            // Guardar datos del usuario en sessionStorage
+            sessionStorage.setItem('isAuthenticated', 'true');
+            
+            if (data.session.user) {
+              sessionStorage.setItem('userId', data.session.user.id);
+              sessionStorage.setItem('userEmail', data.session.user.email);
+              
+              // Guardar metadata adicional si existe
+              if (data.session.user.user_metadata) {
+                if (data.session.user.user_metadata.full_name) {
+                  sessionStorage.setItem('userName', data.session.user.user_metadata.full_name);
+                } else if (data.session.user.user_metadata.name) {
+                  sessionStorage.setItem('userName', data.session.user.user_metadata.name);
+                }
+              }
+            }
+            
+            // Redirigir al usuario a la página de inicio
+            setTimeout(() => {
+              window.location.href = '/web/pantalla_Inicio/inicio.html';
+            }, 1000);
+          } else {
+            throw new Error('No se pudo obtener la sesión de usuario');
+          }
+        }
+      } catch (error) {
+        console.error('Error durante la autenticación:', error);
+        statusMessage.textContent = 'Error al completar la autenticación.';
+        
+        if (errorMessage) {
+          errorMessage.textContent = error.message || 'Error desconocido';
+          errorMessage.style.display = 'block';
+        }
+        
+        // Botón para volver al inicio de sesión
+        const backButton = document.createElement('ion-button');
+        backButton.expand = 'block';
+        backButton.innerHTML = 'Volver al inicio de sesión';
+        backButton.addEventListener('click', () => {
+          window.location.href = '/web/login_registro/iniciosesion.html';
+        });
+        
+        document.querySelector('.auth-container').appendChild(backButton);
+      }
+    });
+    
+    /**
+     * Espera a que el servicio de Supabase esté disponible
+     */
+    async function waitForSupabaseService() {
+      return new Promise((resolve, reject) => {
+        // Si ya está disponible, resolver inmediatamente
+        if (window.supabaseService) {
+          return resolve();
+        }
+        
+        // Intentar cargar el script
+        const script = document.createElement('script');
+        script.src = '/web/conexion/services/supabase-service.js';
+        script.onload = () => {
+          // Verificar periódicamente si supabaseService está disponible
+          const checkInterval = setInterval(() => {
+            if (window.supabaseService) {
+              clearInterval(checkInterval);
+              clearTimeout(timeout);
+              resolve();
+            }
+          }, 100);
+          
+          // Establecer un tiempo límite para la carga
+          const timeout = setTimeout(() => {
+            clearInterval(checkInterval);
+            reject(new Error('Tiempo de espera agotado al cargar el servicio de Supabase'));
+          }, 10000); // 10 segundos máximo
+        };
+        
+        script.onerror = () => {
+          reject(new Error('Error al cargar el script de Supabase'));
+        };
+        
+        document.head.appendChild(script);
+      });
+    }
+  </script>
+  
+  <!-- Ionicons -->
+  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</body>
+</html>
