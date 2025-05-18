@@ -6,7 +6,12 @@
   <title>Reservar - CoWorkGo</title>
   <script type="module" src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.esm.js"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ionic/core/css/ionic.bundle.css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap" rel="stylesheet">
+  
+  <script src="/web/conexion/services/supabase-service.js"></script>
+  <script src="/web/menus/reservas-service.js"></script>
   <script type="module" src="reservar.js"></script>
+  
   <style>
     ion-content {
       --background: #f4f5f8;
@@ -435,6 +440,7 @@
         display: grid;
         gap: 10px;
     }
+    
   </style>
 </head>
 <body>
@@ -740,75 +746,5 @@
       </div>
     </ion-content>
   </ion-app>
-  <!-- <script>
-    // Modificar la función generateWorkspaces para salas de reuniones
-    function generateWorkspaces(type) {
-        const floorPlan = document.getElementById('floorPlan');
-        floorPlan.innerHTML = '';
-
-        if (type === 'meeting') {
-            const meetingGrid = document.createElement('div');
-            meetingGrid.className = 'meeting-grid';
-            
-            // Generar 10 salas de reuniones
-            for (let i = 1; i <= 10; i++) {
-                const room = document.createElement('div');
-                room.className = 'meeting-room';
-                room.dataset.id = `M${i}`;
-                
-                // Asignar características según el número de sala
-                const capacity = i <= 5 ? 8 : 12;
-                const hasVideoConf = i % 2 === 0;
-                const hasCoffee = i > 7;
-                
-                room.innerHTML = `
-                    <ion-icon name="people-outline" class="room-icon"></ion-icon>
-                    <div class="meeting-room-title">Sala de Reuniones ${i}</div>
-                    <div class="meeting-room-capacity">Capacidad: ${capacity} personas</div>
-                    <div class="meeting-room-features">
-                        <ion-icon name="tv-outline" title="Proyector"></ion-icon>
-                        ${hasVideoConf ? '<ion-icon name="videocam-outline" title="Videoconferencia"></ion-icon>' : ''}
-                        ${hasCoffee ? '<ion-icon name="cafe-outline" title="Servicio de café"></ion-icon>' : ''}
-                    </div>
-                `;
-
-                // Estado aleatorio (30% probabilidad de estar ocupada)
-                if (Math.random() < 0.3) {
-                    room.classList.add('occupied');
-                } else {
-                    room.addEventListener('click', handleMeetingRoomSelection);
-                }
-                
-                meetingGrid.appendChild(room);
-            }
-            
-            floorPlan.appendChild(meetingGrid);
-        }
-    }
-
-    // Función para manejar la selección de salas
-    function handleMeetingRoomSelection() {
-        if (this.classList.contains('occupied')) {
-            showToast('Esta sala no está disponible', 'danger');
-            return;
-        }
-
-        document.querySelectorAll('.meeting-room').forEach(room => {
-            if (room !== this) room.classList.remove('selected');
-        });
-        
-        this.classList.toggle('selected');
-        const roomId = this.dataset.id;
-
-        // Actualizar selección
-        selectedMeetingRooms.clear();
-        if (this.classList.contains('selected')) {
-            selectedMeetingRooms.add(roomId);
-        }
-
-        updateSelectionSummary();
-        updateConfirmButton();
-    }
-  </script> -->
 </body>
 </html>

@@ -1,24 +1,27 @@
+/**
+ * CoWorkGo - Script de Reservas
+ * Gestiona la funcionalidad para reservar espacios de trabajo
+ */
+
 document.addEventListener('DOMContentLoaded', () => {
-    // Variables globales (igual que el original)
-    let selectedWorkspace = null;
-    let selectedTime = null;
+    // Variables globales (IMPORTANTE - Estaban faltando estas declaraciones)
+    window.selectedDesks = new Set();
+    window.selectedOffices = new Set();
+    window.selectedMeetingRooms = new Set();
+    window.selectedServices = new Set();
+    
     let selectedDate = null;
     let selectedStartTime = null;
     let selectedEndTime = null;
-    let selectedDuration = null;
-    let selectedDesks = new Set();
-    let selectedOffices = new Set();
-    let selectedMeetingRooms = new Set();
-    let selectedServices = new Set();
 
-    // Array con los IDs de los espacios ocupados (mantenemos los mismos datos)
+    // Array con los IDs de los espacios ocupados (simulación de backend)
     const occupiedSpaces = {
-        desk: ['D3', 'D7', 'D12', 'D15', 'D19'], // Ajustado para 21 escritorios
-        office: ['O2', 'O5', 'O9', 'O13', 'O16'], // Oficinas ocupadas
-        meeting: ['M2', 'M5', 'M7', 'M9'] // Salas de reuniones ocupadas
+        desk: ['D3', 'D7', 'D12', 'D15', 'D19'], 
+        office: ['O2', 'O5', 'O9', 'O13', 'O16'],
+        meeting: ['M2', 'M5', 'M7', 'M9']
     };
 
-    // Elementos DOM (usando los mismos IDs del original)
+    // Referencias a elementos DOM
     const workspaceTypeSegment = document.getElementById('workspaceType');
     const floorPlan = document.getElementById('floorPlan');
     const bookingDateInput = document.getElementById('bookingDate');
@@ -36,42 +39,49 @@ document.addEventListener('DOMContentLoaded', () => {
     const selectedCount = document.getElementById('selectedCount');
     const selectedDesksElement = document.getElementById('selectedDesks');
 
-    // CORRECCIÓN 1: Asegurar que tenemos el event listener para cambio de tipo de espacio
+    // Verificar todos los elementos críticos
+    if (!workspaceTypeSegment) console.error('Elemento workspaceType no encontrado');
+    if (!floorPlan) console.error('Elemento floorPlan no encontrado');
+    if (!bookingDateInput) console.error('Elemento bookingDate no encontrado');
+    if (!startTimeSelect) console.error('Elemento startTime no encontrado');
+    if (!endTimeSelect) console.error('Elemento endTime no encontrado');
+
+    // INICIALIZACIÓN DE LA PÁGINA
+    console.log('Inicializando página de reservas...');
+
+    // Setup date picker - Configurar la fecha
+    setupDateInput();
+    
+    // Setup time selectors - Configurar selectores de tiempo
+    generateTimeOptions(startTimeSelect, 7, 23);
+    
+    // Setup service checkboxes - Manejar servicios adicionales
+    setupServiceCheckboxes();
+
+    // Cargar workspace por defecto
+    generateWorkspaces('desk');
+
+    // ASIGNAR EVENT LISTENERS
+    
+    // Cambiar tipo de espacio
     if (workspaceTypeSegment) {
         workspaceTypeSegment.addEventListener('ionChange', (ev) => {
             console.log('Cambiando tipo de espacio a:', ev.detail.value);
             
-            // Limpiar selecciones previas
-            selectedDesks.clear();
-            selectedOffices.clear();
-            selectedMeetingRooms.clear();
+            // Reset selecciones previas
+            window.selectedDesks.clear();
+            window.selectedOffices.clear();
+            window.selectedMeetingRooms.clear();
             
-            // Generar la vista correcta
+            // Generar nuevos espacios
             generateWorkspaces(ev.detail.value);
             
             // Actualizar UI
             updateConfirmButton();
         });
-    } else {
-        console.error('No se encontró el elemento workspaceType');
     }
 
-    // Configurar botón de volver
-    const backButton = document.querySelector('ion-back-button');
-    if (backButton) {
-        backButton.addEventListener('click', (e) => {
-            e.preventDefault();
-            
-            // Verificar cambios sin guardar
-            if (hasUnsavedChanges()) {
-                showConfirmationDialog();
-            } else {
-                navigateBack();
-            }
-        });
-    }
-
-    // CORRECCIÓN 2: Asegurar los handlers para los inputs de fecha/hora
+    // Cambio de fecha
     if (bookingDateInput) {
         bookingDateInput.addEventListener('ionChange', (ev) => {
             const selectedDateObj = new Date(ev.detail.value);
@@ -91,6 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Hora inicio
     if (startTimeSelect) {
         startTimeSelect.addEventListener('ionChange', (ev) => {
             selectedStartTime = ev.detail.value;
@@ -100,6 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Hora fin
     if (endTimeSelect) {
         endTimeSelect.addEventListener('ionChange', (ev) => {
             selectedEndTime = ev.detail.value;
@@ -109,20 +121,23 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // CORRECCIÓN 3: Asegurar los handlers para botones de confirmar/guardar
+    // Botón confirmar
     if (confirmButton) {
         confirmButton.addEventListener('click', () => {
+            // Crear resumen de la reserva
+            const workspaces = [
+                ...Array.from(window.selectedDesks),
+                ...Array.from(window.selectedOffices),
+                ...Array.from(window.selectedMeetingRooms)
+            ].filter(Boolean);
+            
             const booking = {
-                workspaces: [
-                    ...Array.from(selectedDesks),
-                    ...Array.from(selectedOffices),
-                    ...Array.from(selectedMeetingRooms)
-                ].filter(Boolean),
+                workspaces: workspaces,
                 date: selectedDate,
                 startTime: selectedStartTime,
                 endTime: selectedEndTime,
                 duration: totalDurationSpan ? totalDurationSpan.textContent : '0 horas',
-                services: Array.from(selectedServices)
+                services: Array.from(window.selectedServices)
             };
 
             updateBookingSummary(booking);
@@ -132,79 +147,58 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Configurar "Guardar Reserva"
-    // Configurar "Guardar Reserva"
-    const saveBookingButton = document.getElementById('saveBooking');   
-    if (saveBookingButton) {
-        saveBookingButton.addEventListener('click', async () => {
+    // Guardar reserva
+    // Guardar reserva
+const saveBookingButton = document.getElementById('saveBooking');   
+if (saveBookingButton) {
+    saveBookingButton.addEventListener('click', async () => {
         try {
-            // Mostrar indicador de carga
-            const loading = document.createElement('ion-loading');
-            loading.message = 'Guardando reserva...';
-            document.body.appendChild(loading);
-            await loading.present();
+            showLoading('Guardando reserva...');
 
-            // Obtener datos de la reserva
-            const idUsuario = sessionStorage.getItem('userId') || '1'; // Valor predeterminado para demo
+            // Obtener datos relevantes
+            const idUsuario = sessionStorage.getItem('userId') || '62487baf-f156-4395-b988-d5a66dcc1126'; 
             
             // Obtener espacios seleccionados
             const workspaces = [
-                ...Array.from(selectedDesks),
-                ...Array.from(selectedOffices),
-                ...Array.from(selectedMeetingRooms)
+                ...Array.from(window.selectedDesks),
+                ...Array.from(window.selectedOffices),
+                ...Array.from(window.selectedMeetingRooms)
             ].filter(Boolean);
             
             if (workspaces.length === 0) {
                 throw new Error('Debe seleccionar al menos un espacio');
             }
             
-            // Usar el primer espacio seleccionado para la reserva en Supabase
+            // Usar el primer espacio para la reserva
             const espacioCompleto = workspaces[0];
-            const tipoEspacio = espacioCompleto[0]; // Primera letra: D, O o M
-            const idEspacio = espacioCompleto.substring(1); // Número después de la letra
+            // MODIFICACIÓN IMPORTANTE: Pasar el ID completo incluyendo la letra
+            // para identificar el tipo de espacio (D2, O3, M1, etc.)
+            const idEspacio = espacioCompleto; 
             
-            console.log(`Creando reserva para espacio tipo ${tipoEspacio} id ${idEspacio}`);
+            console.log(`Creando reserva para espacio ${idEspacio}`);
             
-            // Construir fechas ISO para Supabase
+            // Construir fechas ISO
             const fechaISO = selectedDate;
             const fechaInicio = `${fechaISO}T${selectedStartTime}:00`;
             const fechaFin = `${fechaISO}T${selectedEndTime}:00`;
             
-            // Recopilar servicios adicionales seleccionados
-            const serviciosIds = Array.from(selectedServices).map(servicio => {
-                // Mapeo simple de servicios para la demo
+            // Recopilar servicios
+            const serviciosIds = Array.from(window.selectedServices).map(servicio => {
                 const mapeoServicios = {
-                    'wifi': 1,
-                    'parking': 2,
-                    'coffee': 3,
-                    'water': 4,
-                    'projector': 5,
-                    'printer': 6,
-                    'videoconf': 7,
-                    'wifi_meeting': 1,
-                    'coffee_meeting': 3,
-                    'water_meeting': 4,
-                    'projector_meeting': 5
+                    'wifi': 1, 'parking': 2, 'coffee': 3, 'water': 4,
+                    'projector': 5, 'printer': 6, 'videoconf': 7,
+                    'wifi_meeting': 1, 'coffee_meeting': 3, 
+                    'water_meeting': 4, 'projector_meeting': 5
                 };
                 return mapeoServicios[servicio] || null;
             }).filter(Boolean);
             
             let reservaGuardada = false;
             
-            // PASO 1: Intentar guardar en Supabase usando el servicio
-            try {
-                // Importar el servicio si está disponible
-                let servicioReservas;
+            // Intentar guardar en base de datos
+            if (window.servicioReservas) {
                 try {
-                    servicioReservas = (await import('../conexion/services/reservas-service.js')).servicioReservas;
-                } catch (importError) {
-                    console.warn('No se pudo importar el servicio de reservas:', importError);
-                }
-                
-                // Verificar si existe el servicio
-                if (servicioReservas && typeof servicioReservas.crearReserva === 'function') {
-                    
-                    const resultado = await servicioReservas.crearReserva({
+                    const resultado = await window.servicioReservas.crearReserva({
                         idEspacio,
                         idUsuario,
                         fechaInicio,
@@ -214,15 +208,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     
                     console.log('Reserva guardada en Supabase:', resultado);
                     reservaGuardada = true;
-                } else {
-                    console.warn('Servicio de reservas no disponible, usando almacenamiento local');
+                } catch (error) {
+                    console.error('Error con Supabase, usando almacenamiento local:', error);
                 }
-            } catch (supabaseError) {
-                console.error('Error al guardar en Supabase:', supabaseError);
-                console.log('Continuando con almacenamiento local');
+            } else {
+                console.warn('API no disponible, usando almacenamiento local');
             }
             
-            // PASO 2: Si falla Supabase, usar almacenamiento local como respaldo
+            // Reserva local como respaldo
             if (!reservaGuardada) {
                 console.log('Guardando en localStorage como respaldo');
                 const reservations = JSON.parse(localStorage.getItem('reservations') || '[]');
@@ -232,49 +225,30 @@ document.addEventListener('DOMContentLoaded', () => {
                     startTime: selectedStartTime,
                     endTime: selectedEndTime,
                     duration: totalDurationSpan ? totalDurationSpan.textContent : '0 horas',
-                    services: Array.from(selectedServices)
+                    services: Array.from(window.selectedServices)
                 });
                 localStorage.setItem('reservations', JSON.stringify(reservations));
             }
 
-            // Cerrar indicador de carga
-            await loading.dismiss();
+            hideLoading();
             
-            // Mostrar mensaje de éxito
-            const toast = document.createElement('ion-toast');
-            toast.message = '¡Reserva guardada con éxito!';
-            toast.duration = 2000;
-            toast.position = 'top';
-            toast.color = 'success';
-            document.body.appendChild(toast);
-            await toast.present();
-
-            // Redirigir a inicio después de 2 segundos
+            // Éxito!
+            showToast('¡Reserva guardada con éxito!', 'success');
+            
+            // // Redirigir después de 2 segundos
             setTimeout(() => {
                 window.location.href = '/web/pantalla_Inicio/inicio.html';
             }, 2000);
             
         } catch (error) {
-            // Cerrar loading si está activo
-            const loadingElement = document.querySelector('ion-loading');
-            if (loadingElement) {
-                await loadingElement.dismiss();
-            }
-            
-            // Mostrar mensaje de error
-            const toast = document.createElement('ion-toast');
-            toast.message = `Error: ${error.message}`;
-            toast.duration = 3000;
-            toast.position = 'top';
-            toast.color = 'danger';
-            document.body.appendChild(toast);
-            await toast.present();
-            console.error('Error al guardar la reserva:', error);
+            hideLoading();
+            showToast(`Error: ${error.message}`, 'danger');
+            console.error('Error al guardar reserva:', error);
         }
-     });
-    }
+    });
+}
 
-    // Configurar "Modificar Reserva"
+    // Modificar reserva
     const modifyBookingButton = document.getElementById('modifyBooking');
     if (modifyBookingButton) {
         modifyBookingButton.addEventListener('click', () => {
@@ -283,66 +257,21 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
-
-    // Configurar servicios adicionales
-    document.querySelectorAll('.service-item ion-checkbox').forEach(checkbox => {
-        checkbox.addEventListener('ionChange', (ev) => {
-            const service = ev.detail.checked;
-            const serviceValue = ev.target.value;
-            
-            if (service) {
-                selectedServices.add(serviceValue);
-                console.log('Servicio seleccionado:', serviceValue);
-            } else {
-                selectedServices.delete(serviceValue);
-                console.log('Servicio deseleccionado:', serviceValue);
-            }
-        });
-    });
-
-    // CORRECCIÓN 4: Funciones clave actualizadas
-    // Verificar cambios sin guardar
-    function hasUnsavedChanges() {
-        return selectedDesks.size > 0 || 
-               selectedOffices.size > 0 || 
-               selectedMeetingRooms.size > 0 || 
-               selectedServices.size > 0 ||
-               selectedDate !== null ||
-               selectedStartTime !== null ||
-               selectedEndTime !== null;
+    
+    // Configurar servicio supabase
+    console.log('Verificando disponibilidad del servicio de reservas...');
+    if (window.servicioReservas) {
+        console.log('Servicio de reservas existente encontrado');
+    } else {
+        console.log('Cargando servicio de reservas dinamicamente...');
+        const script = document.createElement('script');
+        script.src = '/web/menus/reservas-service.js';
+        document.head.appendChild(script);
     }
 
-    // Mostrar diálogo de confirmación
-    function showConfirmationDialog() {
-        const alert = document.createElement('ion-alert');
-        alert.header = 'Cambios sin guardar';
-        alert.message = '¿Estás seguro de que quieres salir? Los cambios no guardados se perderán.';
-        alert.buttons = [
-            {
-                text: 'Cancelar',
-                role: 'cancel',
-                handler: () => {
-                    console.log('Operación cancelada');
-                }
-            },
-            {
-                text: 'Salir',
-                handler: () => {
-                    navigateBack();
-                }
-            }
-        ];
+    // FUNCIONES DE UTILIDAD
 
-        document.body.appendChild(alert);
-        alert.present();
-    }
-
-    // Navegar hacia atrás
-    function navigateBack() {
-        window.location.href = '/web/pantalla_Inicio/inicio.html';
-    }
-
-    // CORRECCIÓN 5: Este es el método clave que necesita arreglarse
+    // Generación de espacios
     function generateWorkspaces(type) {
         console.log('Generando espacios de tipo:', type);
         
@@ -477,7 +406,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // CORRECCIÓN 6: Handler para selección de escritorios
+    // Handler para selección de escritorios
     function handleDeskSelection() {
         if (this.classList.contains('occupied')) {
             showToast('Este escritorio no está disponible', 'danger');
@@ -491,9 +420,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Actualizar conjunto de escritorios seleccionados
         if (this.classList.contains('selected')) {
-            selectedDesks.add(deskId);
+            window.selectedDesks.add(deskId);
         } else {
-            selectedDesks.delete(deskId);
+            window.selectedDesks.delete(deskId);
         }
 
         // Actualizar UI
@@ -501,7 +430,7 @@ document.addEventListener('DOMContentLoaded', () => {
         updateConfirmButton();
     }
 
-    // CORRECCIÓN 7: Handler para selección de oficinas
+    // Handler para selección de oficinas
     function handleOfficeSelection() {
         if (this.classList.contains('occupied')) {
             showToast('Esta oficina no está disponible', 'danger');
@@ -515,9 +444,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Actualizar conjunto de oficinas seleccionadas
         if (this.classList.contains('selected')) {
-            selectedOffices.add(officeId);
+            window.selectedOffices.add(officeId);
         } else {
-            selectedOffices.delete(officeId);
+            window.selectedOffices.delete(officeId);
         }
 
         // Actualizar UI
@@ -525,7 +454,7 @@ document.addEventListener('DOMContentLoaded', () => {
         updateConfirmButton();
     }
 
-    // CORRECCIÓN 8: Handler para selección de salas
+    // Handler para selección de salas
     function handleMeetingRoomSelection() {
         if (this.classList.contains('occupied')) {
             showToast('Esta sala no está disponible', 'danger');
@@ -543,9 +472,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const roomId = this.dataset.id;
 
         // Actualizar conjunto de salas seleccionadas
-        selectedMeetingRooms.clear();
+        window.selectedMeetingRooms.clear();
         if (this.classList.contains('selected')) {
-            selectedMeetingRooms.add(roomId);
+            window.selectedMeetingRooms.add(roomId);
         }
 
         // Actualizar UI
@@ -553,7 +482,7 @@ document.addEventListener('DOMContentLoaded', () => {
         updateConfirmButton();
     }
 
-    // CORRECCIÓN 9: Actualización del resumen de selección
+    // Actualización del resumen de selección
     function updateSelectionSummary(type = 'desk') {
         if (!selectionSummary || !selectedCount || !selectedDesksElement) {
             return;
@@ -562,13 +491,13 @@ document.addEventListener('DOMContentLoaded', () => {
         let items, tagClass;
         
         if (type === 'desk') {
-            items = selectedDesks;
+            items = window.selectedDesks;
             tagClass = 'desk-tag';
         } else if (type === 'office') {
-            items = selectedOffices;
+            items = window.selectedOffices;
             tagClass = 'office-tag';
         } else if (type === 'meeting') {
-            items = selectedMeetingRooms;
+            items = window.selectedMeetingRooms;
             tagClass = 'desk-tag'; // Usar el mismo estilo para simplificar
         }
 
@@ -589,13 +518,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // CORRECCIÓN 10: Actualización de horas disponibles
+    // Actualizar horas disponibles para fin
     function updateAvailableEndTimes() {
-        if (!endTimeSelect) return;
+        if (!endTimeSelect || !selectedStartTime) return;
         
         endTimeSelect.innerHTML = '';
-        if (!selectedStartTime) return;
-
+        
         const startHour = parseInt(selectedStartTime.split(':')[0]);
         for (let hour = startHour + 1; hour <= 24; hour++) {
             const timeValue = hour === 24 ? '00:00' : `${hour.toString().padStart(2, '0')}:00`;
@@ -625,32 +553,24 @@ document.addEventListener('DOMContentLoaded', () => {
         updateConfirmButton();
     }
 
-    // Actualizar rango de tiempo
+    // Actualizar rango de tiempo en UI
     function updateTimeRange() {
-        if (!selectedStartTime || !selectedEndTime || !timeRangeSpan || !totalDurationSpan) return;
-        
-        const startTime = new Date(`2025-01-01 ${selectedStartTime}`);
-        let endTime = new Date(`2025-01-01 ${selectedEndTime}`);
-        
-        if (selectedEndTime === '00:00') {
-            endTime = new Date(`2025-01-02 00:00`);
-        }
-        
-        const diffHours = (endTime - startTime) / (1000 * 60 * 60);
+        if (!selectedStartTime || !selectedEndTime || !timeRangeSpan) return;
         
         timeRangeSpan.textContent = `${selectedStartTime} a ${selectedEndTime}`;
-        totalDurationSpan.textContent = `${diffHours} ${diffHours === 1 ? 'hora' : 'horas'}`;
         
-        updateConfirmButton();
+        // Esto también actualiza la duración
+        calculateDuration();
     }
 
     // Actualizar estado del botón de confirmación
     function updateConfirmButton() {
         if (!confirmButton) return;
         
-        const hasSelections = selectedDesks.size > 0 || 
-                             selectedOffices.size > 0 || 
-                             selectedMeetingRooms.size > 0;
+        const hasSelections = 
+            window.selectedDesks.size > 0 || 
+            window.selectedOffices.size > 0 || 
+            window.selectedMeetingRooms.size > 0;
                              
         confirmButton.disabled = !hasSelections || !selectedDate || !selectedStartTime || !selectedEndTime;
     }
@@ -662,12 +582,12 @@ document.addEventListener('DOMContentLoaded', () => {
         // Determinar tipo de espacio y crear descripción
         let workspaceDescription = '';
         
-        if (selectedDesks.size > 0) {
-            workspaceDescription = `Escritorio${selectedDesks.size > 1 ? 's' : ''}: ${Array.from(selectedDesks).join(', ')}`;
-        } else if (selectedOffices.size > 0) {
-            workspaceDescription = `Oficina${selectedOffices.size > 1 ? 's' : ''}: ${Array.from(selectedOffices).join(', ')}`;
-        } else if (selectedMeetingRooms.size > 0) {
-            workspaceDescription = `Sala${selectedMeetingRooms.size > 1 ? 's' : ''} de Reuniones: ${Array.from(selectedMeetingRooms).join(', ')}`;
+        if (window.selectedDesks.size > 0) {
+            workspaceDescription = `Escritorio${window.selectedDesks.size > 1 ? 's' : ''}: ${Array.from(window.selectedDesks).join(', ')}`;
+        } else if (window.selectedOffices.size > 0) {
+            workspaceDescription = `Oficina${window.selectedOffices.size > 1 ? 's' : ''}: ${Array.from(window.selectedOffices).join(', ')}`;
+        } else if (window.selectedMeetingRooms.size > 0) {
+            workspaceDescription = `Sala${window.selectedMeetingRooms.size > 1 ? 's' : ''} de Reuniones: ${Array.from(window.selectedMeetingRooms).join(', ')}`;
         }
 
         // Formatear fecha para mostrar
@@ -690,10 +610,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 <p><strong>Fecha:</strong> ${fechaFormateada}</p>
                 <p><strong>Horario:</strong> ${selectedStartTime} a ${selectedEndTime}</p>
                 <p><strong>Duración:</strong> ${totalDurationSpan ? totalDurationSpan.textContent : '0 horas'}</p>
-                ${selectedServices.size > 0 ? `
+                ${window.selectedServices.size > 0 ? `
                     <div class="services-summary">
                         <h4>Servicios adicionales:</h4>
-                        ${Array.from(selectedServices).map(service => `
+                        ${Array.from(window.selectedServices).map(service => `
                             <div class="selected-service">
                                 <ion-icon name="${getServiceIcon(service)}"></ion-icon>
                                 ${getServiceName(service)}
@@ -703,6 +623,24 @@ document.addEventListener('DOMContentLoaded', () => {
                 ` : ''}
             </div>
         `;
+    }
+
+    // Configurar servicios adicionales
+    function setupServiceCheckboxes() {
+        document.querySelectorAll('.service-item ion-checkbox').forEach(checkbox => {
+            checkbox.addEventListener('ionChange', (ev) => {
+                const isChecked = ev.detail.checked;
+                const serviceValue = ev.target.value;
+                
+                if (isChecked) {
+                    window.selectedServices.add(serviceValue);
+                    console.log('Servicio seleccionado:', serviceValue);
+                } else {
+                    window.selectedServices.delete(serviceValue);
+                    console.log('Servicio deseleccionado:', serviceValue);
+                }
+            });
+        });
     }
 
     // Configurar input de fecha
@@ -721,7 +659,7 @@ document.addEventListener('DOMContentLoaded', () => {
         selectedDate = bookingDateInput.value;
     }
 
-    // CORRECCIÓN 11: Generar opciones de hora
+    // Generar opciones de hora para los selectores
     function generateTimeOptions(select, startHour, endHour) {
         if (!select) return;
         
@@ -746,6 +684,24 @@ document.addEventListener('DOMContentLoaded', () => {
         toast.color = color;
         document.body.appendChild(toast);
         toast.present();
+    }
+
+    // Mostrar indicador de carga
+    async function showLoading(message = 'Cargando...') {
+        const loading = document.createElement('ion-loading');
+        loading.message = message;
+        loading.id = 'loading-indicator';
+        document.body.appendChild(loading);
+        await loading.present();
+    }
+
+    // Ocultar indicador de carga
+    async function hideLoading() {
+        const loading = document.getElementById('loading-indicator');
+        if (loading) {
+            await loading.dismiss();
+            loading.remove();
+        }
     }
 
     // Obtener nombre de servicio
@@ -783,10 +739,4 @@ document.addEventListener('DOMContentLoaded', () => {
         };
         return serviceIcons[service] || 'add-outline';
     }
-
-    // INICIALIZACIÓN
-    console.log('Inicializando página de reservas...');
-    setupDateInput();
-    generateTimeOptions(startTimeSelect, 7, 23);
-    generateWorkspaces('desk'); // Mostrar escritorios por defecto
 });

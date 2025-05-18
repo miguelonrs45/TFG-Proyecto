@@ -1,413 +1,324 @@
-document.addEventListener('DOMContentLoaded', () => {
-    loadUserProfile();
-    setupEventListeners();
-
-    // Añadir manejador para el botón de volver
-    document.querySelector('ion-back-button').addEventListener('click', (e) => {
-        e.preventDefault();
-        navigateBack();
-    });
-});
-
-function loadUserProfile() {
-    // Obtener datos del usuario desde sessionStorage
-    const userName = sessionStorage.getItem('userName');
-    const userEmail = sessionStorage.getItem('userEmail');
-    const notifications = sessionStorage.getItem('notifications') === 'true';
-    const currentTheme = sessionStorage.getItem('theme') || 'light'; // Obtener tema guardado
+/**
+ * Perfil de usuario para CoWorkGo
+ * Utiliza servicios para gestionar datos y autenticación
+ */
+document.addEventListener('DOMContentLoaded', function() {
+    console.log("Inicializando página de perfil...");
     
-    // Cargar datos del usuario
-    const userProfile = {
-        name: userName || 'Usuario',
-        email: userEmail || 'usuario@email.com',
-        department: 'Tecnología',
-        position: 'Desarrollador Senior',
-        notifications: notifications !== null ? notifications : true,
-        theme: currentTheme
-    };
-
-    // Actualizar la interfaz y aplicar el tema
-    document.getElementById('userName').textContent = userProfile.name;
-    document.getElementById('userEmail').textContent = userProfile.email;
-    document.getElementById('fullName').textContent = userProfile.name;
-    document.getElementById('department').textContent = userProfile.department;
-    document.getElementById('position').textContent = userProfile.position;
-    document.getElementById('notificationsToggle').checked = userProfile.notifications;
-    document.getElementById('themeSelect').value = userProfile.theme;
-    
-    // Aplicar el tema actual
-    applyTheme(userProfile.theme);
-}
-
-function applyTheme(theme) {
-    document.body.classList.remove('light-theme', 'dark-theme');
-    document.body.classList.add(`${theme}-theme`);
-    
-    if (theme === 'dark') {
-        document.body.style.setProperty('--ion-background-color', '#121212');
-        document.body.style.setProperty('--ion-text-color', '#ffffff');
-        document.body.style.setProperty('--ion-toolbar-background', '#1e1e1e');
-        document.body.style.setProperty('--ion-item-background', '#1e1e1e');
-        document.body.style.setProperty('--ion-card-background', '#1e1e1e');
-        // Nuevas variables para mejor contraste
-        document.body.style.setProperty('--ion-color-step-50', '#1e1e1e');
-        document.body.style.setProperty('--ion-color-step-100', '#2a2a2a');
-        document.body.style.setProperty('--ion-color-step-150', '#363636');
-        document.body.style.setProperty('--ion-color-step-200', '#414141');
-        document.body.style.setProperty('--ion-color-step-850', '#e0e0e0');
-        document.body.style.setProperty('--ion-color-step-900', '#f0f0f0');
+    // Asegurarse de que el servicio Supabase esté disponible
+    if (typeof window.supabaseService === 'undefined') {
+        console.log("Cargando servicio de Supabase...");
+        const script = document.createElement('script');
+        script.src = '/web/conexion/services/supabase-service.js';
+        document.head.appendChild(script);
+        
+        // Esperar a que esté disponible
+        const checkService = setInterval(() => {
+            if (typeof window.supabaseService !== 'undefined') {
+                clearInterval(checkService);
+                console.log("Servicio de Supabase cargado con éxito");
+                inicializarPerfil();
+            }
+        }, 100);
     } else {
-        document.body.style.setProperty('--ion-background-color', '#ffffff');
-        document.body.style.setProperty('--ion-text-color', '#000000');
-        document.body.style.setProperty('--ion-toolbar-background', '#f8f9fa');
-        document.body.style.setProperty('--ion-item-background', '#ffffff');
-        document.body.style.setProperty('--ion-card-background', '#ffffff');
-        // Restablecer variables para modo claro
-        document.body.style.setProperty('--ion-color-step-50', '#f2f2f2');
-        document.body.style.setProperty('--ion-color-step-100', '#e6e6e6');
-        document.body.style.setProperty('--ion-color-step-150', '#d9d9d9');
-        document.body.style.setProperty('--ion-color-step-200', '#cccccc');
-        document.body.style.setProperty('--ion-color-step-850', '#262626');
-        document.body.style.setProperty('--ion-color-step-900', '#1a1a1a');
+        inicializarPerfil();
     }
-}
-
-function setupEventListeners() {
-    // Manejar edición de perfil
-    document.getElementById('editProfileButton').addEventListener('click', () => {
-        showEditProfileModal();
-    });
-
-    // Manejar cambio de notificaciones
-    document.getElementById('notificationsToggle').addEventListener('ionChange', (ev) => {
-        const isEnabled = ev.detail.checked;
-        updateNotificationPreference(isEnabled);
-    });
-
-    // Manejar cambio de tema
-    document.getElementById('themeSelect').addEventListener('ionChange', (ev) => {
-        updateThemePreference(ev.detail.value);
-    });
-
-    // Manejar cierre de sesión
-    document.getElementById('logoutButton').addEventListener('click', () => {
-        showLogoutConfirmation();
-    });
-}
-
-async function showEditProfileModal() {
-    const alert = document.createElement('ion-alert');
-    alert.header = 'Editar Perfil';
-    alert.inputs = [
-        {
-            name: 'name',
-            type: 'text',
-            placeholder: 'Nombre completo',
-            value: document.getElementById('fullName').textContent
-        },
-        {
-            name: 'department',
-            type: 'text',
-            placeholder: 'Departamento',
-            value: document.getElementById('department').textContent
-        },
-        {
-            name: 'position',
-            type: 'text',
-            placeholder: 'Cargo',
-            value: document.getElementById('position').textContent
-        }
-    ];
-    alert.buttons = [
-        {
-            text: 'Cancelar',
-            role: 'cancel'
-        },
-        {
-            text: 'Guardar',
-            handler: (data) => {
-                updateProfile(data);
-            }
-        }
-    ];
-
-    document.body.appendChild(alert);
-    await alert.present();
-}
-
-function updateProfile(data) {
-    // Actualizar datos en la interfaz
-    document.getElementById('userName').textContent = data.name;
-    document.getElementById('fullName').textContent = data.name;
-    document.getElementById('department').textContent = data.department;
-    document.getElementById('position').textContent = data.position;
-
-    // Mostrar confirmación
-    showToast('Perfil actualizado correctamente');
-}
-
-async function showLogoutConfirmation() {
-    const alert = document.createElement('ion-alert');
-    alert.header = 'Cerrar Sesión';
-    alert.message = '¿Estás seguro de que deseas cerrar sesión?';
-    alert.buttons = [
-        {
-            text: 'Cancelar',
-            role: 'cancel'
-        },
-        {
-            text: 'Sí, cerrar sesión',
-            handler: () => {
-                logout();
-            }
-        }
-    ];
-
-    document.body.appendChild(alert);
-    await alert.present();
-}
-
-function logout() {
-    // Limpiar datos de sesión
-    sessionStorage.clear();
-    // Redirigir a login
-    window.location.href = '/web/login_registro/iniciosesion.html';
-}
-
-async function showToast(message) {
-    const toast = document.createElement('ion-toast');
-    toast.message = message;
-    toast.duration = 2000;
-    toast.position = 'top';
-    toast.color = 'success';
-
-    document.body.appendChild(toast);
-    await toast.present();
-}
-
-async function updateNotificationPreference(enabled) {
-    // Guardar preferencia en sessionStorage
-    sessionStorage.setItem('notifications', enabled);
-
-    // Mostrar confirmación al usuario
-    const toast = document.createElement('ion-toast');
-    toast.message = `Notificaciones ${enabled ? 'activadas' : 'desactivadas'}`;
-    toast.duration = 2000;
-    toast.position = 'top';
-    toast.color = enabled ? 'success' : 'medium';
-
-    document.body.appendChild(toast);
-    await toast.present();
-
-    // Si las notificaciones están activadas, solicitar permiso del navegador
-    if (enabled && "Notification" in window) {
-        Notification.requestPermission().then(permission => {
-            if (permission === "granted") {
-                // Mostrar una notificación de prueba
-                new Notification("CoWorkGo", {
-                    body: "Las notificaciones han sido activadas",
-                    icon: "/assets/icon.png" // Asegúrate de tener un icono
-                });
-            }
-        });
-    }
-}
-
-async function updateThemePreference(theme) {
-    // Guardar preferencia en sessionStorage
-    sessionStorage.setItem('theme', theme);
     
-    // Aplicar el nuevo tema usando el gestor global
-    window.applyGlobalTheme();
-
-    // Mostrar confirmación
-    const toast = document.createElement('ion-toast');
-    toast.message = `Tema ${theme === 'dark' ? 'oscuro' : 'claro'} aplicado`;
-    toast.duration = 2000;
-    toast.position = 'top';
-    toast.color = 'success';
-
-    document.body.appendChild(toast);
-    await toast.present();
-}
-
-async function navigateBack() {
-    const hasChanges = checkForChanges(); // Función para verificar cambios sin guardar
-
-    if (hasChanges) {
+    function inicializarPerfil() {
+        cargarDatosPerfil();
+        configurarEventos();
+        
+        // Botón de volver
+        const backButton = document.querySelector('ion-back-button');
+        if (backButton) {
+            backButton.addEventListener('click', function(e) {
+                e.preventDefault();
+                window.location.href = '/web/pantalla_Inicio/inicio.html';
+            });
+        }
+    }
+    
+    async function cargarDatosPerfil() {
+        // Cargar datos desde sessionStorage
+        const userName = sessionStorage.getItem('userName') || 'Usuario';
+        const userEmail = sessionStorage.getItem('userEmail') || 'usuario@email.com';
+        const userLastName = sessionStorage.getItem('userLastName') || '';
+        const notifications = sessionStorage.getItem('notifications') === 'true';
+        const currentTheme = sessionStorage.getItem('theme') || 'light';
+        
+        // Actualizar interfaz con datos básicos
+        document.getElementById('userName').textContent = userName;
+        document.getElementById('userEmail').textContent = userEmail;
+        document.getElementById('fullName').textContent = `${userName} ${userLastName}`.trim();
+        document.getElementById('department').textContent = sessionStorage.getItem('userDepartment') || 'No especificado';
+        document.getElementById('position').textContent = sessionStorage.getItem('userPosition') || 'No especificado';
+        
+        // Configurar preferencias
+        const notificationsToggle = document.getElementById('notificationsToggle');
+        if (notificationsToggle) {
+            notificationsToggle.checked = notifications !== null ? notifications : true;
+        }
+        
+        const themeSelect = document.getElementById('themeSelect');
+        if (themeSelect) {
+            themeSelect.value = currentTheme;
+        }
+        
+        // Aplicar tema
+        applyTheme(currentTheme);
+        
+        try {
+            // Si está disponible Supabase, intentar cargar datos actualizados
+            if (window.supabaseService) {
+                // Verificar sesión
+                const sesionActiva = await window.supabaseService.verificarSesion();
+                
+                if (!sesionActiva) {
+                    console.log("No hay sesión activa - Redirigiendo a login");
+                    window.location.href = '/web/login_registro/iniciosesion.html';
+                    return;
+                }
+                
+                // Obtener ID de usuario desde la sesión
+                const client = window.supabaseService.getClient();
+                const { data: sessionData } = await client.auth.getSession();
+                
+                if (sessionData && sessionData.session) {
+                    const userId = sessionData.session.user.id;
+                    
+                    // Cargar datos actualizados
+                    const userData = await window.supabaseService.cargarDatosUsuario(userId);
+                    
+                    if (userData) {
+                        // Actualizar interfaz con datos frescos
+                        document.getElementById('userName').textContent = userData.nombre || userName;
+                        document.getElementById('fullName').textContent = 
+                            `${userData.nombre || ''} ${userData.apellidos || ''}`.trim() || userName;
+                        
+                        // Solo actualizar email si está disponible
+                        if (userData.email) {
+                            document.getElementById('userEmail').textContent = userData.email;
+                        }
+                    }
+                }
+            }
+        } catch (error) {
+            console.error("Error al cargar datos desde Supabase:", error);
+            
+            // Si hay error de autenticación, redirigir a login
+            if (error.message && (
+                error.message.includes("not authenticated") || 
+                error.message.includes("JWT expired") ||
+                error.message.includes("token expired")
+            )) {
+                window.location.href = '/web/login_registro/iniciosesion.html';
+            }
+        }
+    }
+    
+    function configurarEventos() {
+        // Editar perfil
+        const editProfileButton = document.getElementById('editProfileButton');
+        if (editProfileButton) {
+            editProfileButton.addEventListener('click', function() {
+                showEditProfileModal();
+            });
+        }
+        
+        // Notificaciones
+        const notificationsToggle = document.getElementById('notificationsToggle');
+        if (notificationsToggle) {
+            notificationsToggle.addEventListener('ionChange', function(ev) {
+                const isEnabled = ev.detail.checked;
+                updateNotificationPreference(isEnabled);
+            });
+        }
+        
+        // Tema
+        const themeSelect = document.getElementById('themeSelect');
+        if (themeSelect) {
+            themeSelect.addEventListener('ionChange', function(ev) {
+                updateThemePreference(ev.detail.value);
+            });
+        }
+    }
+    
+    async function showEditProfileModal() {
         const alert = document.createElement('ion-alert');
-        alert.header = 'Cambios sin guardar';
-        alert.message = '¿Estás seguro de que quieres salir? Los cambios no guardados se perderán.';
+        alert.header = 'Editar Perfil';
+        alert.inputs = [
+            {
+                name: 'name',
+                type: 'text',
+                placeholder: 'Nombre completo',
+                value: document.getElementById('fullName').textContent
+            },
+            {
+                name: 'department',
+                type: 'text',
+                placeholder: 'Departamento',
+                value: document.getElementById('department').textContent
+            },
+            {
+                name: 'position',
+                type: 'text',
+                placeholder: 'Cargo',
+                value: document.getElementById('position').textContent
+            }
+        ];
         alert.buttons = [
             {
                 text: 'Cancelar',
-                role: 'cancel',
-                handler: () => {
-                    console.log('Navegación cancelada');
-                }
+                role: 'cancel'
             },
             {
-                text: 'Salir',
-                handler: () => {
-                    window.location.href = '/web/pantalla_Inicio/inicio.html';
+                text: 'Guardar',
+                handler: async (data) => {
+                    try {
+                        // Actualizar interfaz
+                        document.getElementById('fullName').textContent = data.name;
+                        document.getElementById('department').textContent = data.department;
+                        document.getElementById('position').textContent = data.position;
+                        
+                        // Separar nombre y apellidos
+                        const nameParts = data.name.split(' ');
+                        const nombre = nameParts[0] || '';
+                        const apellidos = nameParts.slice(1).join(' ') || '';
+                        
+                        // Actualizar nombre visible
+                        document.getElementById('userName').textContent = nombre;
+                        
+                        // Guardar en sessionStorage
+                        sessionStorage.setItem('userName', nombre);
+                        sessionStorage.setItem('userLastName', apellidos);
+                        sessionStorage.setItem('userDepartment', data.department);
+                        sessionStorage.setItem('userPosition', data.position);
+                        
+                        // Actualizar en Supabase si está disponible
+                        if (window.supabaseService) {
+                            // Obtener ID de usuario desde la sesión
+                            const client = window.supabaseService.getClient();
+                            const { data: sessionData } = await client.auth.getSession();
+                            
+                            if (sessionData && sessionData.session) {
+                                const userId = sessionData.session.user.id;
+                                
+                                // Actualizar datos en Supabase
+                                await window.supabaseService.actualizarPerfil(userId, {
+                                    nombre: nombre,
+                                    apellidos: apellidos,
+                                    departamento: data.department,
+                                    cargo: data.position
+                                });
+                            }
+                        }
+                        
+                        showToast('Perfil actualizado correctamente');
+                    } catch (error) {
+                        console.error("Error al actualizar perfil:", error);
+                        showToast('Error al actualizar perfil', 'danger');
+                    }
                 }
             }
         ];
 
         document.body.appendChild(alert);
         await alert.present();
-    } else {
-        window.location.href = '/web/pantalla_Inicio/inicio.html';
     }
-}
-
-function checkForChanges() {
-    // Verificar si hay cambios sin guardar comparando con los valores originales
-    const originalProfile = {
-        name: document.getElementById('userName').textContent,
-        department: document.getElementById('department').textContent,
-        position: document.getElementById('position').textContent
-    };
-
-    return false; // Por defecto retorna false si no hay cambios
-}
-
-// Actualizar los estilos CSS para los temas
-const styleSheet = document.createElement('style');
-styleSheet.textContent = `
-    .light-theme {
-        --background-color: #ffffff;
-        --text-color: #000000;
-        --card-background: #ffffff;
-        --border-color: #e0e0e0;
-        --label-color: #666666;
-        --value-color: #333333;
+    
+    async function updateNotificationPreference(enabled) {
+        // Guardar en sessionStorage
+        sessionStorage.setItem('notifications', enabled);
+        
+        // Mostrar confirmación
+        showToast(`Notificaciones ${enabled ? 'activadas' : 'desactivadas'}`);
+        
+        // Actualizar en Supabase si está disponible
+        try {
+            if (window.supabaseService) {
+                // Obtener ID de usuario desde la sesión
+                const client = window.supabaseService.getClient();
+                const { data: sessionData } = await client.auth.getSession();
+                
+                if (sessionData && sessionData.session) {
+                    const userId = sessionData.session.user.id;
+                    
+                    // Guardar preferencia
+                    await window.supabaseService.guardarPreferencias(userId, {
+                        notifications: enabled
+                    });
+                }
+            }
+        } catch (error) {
+            console.error("Error al guardar preferencia de notificaciones:", error);
+        }
     }
-
-    .dark-theme {
-        --background-color: #121212;
-        --text-color: #ffffff;
-        --card-background: #1e1e1e;
-        --border-color: #333333;
-        --label-color: #e0e0e0;
-        --value-color: #ffffff;
+    
+    async function updateThemePreference(theme) {
+        // Guardar en sessionStorage
+        sessionStorage.setItem('theme', theme);
+        
+        // Aplicar tema
+        applyTheme(theme);
+        
+        // Mostrar confirmación
+        showToast(`Tema ${theme === 'dark' ? 'oscuro' : 'claro'} aplicado`);
+        
+        // Actualizar en Supabase si está disponible
+        try {
+            if (window.supabaseService) {
+                // Obtener ID de usuario desde la sesión
+                const client = window.supabaseService.getClient();
+                const { data: sessionData } = await client.auth.getSession();
+                
+                if (sessionData && sessionData.session) {
+                    const userId = sessionData.session.user.id;
+                    
+                    // Guardar preferencia
+                    await window.supabaseService.guardarPreferencias(userId, {
+                        theme: theme
+                    });
+                }
+            }
+        } catch (error) {
+            console.error("Error al guardar preferencia de tema:", error);
+        }
     }
-
-    .dark-theme .profile-section {
-        background-color: var(--card-background);
-        border-color: var(--border-color);
+    
+    function applyTheme(theme) {
+        document.body.classList.remove('light-theme', 'dark-theme');
+        document.body.classList.add(`${theme}-theme`);
+        
+        if (theme === 'dark') {
+            document.body.style.setProperty('--ion-background-color', '#121212');
+            document.body.style.setProperty('--ion-text-color', '#ffffff');
+            document.body.style.setProperty('--ion-toolbar-background', '#1e1e1e');
+            document.body.style.setProperty('--ion-item-background', '#1e1e1e');
+            document.body.style.setProperty('--ion-card-background', '#1e1e1e');
+            // Más variables...
+        } else {
+            document.body.style.setProperty('--ion-background-color', '#ffffff');
+            document.body.style.setProperty('--ion-text-color', '#000000');
+            document.body.style.setProperty('--ion-toolbar-background', '#f8f9fa');
+            document.body.style.setProperty('--ion-item-background', '#ffffff');
+            document.body.style.setProperty('--ion-card-background', '#ffffff');
+            // Más variables...
+        }
+        
+        // Si existe la función global, también usarla
+        if (typeof window.applyGlobalTheme === 'function') {
+            window.applyGlobalTheme();
+        }
     }
+    
+    async function showToast(message, color = 'success', duration = 2000) {
+        const toast = document.createElement('ion-toast');
+        toast.message = message;
+        toast.duration = duration;
+        toast.position = 'top';
+        toast.color = color;
 
-    .dark-theme .profile-info-label {
-        color: var(--label-color);
+        document.body.appendChild(toast);
+        await toast.present();
     }
-
-    .dark-theme .profile-info-value {
-        color: var(--value-color);
-    }
-
-    .dark-theme .profile-name {
-        color: #ffffff;
-    }
-
-    .dark-theme .profile-email {
-        color: #e0e0e0;
-    }
-
-    .dark-theme .profile-section h3 {
-        color: #ffffff;
-    }
-
-    .dark-theme .profile-section h3 ion-icon {
-        color: #4a90e2;
-    }
-
-    .dark-theme ion-item {
-        --highlight-color-focused: #4a90e2;
-        --highlight-color-valid: #2dd36f;
-        --highlight-color-invalid: #eb445a;
-    }
-
-    .dark-theme ion-toggle {
-        --background: #333333;
-        --background-checked: #4a90e2;
-    }
-
-    .dark-theme ion-select {
-        --placeholder-color: #e0e0e0;
-        --text-color: #ffffff;
-    }
-
-    .dark-theme .profile-header {
-        background: #1e1e1e;
-        border: 1px solid #333333;
-    }
-
-    .dark-theme .profile-avatar {
-        background: #4a90e2;
-        border: 2px solid #666666;
-    }
-
-    .dark-theme .profile-avatar ion-icon {
-        color: #ffffff;
-    }
-
-    .dark-theme .profile-name {
-        color: #ffffff;
-        text-shadow: none;
-    }
-
-    .dark-theme .profile-email {
-        color: #4a90e2;
-        opacity: 0.9;
-    }
-
-    .dark-theme .profile-section {
-        background-color: #1e1e1e;
-        border: 1px solid #333333;
-    }
-
-    .dark-theme .profile-section h3 {
-        color: #ffffff;
-    }
-
-    .dark-theme .profile-section h3 ion-icon {
-        color: #4a90e2;
-    }
-
-    .dark-theme .profile-info-label {
-        color: #e0e0e0;
-    }
-
-    .dark-theme .profile-info-value {
-        color: #ffffff;
-    }
-
-    /* Efectos hover para mejor interactividad */
-    .dark-theme .profile-section:hover {
-        background-color: #252525;
-        transition: background-color 0.3s ease;
-    }
-
-    .dark-theme ion-button {
-        --background: #4a90e2;
-        --background-hover: #357abd;
-        --color: #ffffff;
-    }
-
-    .dark-theme ion-button.danger {
-        --background: #cf3c4f;
-        --background-hover: #b33545;
-    }
-`;
-document.head.appendChild(styleSheet);
-
-const headElement = document.querySelector('head');
-const linkElement = document.createElement('link');
-linkElement.rel = 'stylesheet';
-linkElement.href = 'global-theme.css';
-headElement.appendChild(linkElement);
-
-const scriptElement = document.createElement('script');
-scriptElement.src = 'theme-manager.js';
-headElement.appendChild(scriptElement);
+});

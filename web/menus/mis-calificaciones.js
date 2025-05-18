@@ -1,3 +1,35 @@
+// Inicialización y verificación de servicios - Agregar al principio del archivo
+document.addEventListener('DOMContentLoaded', async function() {
+    console.log("Verificando servicios para calificaciones...");
+    
+    // Verificar autenticación
+    if (!window.supabaseService) {
+        console.error("Servicio Supabase no disponible");
+        mostrarAlerta("Error al cargar servicios necesarios", "danger");
+        return;
+    }
+    
+    // Verificar si el usuario está autenticado
+    const estaAutenticado = await window.supabaseService.verificarSesion();
+    if (!estaAutenticado) {
+        window.location.href = '/web/login_registro/iniciosesion.html';
+        return;
+    }
+    
+    // Función para mostrar alertas si no existe
+    async function mostrarAlerta(mensaje, color = 'primary', duracion = 3000) {
+        const toast = document.createElement('ion-toast');
+        toast.message = mensaje;
+        toast.duration = duracion;
+        toast.position = 'top';
+        toast.color = color;
+        document.body.appendChild(toast);
+        await toast.present();
+    }
+    
+    // El resto del código del archivo se mantiene igual
+});
+
 document.addEventListener('DOMContentLoaded', () => {
     // Data models
     let resenas = [];

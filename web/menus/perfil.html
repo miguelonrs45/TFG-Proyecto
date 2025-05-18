@@ -113,6 +113,8 @@
             }
         }
     </style>
+    <script src="/web/conexion/services/supabase-service.js"></script>
+    <script src="/web/menus/logout-handler.js"></script>
 </head>
 <body>
     <ion-app>
@@ -190,5 +192,42 @@
             </div>
         </ion-content>
     </ion-app>
+ <!-- Agregar este script justo antes del cierre de body -->
+<script>
+    // Script independiente para el cierre de sesión
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log("Configurando cierre de sesión seguro");
+        
+        const logoutBtn = document.getElementById('logoutButton');
+        
+        if (logoutBtn) {
+            console.log("Botón de logout encontrado y configurado");
+            
+            logoutBtn.addEventListener('click', function() {
+                console.log("Botón de logout clickeado");
+                
+                // Limpiar todos los datos de sesión
+                sessionStorage.clear();
+                
+                // Limpiar tokens de Supabase en localStorage
+                Object.keys(localStorage).forEach(key => {
+                    if (key.startsWith('sb-')) {
+                        localStorage.removeItem(key);
+                    }
+                });
+                
+                // ⚠️ CRÍTICO: Redireccionar con delay para permitir que el localStorage se limpie
+                setTimeout(function() {
+                    // Forzar recarga completa de la página de login
+                    window.location.replace('/web/login_registro/iniciosesion.html');
+                }, 100);
+            });
+        } else {
+            console.error("No se encontró el botón de logout. Verificar ID");
+        }
+    });
+</script>
+<!-- Script para manejo de cierre de sesión -->
+<script src="/web/menus/logout-handler.js"></script>
 </body>
 </html>

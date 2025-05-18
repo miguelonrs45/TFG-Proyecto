@@ -6,8 +6,7 @@
   <title>Inicio Sesión - CoWorkGo</title>
   <script type="module" src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.esm.js"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ionic/core/css/ionic.bundle.css">
-  <!-- Cambiar a type="module" para permitir importaciones ES6 -->
-  <script type="module" src="iniciosesion.js"></script>
+  <script src="iniciosesion.js" defer></script>
   <style>
     ion-content {
       --background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.7)), 
@@ -48,6 +47,43 @@
       margin-top: 2rem;
     }
 
+    .separator {
+      display: flex;
+      align-items: center;
+      text-align: center;
+      margin: 20px 0;
+      color: #777;
+    }
+    
+    .separator::before,
+    .separator::after {
+      content: '';
+      flex: 1;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    }
+    
+    .separator span {
+      padding: 0 10px;
+      font-size: 14px;
+    }
+    
+    .google-button {
+      --background: white;
+      --color: #333;
+      --border-radius: 8px;
+      --border-color: #ddd;
+      --border-style: solid;
+      --border-width: 1px;
+      font-weight: 500;
+      margin-top: 10px;
+    }
+    
+    .google-button ion-icon {
+      font-size: 18px;
+      margin-right: 8px;
+      min-width: 18px;
+    }
+
     @keyframes fadeIn {
       from {
         opacity: 0;
@@ -67,6 +103,8 @@
       --box-shadow: none;
     }
   </style>
+  <!-- Cargar servicio de Supabase -->
+  <script src="/web/conexion/services/supabase-service.js"></script>
 </head>
 <body>
   <ion-app>
@@ -102,6 +140,16 @@
           <ion-button expand="block" type="submit" color="primary">
             <ion-icon slot="start" name="log-in-outline"></ion-icon>
             Iniciar Sesión
+          </ion-button>
+
+          <!-- Botón de Google (ahora correctamente posicionado dentro del form) -->
+          <div class="separator">
+            <span>o continúa con</span>
+          </div>
+
+          <ion-button expand="block" type="button" class="google-button" id="googleLoginBtn">
+            <ion-icon src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0OCA0OCI+PHBhdGggZmlsbD0iI2ZiYzAyZCIgZD0iTTQzLjYxMSAyMC4wODNIMjRWMjkuMWgxMS4zMDNjLTEuMDI5IDQuNjU3LTUuMzE2IDcuNjE3LTExLjMwMyA3LjYxNy02Ljg4IDAtMTIuNDgtNS42LTEyLjQ4LTEyLjQ4czUuNi0xMi40OCAxMi40OC0xMi40OGMyLjk1NCAwIDUuNjM4IDEuMDI5IDcuNzU1IDIuNzN2LS4wMDlsNS4zNDQtNS4zNDRBMjEuNzIzIDIxLjcyMyAwIDAgMCAyNCAzLjkxN2MtMTEuMDg2IDAtMjAuMDgzIDguOTk3LTIwLjA4MyAyMC4wODMgMCAxMS4wODYgOC45OTcgMjAuMDgzIDIwLjA4MyAyMC4wODMgMTAuMDkgMCAxOC42LTcuMzA3IDE5LjY0Ny0xNi45NDMuMTU5LS45ODIuMjkyLTEuOTk5LjI5Mi0zLjA1N2E0My42MDIgNDMuNjAyIDAgMCAwLS4zMjktNC4wMDEiLz48cGF0aCBmaWxsPSIjZTk1NDJhIiBkPSJNMy45MTcgMTMuMTk1bDYuMTk4IDQuNjc0YTEyLjQ0NiAxMi40NDYgMCAwIDEgMTMuODg2LTcuMTFWMy45MTdDMTMuMDQ2IDMuOTE3IDMuOTE3IDEyLjA0NiAzLjkxNyAyNHoiLz48cGF0aCBmaWxsPSIjNDI4NWY0IiBkPSJNMjQgNDQuMDgzYzUuNTIzIDAgMTAuNTA4LTIuMDMxIDE0LjM4LTUuMzcySzMyLjUgMzEuNThDMzAuMDUxIDMzLjQwNiAyNy4wMDcgMzQuNSAyNCAzNC41Yy01Ljk0OCAwLTEwLjg5OC00LjI0OS0xMi4wMjYtOS45MjVMNS41NDIgMzAuMTdBMjAuMDU2IDIwLjA1NiAwIDAgMCAyNCA0NC4wODN6Ii8+PHBhdGggZmlsbD0iIzM0YTg1MyIgZD0iTTUuNTQyIDMwLjE3bDYuNDMyLTUuNTk1YzEuMTI4IDUuNjc2IDYuMDc5IDkuOTI1IDEyLjAyNiA5LjkyNSAzLjAwNyAwIDYuMDUtMS4wOTQgOC41LTIuOTJsNS44OCA3LjEzMWMtMy44NzIgMy4zNDEtOC44NTcgNS4zNzItMTQuMzggNS4zNzJBMjAuMDU2IDIwLjA1NiAwIDAgMSA1LjU0MiAzMC4xN3oiLz48cGF0aCBmaWxsPSIjZmFiYmRhIiBkPSJNNDMuNjExIDIwLjA4M0gyNHY5LjAxN2gxMS4zMDNjLTEuMDI5IDQuNjU3LTUuMzE2IDcuNjE3LTExLjMwMyA3LjYxN3YwYy01Ljk0OCAwLTEwLjg5OC00LjI0OS0xMi4wMjYtOS45MjVsLTYuNDMyIDUuNTk1QzYuOTA4IDM5LjkxOSAxNC4wODYgNDMuOSAyNCA0My45NTZWMC4wNDRDMTMuMDQ2IDAuMDQ0IDMuOTE3IDguMTczIDMuOTE3IDIwLjEyN2MwIDExLjA4NiA4Ljk5NyAyMC4wODMgMjAuMDgzIDIwLjA4M3YwYzEwLjA5IDAgMTguNi03LjMwNyAxOS42NDctMTYuOTQzLjE1OS0uOTgyLjI5Mi0xLjk5OS4yOTItMy4wNTdhNDMuNjAyIDQzLjYwMiAwIDAgMC0uMzI5LTQuMDAxIi8+PC9zdmc+" slot="start"></ion-icon>
+            Iniciar sesión con Google
           </ion-button>
 
           <div class="register-link">

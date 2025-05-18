@@ -1,9 +1,19 @@
 import { supabase } from '../conexion/services/supabase-service.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
-  // Contenedores para los diferentes estados
+  // Elementos DOM
   const requestResetContainer = document.getElementById('requestResetContainer');
   const resetPasswordContainer = document.getElementById('resetPasswordContainer');
+  const requestResetForm = document.getElementById('requestResetForm');
+  const resetPasswordForm = document.getElementById('resetPasswordForm');
+  
+  // Verificar si ya hay una sesión activa
+  const sesionActiva = await verificarSesionActiva();
+  if (sesionActiva) {
+    // Si hay sesión activa, redirigir al inicio
+    window.location.href = '/web/pantalla_Inicio/inicio.html';
+    return;
+  }
   
   // Obtener el hash de la URL para ver si hay un token
   const hash = window.location.hash;
@@ -18,13 +28,16 @@ document.addEventListener('DOMContentLoaded', async () => {
   if (type === 'recovery' && accessToken) {
     try {
       // Establecer la sesión con el token de recuperación
-      const { error } = await supabase.auth.setSession({
+      const { data, error } = await supabase.auth.setSession({
         access_token: accessToken,
         refresh_token: refreshToken || ''
       });
       
-      if (!error) {
+      if (!error && data.session) {
         hasValidSession = true;
+        
+        // Registrar evento analítico (opcional)
+        console.log('Usuario accedió a restablecimiento de contraseña con token válido');
       }
     } catch (error) {
       console.error('Error al establecer sesión:', error);
@@ -38,8 +51,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     resetPasswordContainer.style.display = 'block';
     
     // Manejar el formulario de restablecimiento de contraseña
-    const resetPasswordForm = document.getElementById('resetPasswordForm');
-    
     resetPasswordForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       
@@ -57,20 +68,50 @@ document.addEventListener('DOMContentLoaded', async () => {
         return;
       }
       
+      // Validar complejidad de la contraseña
+      if (!isValidPassword(password)) {
+        mostrarAlerta('La contraseña debe tener al menos 6 caracteres, incluir una mayúscula, una minúscula, un número y un carácter especial', 'danger');
+        return;
+      }
+      
+      // Mostrar indicador de carga
+      const loading = document.createElement('ion-loading');
+      loading.message = 'Actualizando contraseña...';
+      document.body.appendChild(loading);
+      await loading.present();
+      
       try {
         // Actualizar la contraseña
-        const { error } = await supabase.auth.updateUser({ password });
+        const { error } = await supabase.auth.updateUser({ 
+          password: password 
+        });
+        
+        // Cerrar indicador de carga
+        await loading.dismiss();
         
         if (error) throw error;
         
-        mostrarAlerta('Contraseña actualizada con éxito', 'success');
+        // Mostrar mensaje de éxito
+        const alert = document.createElement('ion-alert');
+        alert.header = 'Contraseña actualizada';
+        alert.message = 'Tu contraseña ha sido actualizada correctamente. Serás redirigido a la página de inicio de sesión.';
+        alert.buttons = [{
+          text: 'Continuar',
+          handler: () => {
+            // Cerrar sesión y redirigir a la página de inicio de sesión
+            supabase.auth.signOut().then(() => {
+              window.location.href = 'iniciosesion.html';
+            });
+          }
+        }];
         
-        // Redirigir a la página de inicio de sesión
-        setTimeout(() => {
-          window.location.href = 'iniciosesion.html';
-        }, 2000);
+        document.body.appendChild(alert);
+        await alert.present();
         
       } catch (error) {
+        // Cerrar indicador de carga
+        await loading.dismiss();
+        
         console.error('Error al cambiar contraseña:', error);
         mostrarAlerta(`Error: ${error.message || 'No se pudo actualizar la contraseña'}`, 'danger');
       }
@@ -81,28 +122,29 @@ document.addEventListener('DOMContentLoaded', async () => {
     resetPasswordContainer.style.display = 'none';
     
     // Manejar el formulario de solicitud de restablecimiento
-    const requestResetForm = document.getElementById('requestResetForm');
-    
     requestResetForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       
       const email = requestResetForm.querySelector('ion-input[type="email"]').value;
       
-      if (!email) {
-        mostrarAlerta('Por favor, ingresa tu correo electrónico', 'danger');
+      if (!email || !isValidEmail(email)) {
+        mostrarAlerta('Por favor, ingresa un correo electrónico válido', 'danger');
         return;
       }
       
+      // Mostrar indicador de carga
+      const loading = document.createElement('ion-loading');
+      loading.message = 'Enviando correo...';
+      document.body.appendChild(loading);
+      await loading.present();
+      
       try {
-        // Mostrar indicador de carga
-        const loading = document.createElement('ion-loading');
-        loading.message = 'Enviando correo...';
-        document.body.appendChild(loading);
-        await loading.present();
+        // Configuración de redirección para que vuelva a la página correcta
+        const redirectUrl = `${window.location.origin}/web/login_registro/reset-password.html`;
         
         // Enviar correo de restablecimiento
         const { error } = await supabase.auth.resetPasswordForEmail(email, {
-          redirectTo: window.location.origin + '/web/usuarios/CContraseña.html'
+          redirectTo: redirectUrl
         });
         
         // Cerrar indicador de carga
@@ -110,28 +152,83 @@ document.addEventListener('DOMContentLoaded', async () => {
         
         if (error) throw error;
         
-        mostrarAlerta('Se ha enviado un correo electrónico con instrucciones para restablecer tu contraseña. Por favor, revisa tu bandeja de entrada.', 'success', 6000);
+        // Mostrar mensaje de éxito con información adicional
+        const alert = document.createElement('ion-alert');
+        alert.header = 'Correo enviado';
+        alert.message = `
+          Se ha enviado un enlace de recuperación a ${email}. 
+          <br><br>
+          Por favor, revisa tu bandeja de entrada (y la carpeta de spam) para completar el proceso.
+          <br><br>
+          El enlace expirará en 1 hora.
+        `;
+        alert.buttons = [{
+          text: 'Entendido',
+          handler: () => {
+            // Redirigir a la página de inicio de sesión después de unos segundos
+            window.location.href = 'iniciosesion.html';
+          }
+        }];
         
-        // Redirigir a la página de inicio de sesión después de unos segundos
-        setTimeout(() => {
-          window.location.href = 'iniciosesion.html';
-        }, 6000);
+        document.body.appendChild(alert);
+        await alert.present();
         
       } catch (error) {
+        // Cerrar indicador de carga
+        await loading.dismiss();
+        
         console.error('Error al enviar correo:', error);
-        mostrarAlerta(`Error: ${error.message || 'No se pudo enviar el correo de restablecimiento'}`, 'danger');
+        
+        // Procesamiento especial para ciertos errores
+        if (error.message.includes('rate limit')) {
+          mostrarAlerta('Has realizado demasiadas solicitudes. Por favor, intenta nuevamente más tarde.', 'danger');
+        } else if (error.message.includes('not found')) {
+          // Por seguridad, no revelar si el correo existe o no
+          mostrarAlerta('Si tu correo está registrado, recibirás un enlace para restablecer tu contraseña.', 'primary');
+          
+          // Redirigir a la página de inicio de sesión después de unos segundos
+          setTimeout(() => {
+            window.location.href = 'iniciosesion.html';
+          }, 3000);
+        } else {
+          mostrarAlerta(`Error: ${error.message || 'No se pudo enviar el correo de restablecimiento'}`, 'danger');
+        }
       }
     });
   }
 });
 
+// Verificar si hay una sesión activa
+async function verificarSesionActiva() {
+  try {
+    const { data } = await supabase.auth.getSession();
+    return !!(data && data.session);
+  } catch (error) {
+    console.error('Error al verificar sesión:', error);
+    return false;
+  }
+}
+
+// Validación de correo electrónico
+function isValidEmail(email) {
+  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return regex.test(email);
+}
+
+// Validación de contraseña
+function isValidPassword(password) {
+  // Al menos 6 caracteres, una mayúscula, una minúscula, un número y un carácter especial
+  const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
+  return regex.test(password);
+}
+
 // Función para mostrar alertas
-function mostrarAlerta(mensaje, color = 'primary', duracion = 3000) {
+async function mostrarAlerta(mensaje, color = 'primary', duracion = 3000) {
   const toast = document.createElement('ion-toast');
   toast.message = mensaje;
   toast.duration = duracion;
   toast.position = 'top';
   toast.color = color;
   document.body.appendChild(toast);
-  toast.present();
+  await toast.present();
 }

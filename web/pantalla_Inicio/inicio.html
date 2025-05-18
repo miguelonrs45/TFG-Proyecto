@@ -233,6 +233,8 @@
       margin: 3px 0 0;
     }
   </style>
+  <script src="/web/conexion/services/supabase-service.js"></script>
+  <script src="/web/menus/reservas-service.js"></script>
 </head>
 <body>
   <ion-app>
@@ -246,7 +248,7 @@
           <ion-button size="small">
             <ion-icon slot="icon-only" name="notifications-outline"></ion-icon>
           </ion-button>
-          <ion-button size="small">
+          <ion-button size="small" onclick="window.location.href='/web/menus/perfil.html'">
             <ion-icon slot="icon-only" name="person-circle-outline"></ion-icon>
           </ion-button>
         </ion-buttons>
@@ -275,10 +277,10 @@
           <h3>Espacios</h3>
           <p>Explorar espacios disponibles</p>
         </div>
-        <div class="action-card" onclick="window.location.href='/web/menus/perfil.html'">
-          <ion-icon name="person-outline"></ion-icon>
-          <h3>Mi Perfil</h3>
-          <p>Gestionar tu cuenta</p>
+        <div class="action-card" onclick="window.location.href='/web/menus/mis-calificaciones.html'">
+          <ion-icon name="star-outline" size="large"></ion-icon>
+          <h3>Mis Calificaciones</h3>
+          <p>Da tu opinión de las reservas </p>
         </div>
       </div>
     </ion-content>

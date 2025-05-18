@@ -4,17 +4,16 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mis Calificaciones - CoWorkGo</title>
-  <!-- Ionic Core CSS -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ionic/core/css/ionic.bundle.css">
-  <!-- Custom styles -->
   <link rel="stylesheet" href="mis-calificaciones.css">
+  <script src="/web/conexion/services/supabase-service.js"></script>
 </head>
 <body>
   <ion-app>
     <ion-header>
       <ion-toolbar color="primary">
         <ion-buttons slot="start">
-          <ion-back-button default-href="/web/pantalla_Inicio/inicio.html"></ion-back-button>
+          <ion-back-button onclick="window.location.href='/web/pantalla_Inicio/inicio.html'" default-href="/web/pantalla_Inicio/inicio.html"></ion-back-button>
         </ion-buttons>
         <ion-title>Mis Calificaciones</ion-title>
       </ion-toolbar>
@@ -165,5 +164,15 @@
   
   <!-- Custom JavaScript -->
   <script src="mis-calificaciones.js"></script>
+  
+  <!-- Añadir este script antes del cierre del body -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const backButton = document.querySelector('ion-back-button');
+      backButton.addEventListener('click', () => {
+        window.location.href = '/web/pantalla_Inicio/inicio.html';
+      });
+    });
+  </script>
 </body>
 </html>
