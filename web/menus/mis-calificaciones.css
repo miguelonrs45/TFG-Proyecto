@@ -618,3 +618,114 @@ ion-content {
   .resenas-container .resena-card:nth-child(8) { animation-delay: 0.8s; }
   .resenas-container .resena-card:nth-child(9) { animation-delay: 0.9s; }
   .resenas-container .resena-card:nth-child(10) { animation-delay: 1s; }
+
+#pending-list ion-item {
+  --background: transparent;
+  --border-color: rgba(255, 255, 255, 0.1);
+  --padding-start: 8px;
+  --padding-end: 8px;
+  --padding-top: 8px;
+  --padding-bottom: 8px;
+  margin-bottom: 8px;
+  border-radius: 8px;
+  transition: background 0.2s ease;
+}
+
+#pending-list ion-item:hover {
+  --background: rgba(255, 255, 255, 0.05);
+}
+
+#pending-list ion-item ion-label h2 {
+  font-weight: 600;
+  color: white;
+  margin-bottom: 4px;
+}
+
+#pending-list ion-item ion-label p {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+#pending-list ion-item ion-button {
+  --box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+#pending-list ion-item ion-thumbnail {
+  --border-radius: 8px;
+  width: 60px;
+  height: 60px;
+  margin-right: 12px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+}
+
+#pending-list ion-item ion-thumbnail img {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+#pending-reviews-container ion-card {
+  background: linear-gradient(135deg,
+              rgba(var(--ion-color-warning-rgb), 0.2),
+              rgba(255, 255, 255, 0.1));
+  border-radius: 16px;
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+#pending-reviews-container ion-card-content {
+  --background: transparent;
+  background: transparent; /* Por si --background no tiene efecto */
+}
+
+#pending-reviews-container ion-item {
+  --background: transparent;
+  background: transparent;
+  --border-color: rgba(255, 255, 255, 0.1);
+  margin-bottom: 8px;
+  border-radius: 8px;
+  transition: background 0.2s ease;
+}
+
+#pending-reviews-container ion-item:hover {
+  --background: rgba(255, 255, 255, 0.05);
+}
+#pending-reviews-container ion-item {
+  --background: rgba(15, 1, 1, 0.05); /* o usa 'transparent' si prefieres */
+  background: rgba(255, 255, 255, 0.05); /* respaldo para navegadores que no usan --background */
+  border-radius: 12px;
+  padding: 8px;
+  margin-bottom: 12px;
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+#pending-reviews-container ion-item:hover {
+  --background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+ion-item::part(native) {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border-radius: 12px;
+  transition: background 0.3s ease;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+ion-item:hover::part(native) {
+  background: rgba(255, 255, 255, 0.1) !important;
+}
+
+
+#pending-reviews-container ion-card {
+  background: linear-gradient(135deg,
+              rgba(255, 255, 255, 0.15),
+              rgba(255, 255, 255, 0.05));
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+}
+#pending-list {
+  background: transparent !important;
+}
