@@ -79,7 +79,7 @@ export class RegisterComponent {
         this.user.apellidos,
         this.user.email,
         this.user.contrasena,
-        this.user.telefono // Ahora puede ser vacío
+        this.user.telefono
       );
 
       this.showSuccessMessage('Cuenta creada con éxito');
@@ -104,7 +104,7 @@ export class RegisterComponent {
 
   private showSuccessMessage(message: string) {
     this.errorMessage = message;
-    this.showError = true; // Reutilizamos el mismo toast
+    this.showError = true;
     setTimeout(() => {
       this.showError = false;
     }, 3000);

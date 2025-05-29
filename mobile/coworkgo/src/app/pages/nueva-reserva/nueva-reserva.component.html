@@ -15,7 +15,6 @@
   </div>
 
   <div class="booking-container">
-    <!-- Workspace type selector -->
     <ion-segment [value]="workspaceType" (ionChange)="changeWorkspaceType($event)">
       <ion-segment-button value="desk">
         <ion-icon name="desktop-outline"></ion-icon>
@@ -31,7 +30,6 @@
       </ion-segment-button>
     </ion-segment>
 
-    <!-- Location button -->
     <div class="location-container">
       <ion-item>
         <ion-label position="stacked">Ubicación</ion-label>
@@ -44,7 +42,6 @@
     </div>
 
 
-    <!-- Location map modal (shown when toggleLocationMap is called) -->
     <ion-modal [isOpen]="showLocationMap" (didDismiss)="showLocationMap = false">
       <ng-template>
         <ion-header>
@@ -75,7 +72,6 @@
       </ng-template>
     </ion-modal>
 
-    <!-- Selection summary -->
     <div class="selection-summary" *ngIf="showSelectionSummary">
       <div class="selection-header">
         <ion-icon [name]="workspaceType === 'desk' ? 'desktop-outline' :
@@ -94,9 +90,7 @@
       </div>
     </div>
 
-    <!-- Floor plan -->
     <div class="floor-plan">
-      <!-- Desk grid -->
       <div *ngIf="workspaceType === 'desk'" class="desk-grid">
         <div *ngFor="let workspace of workspaces"
              class="workspace-item"
@@ -108,7 +102,6 @@
         </div>
       </div>
 
-      <!-- Office grid -->
       <div *ngIf="workspaceType === 'office'" class="office-grid">
         <div *ngFor="let workspace of workspaces"
              class="workspace-item"
@@ -121,7 +114,6 @@
         </div>
       </div>
 
-      <!-- Meeting room grid -->
       <div *ngIf="workspaceType === 'meeting'" class="meeting-grid">
         <div *ngFor="let workspace of workspaces"
              class="meeting-room"
@@ -141,7 +133,6 @@
       </div>
     </div>
 
-    <!-- Additional services - Desks -->
     <div class="additional-services" *ngIf="workspaceType === 'desk'">
       <h4>Servicios Adicionales</h4>
       <div class="services-grid">
@@ -191,7 +182,6 @@
       </div>
     </div>
 
-    <!-- Additional services - Offices -->
     <div class="additional-services" *ngIf="workspaceType === 'office'">
       <h4>Servicios Adicionales - Oficinas</h4>
       <div class="services-grid">
@@ -263,7 +253,6 @@
       </div>
     </div>
 
-    <!-- Additional services - Meeting Rooms -->
     <div class="additional-services" *ngIf="workspaceType === 'meeting'">
       <h4>Servicios Adicionales - Salas de Reuniones</h4>
       <div class="services-grid">
@@ -324,7 +313,6 @@
       </div>
     </div>
 
-    <!-- Booking form -->
     <div class="booking-form" *ngIf="!showBookingSummary">
       <ion-item>
         <ion-label position="stacked">Fecha de reserva</ion-label>
@@ -369,7 +357,6 @@
       </ion-button>
     </div>
 
-    <!-- Booking summary -->
     <div class="summary-card" *ngIf="showBookingSummary">
       <h3>Resumen de tu reserva</h3>
       <div class="summary-info">
@@ -391,7 +378,6 @@
           </div>
         </div>
 
-        <!-- Location info in summary -->
         <div class="location-summary">
           <h4>Ubicación:</h4>
           <p>
@@ -414,7 +400,6 @@
     </div>
   </div>
 
-  <!-- Loading indicator -->
   <ion-loading
     [isOpen]="isLoading"
     message="Guardando reserva...">

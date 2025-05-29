@@ -125,9 +125,6 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  // Por ahora, estas funciones solo mostrarán mensajes en consola
-  // ya que las rutas aún no están implementadas
-
   nuevaReserva() {
     console.log('Navegando a Nueva Reserva');
     this.navigate('/nueva-reserva');

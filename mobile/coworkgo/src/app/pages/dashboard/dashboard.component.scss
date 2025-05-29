@@ -445,3 +445,163 @@ ion-col:nth-child(4) .dashboard-card {
   transform-origin: 50% 50%;
   animation: ripple 0.6s ease-out;
 }
+
+ion-toolbar {
+  ion-buttons[slot="end"] {
+    ion-button {
+      /* Aumentar contraste y visibilidad */
+      --color: white !important;
+      --background: rgba(255, 255, 255, 0.2) !important;
+      margin-left: 4px !important;
+      height: 36px !important;
+      width: 36px !important;
+
+      ion-icon {
+        /* Aseguramos tamaño fijo y visible */
+        font-size: 20px !important;
+        color: white !important;
+        opacity: 1 !important;
+        --ionicon-stroke-width: 48px !important;
+        filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3)) !important;
+
+        /* Dimensiones explícitas para evitar problemas */
+        width: 20px !important;
+        height: 20px !important;
+      }
+    }
+  }
+}
+
+.logo-title {
+  /* Mejor gestión de espacio */
+  max-width: 120px !important;
+  margin: 0 auto !important;
+  overflow: visible !important;
+
+  .logo-container {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+
+    ion-icon {
+      /* Icono más visible */
+      font-size: 22px !important;
+      color: white !important;
+      margin-right: 6px !important;
+      min-width: 22px !important;
+      width: 22px !important;
+      height: 22px !important;
+      opacity: 1 !important;
+    }
+
+    span {
+      /* Texto sin truncar */
+      font-size: 16px !important;
+      white-space: nowrap !important;
+      overflow: visible !important;
+      color: white !important;
+      text-overflow: clip !important;
+      font-weight: 600 !important;
+    }
+  }
+}
+
+/* SOLUCIÓN 3: Evitar superposición con el contenido */
+.greeting-container {
+  /* Aumentar el margen superior para evitar superposición con el header */
+  margin-top: 30px !important;
+  padding-top: 30px !important;
+
+  h1 {
+    margin-top: 20px !important;
+  }
+}
+
+/* Mejorar visibilidad de la toolbar transparente */
+.transparent-toolbar {
+  --background: rgba(0, 0, 0, 0.2) !important;
+  --border-color: transparent !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+}
+
+/* Corrección para status bar en iOS */
+.ios ion-header {
+  padding-top: var(--ion-safe-area-top, 0) !important;
+}
+
+/* Ajuste para botones animados */
+.animate-button {
+  /* Mejor visibilidad */
+  background: rgba(255, 255, 255, 0.2) !important;
+  border-radius: 50% !important;
+  overflow: hidden !important;
+  opacity: 1 !important;
+}
+
+.logo-title {
+  width: auto !important;
+  max-width: none !important; /* Eliminar límite de ancho */
+
+  .logo-container {
+    ion-icon {
+      font-size: 24px !important;
+      color: white !important;
+      margin-right: 8px !important;
+      opacity: 1 !important;
+      /* Forzar visibilidad */
+      display: inline-block !important;
+      visibility: visible !important;
+    }
+
+    span {
+      font-size: 18px !important;
+      color: white !important;
+      font-weight: 700 !important;
+      /* Desactivar cualquier truncamiento */
+      text-overflow: clip !important;
+      white-space: normal !important;
+      overflow: visible !important;
+      /* Forzar visibilidad */
+      display: inline-block !important;
+      visibility: visible !important;
+    }
+  }
+}
+
+/* Corregir el ancho del título para darle más espacio */
+ion-toolbar ion-title {
+  --width: auto !important;
+  max-width: none !important;
+  width: auto !important;
+  padding: 0 !important;
+  position: relative !important;
+  left: 0 !important;
+  right: 0 !important;
+  text-align: center !important;
+}
+
+/* Eliminar el background gris del botón de salir */
+ion-buttons[slot="end"] .animate-button {
+  background: transparent !important;
+  border-radius: 0 !important;
+}
+
+/* Asegurar que los iconos de los botones sean visibles */
+ion-buttons[slot="end"] ion-button ion-icon {
+  color: white !important;
+  opacity: 1 !important;
+  font-size: 24px !important;
+  /* Forzar que se muestre sin transparencia */
+  fill: white !important;
+  stroke: white !important;
+  visibility: visible !important;
+  display: block !important;
+}
+
+/* Solucionar superposición con el contenido */
+.greeting-container {
+  margin-top: 60px !important;
+  padding-top: 20px !important;
+}

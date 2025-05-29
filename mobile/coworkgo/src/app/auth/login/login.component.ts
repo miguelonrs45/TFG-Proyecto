@@ -97,7 +97,7 @@ export class LoginComponent {
           name: 'email',
           type: 'email',
           placeholder: 'Correo electrónico',
-          value: this.email // Pre-llenamos con el email si ya lo escribió
+          value: this.email
         }
       ],
       buttons: [

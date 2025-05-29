@@ -272,13 +272,10 @@ export class EspaciosComponent implements OnInit {
   // Navegar a la pantalla de nueva reserva con el ID del espacio seleccionado
   nuevaReserva(espacioId: number) {
     console.log('Navegando a nueva reserva para el espacio:', espacioId);
-    // Esta navegación se implementará cuando esté desarrollada la pantalla de Nueva Reserva
-    // this.router.navigate(['/nueva-reserva', espacioId]);
+
   }
 
   verDetallesEspacio(espacioId: number) {
     console.log('Ver detalles del espacio:', espacioId);
-    // Implementar cuando se tenga la pantalla de detalles
-    // this.router.navigate(['/espacios', espacioId]);
   }
 }

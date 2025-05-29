@@ -14,9 +14,8 @@ export class AuthService {
 
   constructor(
     private router: Router,
-    private platform: Platform // Inyectar Platform
+    private platform: Platform
   ) {
-    // Estos valores deberían estar en un entorno de variables
     const supabaseUrl = 'https://dvtkkaxjehfotylwwsea.supabase.co';
     const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2dGtrYXhqZWhmb3R5bHd3c2VhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI4MzEyOTUsImV4cCI6MjA1ODQwNzI5NX0.VjR1V7PBZuOtvSUIOnjrXBb_O-w6W2wabHhjahaom1A';
 
@@ -270,7 +269,6 @@ export class AuthService {
         .single();
 
       if (queryError && queryError.code !== 'PGRST116') {
-        // PGRST116 significa que no se encontró el registro, lo cual es esperado
         console.error('Error al verificar usuario existente:', queryError);
         return;
       }

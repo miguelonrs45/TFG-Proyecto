@@ -89,7 +89,6 @@ export class MisCalificacionesComponent implements OnInit {
 
   cargarResenas() {
     // Aquí conectaríamos con el servicio para cargar las reseñas del usuario actual
-    // Por ahora usamos datos de ejemplo
     this.resenas = [
       {
         id: 1,
@@ -367,7 +366,6 @@ export class MisCalificacionesComponent implements OnInit {
           const ratingValue = document.querySelector('.rating-value');
           const hiddenInput = document.querySelector('input[name="calificacionHidden"]') as HTMLInputElement;
 
-          // Mejorar la interactividad añadiendo eventos tanto para móvil como desktop
           stars.forEach(star => {
             // Para clicks y toques
             ['click', 'touchstart'].forEach(eventName => {

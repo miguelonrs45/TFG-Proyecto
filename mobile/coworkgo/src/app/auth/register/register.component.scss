@@ -57,8 +57,6 @@ ion-list {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
-/* SOLUCIÓN DE ALTO CONTRASTE */
-/* Cambio completo del enfoque de diseño para inputs */
 ion-item {
   --background: rgba(30, 50, 100, 0.8) !important; /* Fondo más oscuro */
   --border-color: white;
@@ -102,7 +100,6 @@ ion-item.item-has-focus {
   box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.5);
 }
 
-/* Los inputs nativos también necesitan estilos */
 .native-input {
   color: white !important;
   caret-color: white !important; /* Color del cursor */

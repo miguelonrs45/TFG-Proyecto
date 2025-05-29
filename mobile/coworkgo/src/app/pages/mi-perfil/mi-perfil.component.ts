@@ -292,19 +292,15 @@ export class MiPerfilComponent implements OnInit {
 
   saveProfile() {
     if (this.editableProfile) {
-      // En una app real, aquí enviaríamos los datos al servidor
       this.userProfile = {...this.editableProfile};
       this.editMode = false;
       this.editableProfile = null;
 
-      // Mostrar mensaje de éxito (en una app real usaríamos un toast o alerta)
       console.log('Perfil guardado con éxito');
     }
   }
 
   async openPhotoOptions() {
-    // En una aplicación real, aquí usaríamos ActionSheet de Ionic
-    // Pero para simplificar, usaremos un prompt básico
     const option = prompt('Selecciona cómo quieres cambiar tu foto: \n1. Cámara\n2. Galería\n3. Cancelar');
 
     if (option === '1') {
@@ -321,8 +317,6 @@ export class MiPerfilComponent implements OnInit {
       // Simulación de seleccionar desde la galería
       console.log('Abriendo galería...');
 
-      // En una app real, aquí usaríamos Camera o File plugins
-      // Para este ejemplo, usaremos un array de fotos predefinidas
       const randomPhotos = [
         'https://ionicframework.com/docs/img/demos/thumbnail.svg',
         'https://ionicframework.com/docs/img/demos/avatar.svg',
@@ -338,7 +332,6 @@ export class MiPerfilComponent implements OnInit {
 
       alert('¡Foto actualizada con éxito!');
     }
-    // Opción 3 o cualquier otra: cancelar, no hacer nada
   }
 
   setDefaultPaymentMethod(id: string) {
@@ -353,7 +346,6 @@ export class MiPerfilComponent implements OnInit {
   }
 
   addPaymentMethod() {
-    // En una app real, aquí abriríamos un formulario para añadir un método de pago
     console.log('Añadir método de pago');
   }
 
@@ -364,7 +356,6 @@ export class MiPerfilComponent implements OnInit {
 
   toggleTwoFactor() {
     this.securitySettings.twoFactorEnabled = !this.securitySettings.twoFactorEnabled;
-    // En una app real, aquí enviaríamos la configuración al servidor
   }
 
   viewReservationDetails(id: string) {
@@ -374,7 +365,6 @@ export class MiPerfilComponent implements OnInit {
 
   contactSupport() {
     console.log('Contactar con soporte');
-    // En una app real, aquí abriríamos un chat o formulario de contacto
   }
 
   logout() {

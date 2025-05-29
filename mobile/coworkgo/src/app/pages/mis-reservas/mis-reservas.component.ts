@@ -221,71 +221,61 @@ export class MisReservasPage implements OnInit {
 
   // Cargar espacios de trabajo asociados a una reserva - con mejor manejo de errores
   async loadWorkspacesForReservation(reserva: Reservation) {
-    try {
-      // Obtener el cliente de Supabase
-      const supabase = this.authService.getSupabaseClient();
+  try {
+    // Obtener el cliente de Supabase
+    const supabase = this.authService.getSupabaseClient();
 
-      // Primero obtenemos los horarios para encontrar los espacios
-      const { data: horariosData, error: horariosError } = await supabase
-        .from('Horario')
-        .select('id_espacio')
-        .eq('id_reserva', reserva.id_reserva);
+    // Primero consultamos la reserva para obtener el id_espacio
+    const { data: reservaData, error: reservaError } = await supabase
+      .from('Reserva')
+      .select('id_espacio')
+      .eq('id_reserva', reserva.id_reserva)
+      .single();
 
-      if (horariosError) {
-        console.error('Error al consultar horarios:', horariosError);
-        console.log('No se encontraron horarios para la reserva:', reserva.id_reserva);
-        reserva.workspaces = ['Sin espacios registrados'];
-        return;
-      }
-
-      if (!horariosData || horariosData.length === 0) {
-        console.log('No se encontraron horarios para la reserva:', reserva.id_reserva);
-        reserva.workspaces = ['No asignado'];
-        return;
-      }
-
-      // Extraer los IDs de espacios
-      const espacioIds = horariosData.map(h => h.id_espacio).filter(id => id !== null);
-
-      if (espacioIds.length === 0) {
-        console.log('Horarios encontrados pero sin espacios válidos');
-        reserva.workspaces = ['Sin asignación'];
-        return;
-      }
-
-      // Obtener la información de los espacios
-      const { data: espaciosData, error: espaciosError } = await supabase
-        .from('Espacio_Trabajo')
-        .select('*')
-        .in('id_espacio', espacioIds);
-
-      if (espaciosError) {
-        console.error('Error al cargar espacios de la reserva:', espaciosError);
-        reserva.workspaces = ['Error al cargar'];
-        return;
-      }
-
-      if (!espaciosData || espaciosData.length === 0) {
-        console.log('No se encontraron espacios para los horarios');
-        reserva.workspaces = ['No disponible'];
-        return;
-      }
-
-      // Crear un array de IDs simples para mostrar en la UI
-      const workspaceIds = espaciosData.map(workspace => {
-        // Extraer el ID simple del nombre (ej: "Escritorio D1" -> "D1")
-        const match = workspace.nombre?.match(/([OMD]\d+)/i);
-        return match ? match[1].toUpperCase() : workspace.codigo_espacio?.toString() || 'ESP';
-      });
-
-      // Guardar estos IDs en la propiedad workspaces para la UI
-      reserva.workspaces = workspaceIds.length > 0 ? workspaceIds : ['Sin código'];
-    } catch (error) {
-      console.error('Error al cargar espacios de la reserva:', error);
-      // Asegurar que workspaces siempre sea un array (nunca undefined)
-      reserva.workspaces = ['Error'];
+    if (reservaError) {
+      console.error('Error al consultar reserva:', reservaError);
+      reserva.workspaces = ['Sin espacios registrados'];
+      return;
     }
+
+    if (!reservaData || !reservaData.id_espacio) {
+      console.log('No se encontró información de espacio para la reserva:', reserva.id_reserva);
+      reserva.workspaces = ['No asignado'];
+      return;
+    }
+
+    // Ahora obtenemos información del espacio de trabajo
+    const { data: espacioData, error: espacioError } = await supabase
+      .from('Espacio_Trabajo')
+      .select('*')
+      .eq('id_espacio', reservaData.id_espacio)
+      .single();
+
+    if (espacioError) {
+      console.error('Error al cargar espacio de la reserva:', espacioError);
+      reserva.workspaces = ['Error al cargar'];
+      return;
+    }
+
+    if (!espacioData) {
+      console.log('No se encontró información del espacio');
+      reserva.workspaces = ['No disponible'];
+      return;
+    }
+
+    // Extraer el código o ID simple que queremos mostrar
+    const match = espacioData.nombre?.match(/([OMD]\d+)/i);
+    const workspaceId = match ? match[1].toUpperCase() :
+                       espacioData.codigo_espacio?.toString() || 'ESP';
+
+    // Asignar el ID del espacio
+    reserva.workspaces = [workspaceId];
+
+  } catch (error) {
+    console.error('Error al cargar espacios de la reserva:', error);
+    reserva.workspaces = ['Error'];
   }
+}
 
   // Cargar servicios adicionales asociados a una reserva - con mejor manejo de errores
   async loadServicesForReservation(reserva: Reservation) {
